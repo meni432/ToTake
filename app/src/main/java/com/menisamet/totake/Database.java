@@ -34,8 +34,6 @@ public class Database {
         DatabaseReference myRef = database.getReference("user");
 
 
-
-
     }
 
     /**
@@ -45,5 +43,9 @@ public class Database {
     public static boolean isLogIn(){
         static_FirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         return (static_FirebaseUser != null);
+    }
+
+    public static void addNewList(ListData listData){
+        static_userListData.add(listData);
     }
 }

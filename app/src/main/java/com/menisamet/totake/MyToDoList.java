@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,13 @@ public class MyToDoList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_to_do_list);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -39,6 +47,10 @@ public class MyToDoList extends AppCompatActivity {
         mAdapter = new MyAdapter(MyToDoList.this, Database.static_userListData);
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    public void newListOnClick(View view){
+        Utility.checkAuthAndGoToActivity(this, AddNewListActivity.class);
     }
 
 }
@@ -66,7 +78,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
     private List<ListData> listDatas;
 
-    public MyAdapter (Context context, List<ListData> listDatas){
+    public MyAdapter(Context context, List<ListData> listDatas) {
         this.context = context;
         this.listDatas = listDatas;
     }
