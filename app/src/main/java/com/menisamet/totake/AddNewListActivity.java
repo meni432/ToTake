@@ -1,6 +1,7 @@
 package com.menisamet.totake;
 
 import android.app.DatePickerDialog;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -22,6 +23,8 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
 
     public static final String TAG = "TAG_" + AddNewListActivity.class.getCanonicalName();
     private GoogleApiClient mGoogleApiClient;
+    private Calendar startData;
+    private Calendar endDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +77,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
         DialogFragment newFragment = new DatePickerFragment(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Log.d(TAG, dayOfMonth + " " + month + " " + month);
+
             }
         });
         newFragment.show(getSupportFragmentManager(), getString(R.string.date_picker));
