@@ -8,23 +8,28 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.List;
+
 public class ListOfItemActivity extends AppCompatActivity {
 
-    String [] item={"sacks", "shirts", "pants"};
+    //String [] item={"sacks", "shirts", "pants"};
+    List<ItemData> listDatas = null;
     ListView v;
-    ArrayAdapter<String> a;
+    ArrayAdapter<ItemData> a;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_item);
         v=(ListView) findViewById(R.id.listView);
-        a=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, android.R.id.text1, item);
+        a=new ArrayAdapter<ItemData>(this,android.R.layout.simple_list_item_1, android.R.id.text1,listDatas);
         v.setAdapter(a);
         v.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String ob=item[i]; //get the item in the given place
+                ItemData listData=listDatas.get(i);
+                String ob = listData.name;
+                //get the item in the given place
                 Utility.showToast(getApplicationContext(), ob);
             }
         });
