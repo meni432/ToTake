@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class MyToDoList extends AppCompatActivity {
+public class MyToDoListActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -44,7 +44,7 @@ public class MyToDoList extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(MyToDoList.this, Database.static_userListData);
+        mAdapter = new MyAdapter(MyToDoListActivity.this, Database.static_userListData);
         mRecyclerView.setAdapter(mAdapter);
 
     }

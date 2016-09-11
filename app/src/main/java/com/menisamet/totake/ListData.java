@@ -12,6 +12,7 @@ public class ListData {
     private List<ItemData> itemDataList;
 
     public ListData() {
+
     }
 
     public ListData(int id, String listName) {

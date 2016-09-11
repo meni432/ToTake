@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
 //            Intent intent = new Intent(MainActivity.this, ToolActivity.class);
 //            startActivity(intent);
         }else if (id == R.id.nav_my_lists){
-            Utility.checkAuthAndGoToActivity(this, MyToDoList.class);
+            Utility.checkAuthAndGoToActivity(this, MyToDoListActivity.class);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_log_out) {
