@@ -19,20 +19,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignInActivity" />
-        <activity android:name=".ManageActivity"
+        <activity
+            android:name=".ManageActivity"
             android:label="Manage">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.menisamet.totake.MainActivity" />
         </activity>
-        <activity android:name=".MyListActivity"
+        <activity
+            android:name=".MyListActivity"
             android:label="My Lists"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MyListActivity">
+            android:parentActivityName=".MyListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.menisamet.totake.MainActivity" />
         </activity>
+        <activity android:name=".MyToDoList"></activity>
     </application>
 
 </manifest>

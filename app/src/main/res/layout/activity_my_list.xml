@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.menisamet.totake.MyListActivity"
+    android:background="@android:color/transparent"
+    style="@android:style/Widget.ListView.White"
     >
+
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -16,15 +20,75 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            style="@style/AppTheme.AppBarOverlay">
 
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="scrollable"/>
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:padding="0dp">
 
+                <Spinner
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/spinner" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/add_new_list_image_button"
+                    android:background="@drawable/ic_note_add"
+                    android:layout_gravity="center"
+                    android:layout_alignParentBottom="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignWithParentIfMissing="false"
+                    android:layout_centerInParent="true"
+                    android:cropToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_margin="10dp"
+                    android:onClick="newListOnClick"
+                    android:clickable="true"
+                    android:contextClickable="true" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/setting_list_image_button"
+                    android:background="@drawable/ic_settings"
+                    android:layout_gravity="center"
+                    android:layout_alignWithParentIfMissing="false"
+                    android:cropToPadding="false"
+                    android:nestedScrollingEnabled="true"
+                    android:layout_marginRight="11dp"
+                    android:layout_marginEnd="11dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/add_new_list_image_button"
+                    android:layout_toStartOf="@+id/add_new_list_image_button"
+                    android:onClick="settingOnClick"
+                    android:clickable="true"
+                    android:contextClickable="true"
+                    android:baselineAlignBottom="false"
+                    android:adjustViewBounds="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+
+    <ImageView
+        android:layout_width="500dp"
+        android:layout_height="500dp"
+        android:id="@+id/imageView2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_launcher" />
+
 
 </RelativeLayout>

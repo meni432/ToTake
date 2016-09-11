@@ -1,5 +1,7 @@
 package com.menisamet.totake;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -9,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +66,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        setupWindowAnimations();
+
     }
 
     @Override
@@ -106,7 +111,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_manage) {
             Utility.checkAuthAndGoToActivity(this, ManageActivity.class);
         }else if (id == R.id.nav_my_lists){
-            Utility.checkAuthAndGoToActivity(this, MyListActivity.class);
+            Utility.checkAuthAndGoToActivity(this, MyToDoList.class);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_log_out) {
@@ -118,5 +123,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setupWindowAnimations() {
+        Fade fade = new Fade();
+        fade.setDuration(1000);
+        getWindow().setEnterTransition(fade);
+    }
 
 }
