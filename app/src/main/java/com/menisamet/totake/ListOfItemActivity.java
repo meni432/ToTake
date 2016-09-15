@@ -9,8 +9,8 @@ import android.widget.ListView;
 
 import java.util.List;
 
-public class ListOfItemActivity extends AppCompatActivity {
-
+public class ListOfItemActivity extends AppCompatActivity
+{
     //String [] item={"sacks", "shirts", "pants"};
     List<ItemData> itemsToTake = null;
     List<ItemData> recommendations = null;
