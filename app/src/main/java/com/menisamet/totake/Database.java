@@ -2,8 +2,6 @@ package com.menisamet.totake;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +30,11 @@ public class Database {
 
     //Load Database Data
     public static void addTestData()  {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users").child(static_FirebaseUser.getUid());
-
-
-        myRef.setValue(static_userListData);
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("users").child(static_FirebaseUser.getUid());
+//
+//
+//        myRef.setValue(static_userListData);
     }
 
     /**
