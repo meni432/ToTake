@@ -11,7 +11,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by meni on 04/09/16.
@@ -40,32 +39,63 @@ public class Database
 
     public void Database()
     {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("ToTake\\ItemsToTake");
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("ItemToTake\\7WPohkoU8PfRrJaj5uwlArduZ9s2\\-KRieE0kTZZl8RTtTgKz");
 
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener()
-        {
+//        // Read from the database
+//        myRef.addValueEventListener(new ValueEventListener()
+//        {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot)
+//            {
+//                ListDataItem value = dataSnapshot.getValue(database
+//                Log.d(TAG, "Value is: " + value.getListName()+"********************");
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error)
+//            {
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
+    }
+
+    public static void destGetFromDB(){
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("ItemToTake");
+        myRef.child(static_FirebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                ListDataItem value = dataSnapshot.getValue(ListDataItem.class);
-                Log.d(TAG, "Value is: " + value.getListName());
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "there is "+dataSnapshot.getChildrenCount()+" trip in db");
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    ListDataItem listDataItem = snapshot.getValue(ListDataItem.class);
+                    Log.d(TAG, "listDataItem: "+listDataItem);
+                }
             }
 
             @Override
-            public void onCancelled(DatabaseError error)
-            {
-                Log.w(TAG, "Failed to read value.", error.toException());
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
 
+
+
+
     public static void saveToDB(Object objectToSave, String pathToDB)
     {
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("ItemToTake");
+//        String key = myRef.child(static_FirebaseUser.getUid()).push().getKey();
+//        myRef.child(static_FirebaseUser.getUid()).child(key).setValue(objectToSave);
+        static_userListData.add((ListDataItem)objectToSave);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(pathToDB);
-        myRef.setValue(objectToSave);
+        DatabaseReference myRef = database.getReference("ItemToTake");
+        myRef.child(static_FirebaseUser.getUid()).setValue(static_userListData);
+
+
+
     }
 
     /*public Object RetrievedDataFromDB(String pathToDB)
@@ -77,4 +107,6 @@ public class Database
 //        static_FirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         return (static_FirebaseUser != null);
     }
+
+
 }

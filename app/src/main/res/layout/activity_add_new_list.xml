@@ -86,7 +86,8 @@
             android:src="@drawable/ic_add"
             app:cb_color="@color/colorPrimary"
             app:cb_pressedRingWidth="8dip"
-            android:layout_gravity="right|top" />
+            android:layout_gravity="right|top"
+            android:onClick="addButtonClicked" />
 
     </FrameLayout>
 

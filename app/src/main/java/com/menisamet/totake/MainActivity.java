@@ -135,4 +135,8 @@ public class MainActivity extends AppCompatActivity
         getWindow().setEnterTransition(fade);
     }
 
+    public void dbLoadClick(View view){
+        Database.destGetFromDB();
+    }
+
 }

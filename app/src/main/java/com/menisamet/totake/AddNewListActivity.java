@@ -63,8 +63,8 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
                         .findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setHint("Your Destination");
-        ((EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(13.0f);
-        ((EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setPadding(0,0,0,0);
+        ((EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(13.0f);
+        ((EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setPadding(0, 0, 0, 0);
 
 
         autocompleteFragment.setFilter(autocompleteFilter);
@@ -106,14 +106,14 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
                 Calendar calendar = GregorianCalendar.getInstance();
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-                if (v.getId() == R.id.start_date_button){
+                if (v.getId() == R.id.start_date_button) {
                     startDate = calendar.getTime();
-                    Log.d(TAG, "start date set: "+startDate);
-                    ((TextView)v).setText(sdf.format(startDate));
-                } else if (v.getId() == R.id.end_date_button){
+                    Log.d(TAG, "start date set: " + startDate);
+                    ((TextView) v).setText(sdf.format(startDate));
+                } else if (v.getId() == R.id.end_date_button) {
                     endDate = calendar.getTime();
-                    Log.d(TAG, "end date set: "+endDate);
-                    ((TextView)v).setText(sdf.format(endDate));
+                    Log.d(TAG, "end date set: " + endDate);
+                    ((TextView) v).setText(sdf.format(endDate));
                 }
             }
         });
@@ -124,6 +124,12 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    public void addButtonClicked(View view) {
+        ListDataItem itemToSave = new ListDataItem(selectedPlace, startDate, endDate);
+        Database.saveToDB(itemToSave, "ToTake\\ItemsToTake\\" + Database.static_FirebaseUser.getUid());
+        Log.d(TAG, "send to db");
     }
 
 }

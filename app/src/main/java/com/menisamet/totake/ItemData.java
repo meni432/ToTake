@@ -7,6 +7,7 @@ public class ItemData {
     private String name;
     private int numbers;
 
+    public ItemData() {}
     public ItemData(String name, int numbers) {
         this.name = name;
         this.numbers = numbers;
@@ -28,4 +29,11 @@ public class ItemData {
         this.numbers = numbers;
     }
 
+    @Override
+    public String toString() {
+        return "ItemData{" +
+                "name='" + name + '\'' +
+                ", numbers=" + numbers +
+                '}';
+    }
 }

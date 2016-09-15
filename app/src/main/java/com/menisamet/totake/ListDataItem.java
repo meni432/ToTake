@@ -4,6 +4,8 @@ import android.annotation.TargetApi;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 
+import com.google.android.gms.location.places.Place;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,9 +21,9 @@ public class ListDataItem {
     private String listName;
     private List<ItemData> itemDataList;
     private String googlePlaceId = "ChIJ1XXAkwRAHRURIj88VL6V2Sw";
-    private Date fromDate = new Date();
-    private Date toDate = new Date();
-
+    private Date startDate = new Date();
+    private Date endDate = new Date();
+    private Place place = null;
 
 
     public ListDataItem() {
@@ -32,6 +34,16 @@ public class ListDataItem {
         this();
         this.id = id;
         this.listName = listName;
+    }
+
+    public ListDataItem(Place selectedPlace, Date startDate, Date endDate) {
+        this.place = selectedPlace;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.listName = (String)selectedPlace.getName();
+        itemDataList = new ArrayList<>();
+        addItemDataList(new ItemData("ilay", 1));
+        addItemDataList(new ItemData("noa", 2));
     }
 
     public int getId() {
@@ -75,17 +87,16 @@ public class ListDataItem {
 
     @Override
     public String toString() {
-        return getListName();
+        return getListName() + " item list "+itemDataList;
     }
 
     @TargetApi(Build.VERSION_CODES.N)
     public String getRepresentativeFromToDate(){
-        if (toDate != null && fromDate != null) {
+        if (endDate != null && startDate != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-            return sdf.format(fromDate) + " - " + sdf.format(toDate);
+            return sdf.format(startDate) + " - " + sdf.format(endDate);
         }
         return "";
     }
-
 
 }
