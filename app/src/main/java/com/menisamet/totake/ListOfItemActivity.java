@@ -190,6 +190,7 @@ public class ListOfItemActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     itemsToAdd.remove(position);
+                    a_sugg.notifyDataSetChanged();
                    }
             });
 
