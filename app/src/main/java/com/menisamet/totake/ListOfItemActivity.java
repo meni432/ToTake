@@ -95,13 +95,22 @@ public class ListOfItemActivity extends AppCompatActivity
                 deleteItem.setIcon(R.drawable.ic_delete_white_48dp);
                 // add to menu
                 menu.addMenuItem(deleteItem);
+
+
             }
         };
 
         v.setMenuCreator(creator);
         v.setSwipeDirection(SwipeMenuListView.DIRECTION_RIGHT);
+        v.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                itemsToTake.remove(position);
+                a.notifyDataSetChanged();
+                return false;
+            }
+        });
     }
-
 
     class item_adapter extends ArrayAdapter<ItemData> {
 
@@ -163,6 +172,7 @@ public class ListOfItemActivity extends AppCompatActivity
             final TextView itemName = (TextView) convertView.findViewById(R.id.item_test);
             final TextView itemNumber = (TextView) convertView.findViewById(R.id.num_text);
             ImageButton addButton = (ImageButton) convertView.findViewById(R.id.imageButtonPlus);
+            ImageButton deletButton = (ImageButton) convertView.findViewById(R.id.imageButtondelet);
             itemName.setText(itemData.getName());
             itemNumber.setText(itemData.getNumbers() + "");
             addButton.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +183,14 @@ public class ListOfItemActivity extends AppCompatActivity
                     a.notifyDataSetChanged();
                     itemsToAdd.remove(position);
                     a_sugg.notifyDataSetChanged();}
+            });
+
+
+            deletButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    itemsToAdd.remove(position);
+                   }
             });
 
             return convertView;

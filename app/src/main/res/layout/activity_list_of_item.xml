@@ -18,20 +18,15 @@
     <com.baoyz.swipemenulistview.SwipeMenuListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="353dp"
+        android:layout_height="366dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/abc_ic_menu_paste_mtrl_am_alpha"
+        android:backgroundTint="@color/common_google_signin_btn_text_light_disabled" />
 
-    <TextView
-        android:layout_width="355dp"
-        android:layout_height="24dp"
-        android:text="                           Suggestions:"
-        android:id="@+id/textView4"
-        android:background="#E1705C"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        android:singleLine="false"
-        android:layout_margin="5dp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="14dp" />
 
     <ListView
         android:layout_width="match_parent"
