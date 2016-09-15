@@ -20,7 +20,7 @@ import com.google.android.gms.location.places.Places;
 
 import java.util.List;
 
-public class MyToDoListActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener {
+public class MyToTakeListActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -56,7 +56,7 @@ public class MyToDoListActivity extends AppCompatActivity implements  GoogleApiC
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(MyToDoListActivity.this, Database.static_userListData);
+        mAdapter = new MyAdapter(MyToTakeListActivity.this, Database.static_userListData);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -110,9 +110,9 @@ public class MyToDoListActivity extends AppCompatActivity implements  GoogleApiC
 
 
         private Context context;
-        private List<ListData> listDatas;
+        private List<ListDataItem> listDatas;
 
-        public MyAdapter(Context context, List<ListData> listDatas) {
+        public MyAdapter(Context context, List<ListDataItem> listDatas) {
             this.context = context;
             this.listDatas = listDatas;
         }

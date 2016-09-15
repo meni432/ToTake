@@ -16,7 +16,7 @@ import android.widget.Spinner;
 public class MyListActivity extends AppCompatActivity {
 
     Spinner spinner;
-    ArrayAdapter<ListData> adapter;
+    ArrayAdapter<ListDataItem> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class MyListActivity extends AppCompatActivity {
 
     private void setSelectionSpinnerListener() {
         // Create an ArrayAdapter using the string array and a default spinner layout
-        adapter = new ArrayAdapter<ListData>(this,
+        adapter = new ArrayAdapter<ListDataItem>(this,
                 R.layout.spinner_item, Database.static_userListData);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

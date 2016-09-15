@@ -6,12 +6,10 @@ package com.menisamet.totake;
 public class ItemData {
     private String name;
     private int numbers;
-  //  private boolean check;
 
-    public ItemData(String name, int numbers, boolean check) {
+    public ItemData(String name, int numbers) {
         this.name = name;
         this.numbers = numbers;
-    //    this.check = check;
     }
 
     public String getName() {
@@ -30,12 +28,4 @@ public class ItemData {
         this.numbers = numbers;
     }
 
-   // public boolean isCheck() {
-   //     return check;
-   // }
-
-
-    //public void setCheck(boolean check) {
-     //   this.check = check;
-    //}
 }

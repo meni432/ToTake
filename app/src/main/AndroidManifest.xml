@@ -40,7 +40,7 @@
                 android:value="com.menisamet.totake.MainActivity" />
         </activity>
         <activity
-            android:name=".MyToDoListActivity"
+            android:name=".MyToTakeListActivity"
             android:label="My Todo List"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />

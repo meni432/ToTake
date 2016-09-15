@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by meni on 07/09/16.
  */
-public class ListData {
+public class ListDataItem {
 
     private int id;
     private String listName;
@@ -16,11 +16,11 @@ public class ListData {
     private String toDate = "15/03/15";
 
 
-    public ListData() {
+    public ListDataItem() {
         this.itemDataList = new ArrayList<>();
     }
 
-    public ListData(int id, String listName) {
+    public ListDataItem(int id, String listName) {
         this();
         this.id = id;
         this.listName = listName;

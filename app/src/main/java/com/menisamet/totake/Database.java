@@ -1,9 +1,6 @@
 package com.menisamet.totake;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +13,15 @@ public class Database {
     public static final String TAG = "TAG_"+Database.class.getCanonicalName();
 //    public static boolean static_isLogIn = false;
     public static FirebaseUser static_FirebaseUser = null;
-    public static List<ListData> static_userListData = null;
+    public static List<ListDataItem> static_userListData = null;
 
     // only for test
     static  {
         static_userListData = new ArrayList<>();
-        static_userListData.add(new ListData(1,"first list"));
-        static_userListData.add(new ListData(2,"second list"));
-        static_userListData.add(new ListData(3,"th list"));
-        ListData sliListData = new ListData(4,"this list");
+        static_userListData.add(new ListDataItem(1,"first list"));
+        static_userListData.add(new ListDataItem(2,"second list"));
+        static_userListData.add(new ListDataItem(3,"th list"));
+        ListDataItem sliListData = new ListDataItem(4,"this list");
         sliListData.addItemDataList(new ItemData("item test 1", 3, false));
         static_userListData.add(sliListData);
     }
@@ -44,7 +41,8 @@ public class Database {
         return (static_FirebaseUser != null);
     }
 
-    public static void addNewList(ListData listData){
+    public static void addNewList(ListDataItem listData){
         static_userListData.add(listData);
     }
+
 }

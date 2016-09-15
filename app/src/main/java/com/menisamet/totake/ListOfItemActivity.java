@@ -12,7 +12,8 @@ import java.util.List;
 public class ListOfItemActivity extends AppCompatActivity {
 
     //String [] item={"sacks", "shirts", "pants"};
-    List<ItemData> listDatas = null;
+    List<ItemData> itemsToTake = null;
+    List<ItemData> recommendations = null;
     ListView v;
     ArrayAdapter<ItemData> a;
 
@@ -21,12 +22,12 @@ public class ListOfItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_item);
         v=(ListView) findViewById(R.id.listView); //find list from activity
-        a=new ArrayAdapter<ItemData>(this,android.R.layout.simple_list_item_1, android.R.id.text1,listDatas);
+        a=new ArrayAdapter<ItemData>(this,android.R.layout.simple_list_item_1, android.R.id.text1,itemsToTake);
         v.setAdapter(a);
         v.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ItemData listData=listDatas.get(i);
+                ItemData listData=itemsToTake.get(i);
                 String ob = listData.getName();
                 //get the item in the given place
                 Utility.showToast(getApplicationContext(), ob);
