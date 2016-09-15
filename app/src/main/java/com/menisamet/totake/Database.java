@@ -32,11 +32,7 @@ public class Database {
 
     //Load Database Data
     public static void addTestData()  {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users").child(static_FirebaseUser.getUid());
 
-
-        myRef.setValue(static_userListData);
     }
 
     /**
@@ -44,7 +40,7 @@ public class Database {
      * @return
      */
     public static boolean isLogIn(){
-        static_FirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        static_FirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         return (static_FirebaseUser != null);
     }
 

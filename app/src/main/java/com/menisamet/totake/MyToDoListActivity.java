@@ -63,7 +63,7 @@ public class MyToDoListActivity extends AppCompatActivity implements  GoogleApiC
         startGoogleApiClient();
         mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
 
-        Database.addTestData();
+//        Database.addTestData();
 
     }
 

@@ -20,7 +20,7 @@ public class ListOfItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_item);
-        v=(ListView) findViewById(R.id.listView);
+        v=(ListView) findViewById(R.id.listView); //find list from activity
         a=new ArrayAdapter<ItemData>(this,android.R.layout.simple_list_item_1, android.R.id.text1,listDatas);
         v.setAdapter(a);
         v.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -33,6 +33,4 @@ public class ListOfItemActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

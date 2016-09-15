@@ -13,11 +13,11 @@ public class Utility {
     public static final String EXTRA_LOG_OUT = "extra_log_out";
 
     public static void checkAuthAndGoToActivity(Context context, Class nextActivity){
-        Intent intent = new Intent(context, SignInActivity.class);
-        intent.putExtra(EXTRA_NEXT_ACTIVITY, nextActivity);
+ //       Intent intent = new Intent(context, SignInActivity.class);
+   //     intent.putExtra(EXTRA_NEXT_ACTIVITY, nextActivity);
+     //   context.startActivity(intent);
+        Intent intent = new Intent(context, nextActivity);
         context.startActivity(intent);
-//        Intent intent = new Intent(context, nextActivity);
-//        context.startActivity(intent);
     }
 
     public static void logOutUser(Context context){
