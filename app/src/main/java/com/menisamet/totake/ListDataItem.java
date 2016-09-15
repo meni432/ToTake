@@ -93,8 +93,8 @@ public class ListDataItem {
     @TargetApi(Build.VERSION_CODES.N)
     public String getRepresentativeFromToDate(){
         if (endDate != null && startDate != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-            return sdf.format(startDate) + " - " + sdf.format(endDate);
+//            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+  //          return sdf.format(startDate) + " - " + sdf.format(endDate);
         }
         return "";
     }

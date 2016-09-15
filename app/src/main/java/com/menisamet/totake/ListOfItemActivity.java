@@ -31,6 +31,9 @@ public class ListOfItemActivity extends AppCompatActivity
     List<ItemData> recommendations = null;
     SwipeMenuListView v;
     ArrayAdapter<ItemData> a;
+    List<ItemData> itemsToAdd = null;
+    ListView v_sugg;
+    ArrayAdapter<ItemData> a_sugg;
 
 
     @Override
@@ -38,11 +41,22 @@ public class ListOfItemActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_item);
         itemsToTake = new ArrayList<>();
-        itemsToTake.add(new ItemData("test 1", 3));
+        itemsToAdd=new ArrayList<>();
+        itemsToAdd.add(new ItemData("Add a",1));
+        itemsToTake.add(new ItemData("test 1", 2));
         itemsToTake.add(new ItemData("test 2", 4));
+        itemsToAdd.add(new ItemData("Add b",1));
+        itemsToTake.add(new ItemData("test 3", 13));
+        itemsToTake.add(new ItemData("test 4", 4));
+        itemsToAdd.add(new ItemData("Add c",1));
+        itemsToTake.add(new ItemData("test 5", 7));
+        itemsToTake.add(new ItemData("test 6", 1));
         v = (SwipeMenuListView) findViewById(R.id.listView); //find list from activity
+        v_sugg = (ListView) findViewById(R.id.listViewSuggestions); //find list from activity
         a = new item_adapter(this, itemsToTake);
+        a_sugg= new suggestions_adapter(this,itemsToAdd);
         v.setAdapter(a);
+        v_sugg.setAdapter(a_sugg);
         v.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -52,7 +66,15 @@ public class ListOfItemActivity extends AppCompatActivity
                 Utility.showToast(getApplicationContext(), ob);
             }
         });
-
+        v_sugg.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ItemData listData = itemsToAdd.get(i);
+                String ob = listData.getName();
+                //get the item in the given place
+                Utility.showToast(getApplicationContext(), ob);
+            }
+        });
         setSwipeList();
 
     }
@@ -120,6 +142,39 @@ public class ListOfItemActivity extends AppCompatActivity
             });
             itemName.setText(itemData.getName());
             itemNumber.setText(itemData.getNumbers() + "");
+            return convertView;
+        }
+    }
+
+
+    class suggestions_adapter extends ArrayAdapter<ItemData> {
+
+        public suggestions_adapter(Context context, List<ItemData> items) {
+            super(context, 0, items);
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            final ItemData itemData = getItem(position);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.suggestions_layout, parent, false);
+            }
+
+            final TextView itemName = (TextView) convertView.findViewById(R.id.item_test);
+            final TextView itemNumber = (TextView) convertView.findViewById(R.id.num_text);
+            ImageButton addButton = (ImageButton) convertView.findViewById(R.id.imageButtonPlus);
+            itemName.setText(itemData.getName());
+            itemNumber.setText(itemData.getNumbers() + "");
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int temp = (Integer.parseInt(itemNumber.getText().toString()));
+                    itemsToTake.add(new ItemData(itemName.getText().toString(),temp));
+                    a.notifyDataSetChanged();
+                    itemsToAdd.remove(position);
+                    a_sugg.notifyDataSetChanged();}
+            });
+
             return convertView;
         }
     }
