@@ -22,7 +22,7 @@ public class Database {
         static_userListData.add(new ListDataItem(2,"second list"));
         static_userListData.add(new ListDataItem(3,"th list"));
         ListDataItem sliListData = new ListDataItem(4,"this list");
-        sliListData.addItemDataList(new ItemData("item test 1", 3, false));
+        sliListData.addItemDataList(new ItemData("item test 1", 3));
         static_userListData.add(sliListData);
     }
     // end tests

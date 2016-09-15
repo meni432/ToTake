@@ -134,7 +134,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.textView.setText(listDatas.get(position).getListName());
-            String fromToRepresentiveText = listDatas.get(position).getFromDate() + " - "+ listDatas.get(position).getToDate();
+            String fromToRepresentiveText = listDatas.get(position).getRepresentativeFromToDate();
             holder.dateTextView.setText(fromToRepresentiveText);
 //            mPlaceImageLoader.placePhotosTask(listDatas.get(position).getGooglePlaceId(), holder.imageView);
 

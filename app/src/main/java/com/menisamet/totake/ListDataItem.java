@@ -1,6 +1,11 @@
 package com.menisamet.totake;
 
+import android.annotation.TargetApi;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -8,12 +13,15 @@ import java.util.List;
  */
 public class ListDataItem {
 
+    public static final String DATE_FORMAT = "dd-MM-yyyy";
+
     private int id;
     private String listName;
     private List<ItemData> itemDataList;
     private String googlePlaceId = "ChIJ1XXAkwRAHRURIj88VL6V2Sw";
-    private String fromDate = "13/02/12";
-    private String toDate = "15/03/15";
+    private Date fromDate;
+    private Date toDate;
+
 
 
     public ListDataItem() {
@@ -50,22 +58,6 @@ public class ListDataItem {
         this.itemDataList = itemDataList;
     }
 
-    public String getFromDate() {
-        return fromDate;
-    }
-
-    public void setFromDate(String fromDate) {
-        this.fromDate = fromDate;
-    }
-
-    public String getToDate() {
-        return toDate;
-    }
-
-    public void setToDate(String toDate) {
-        this.toDate = toDate;
-    }
-
     public void addItemDataList(ItemData itemData){
         if (this.itemDataList != null){
             this.itemDataList.add(itemData);
@@ -84,6 +76,12 @@ public class ListDataItem {
     @Override
     public String toString() {
         return getListName();
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    public String getRepresentativeFromToDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        return sdf.format(fromDate) + " - " + sdf.format(toDate);
     }
 
 
