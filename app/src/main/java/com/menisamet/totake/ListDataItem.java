@@ -19,8 +19,8 @@ public class ListDataItem {
     private String listName;
     private List<ItemData> itemDataList;
     private String googlePlaceId = "ChIJ1XXAkwRAHRURIj88VL6V2Sw";
-    private Date fromDate;
-    private Date toDate;
+    private Date fromDate = new Date();
+    private Date toDate = new Date();
 
 
 
@@ -80,8 +80,11 @@ public class ListDataItem {
 
     @TargetApi(Build.VERSION_CODES.N)
     public String getRepresentativeFromToDate(){
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        return sdf.format(fromDate) + " - " + sdf.format(toDate);
+        if (toDate != null && fromDate != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+            return sdf.format(fromDate) + " - " + sdf.format(toDate);
+        }
+        return "";
     }
 
 

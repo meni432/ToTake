@@ -1,18 +1,17 @@
 package com.menisamet.totake;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListOfItemActivity extends AppCompatActivity {
@@ -23,10 +22,14 @@ public class ListOfItemActivity extends AppCompatActivity {
     ListView v;
     ArrayAdapter<ItemData> a;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_of_item);
+        itemsToTake = new ArrayList<>();
+        itemsToTake.add(new ItemData("test 1", 3));
+        itemsToTake.add(new ItemData("test 2", 4));
         v=(ListView) findViewById(R.id.listView); //find list from activity
         a=new item_adapter(this, itemsToTake);
         v.setAdapter(a);
@@ -58,7 +61,7 @@ public class ListOfItemActivity extends AppCompatActivity {
             TextView itemNumber= (TextView)convertView.findViewById(R.id.number_text);
 
             itemName.setText(itemData.getName());
-            itemNumber.setText(itemData.getNumbers());
+            itemNumber.setText(itemData.getNumbers() + "");
             return convertView;
         }
     }
