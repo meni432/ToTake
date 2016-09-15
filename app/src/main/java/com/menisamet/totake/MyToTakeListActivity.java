@@ -30,6 +30,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
     private GoogleApiClient mGoogleApiClient;
 
     private PlaceImageLoader mPlaceImageLoader;
+    protected Context context;
 
 
     @Override
@@ -63,6 +64,8 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
         startGoogleApiClient();
         mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
 
+
+        context = this;
 //        Database.addTestData();
 
     }
@@ -130,16 +133,23 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
         // Replace the contents of a view (invoked by the layout manager)
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.textView.setText(listDatas.get(position).getListName());
-            String fromToRepresentiveText = listDatas.get(position).getFromDate() + " - "+ listDatas.get(position).getToDate();
+            String fromToRepresentiveText = listDatas.get(position).getRepresentativeFromToDate();
             holder.dateTextView.setText(fromToRepresentiveText);
 //            mPlaceImageLoader.placePhotosTask(listDatas.get(position).getGooglePlaceId(), holder.imageView);
 
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utility.checkAuthAndGoToActivity(context, ListOfItemActivity.class);
+                }
+            });
 
         }
+
 
         // Return the size of your dataset (invoked by the layout manager)
         @Override

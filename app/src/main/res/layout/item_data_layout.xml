@@ -21,30 +21,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="New Text"
-                android:id="@+id/textView4"
-                android:layout_weight="0.36" />
+                android:text="meni stom"
+                android:id="@+id/item_text"
+                android:layout_weight="0.23" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="New Text"
-                android:id="@+id/textView5"
+                android:text="number"
+                android:id="@+id/number_text"
                 android:layout_weight="0.28" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.50" />
-
-            <CheckBox
-                android:layout_width="40dp"
-                android:layout_height="34dp"
-                android:text="New CheckBox"
-                android:id="@+id/checkBox"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="91dp" />
 
         </LinearLayout>
 
