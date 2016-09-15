@@ -10,6 +10,7 @@ import java.util.List;
  * Created by meni on 04/09/16.
  */
 public class Database {
+    //
 
     public static final String TAG = "TAG_"+Database.class.getCanonicalName();
 //    public static boolean static_isLogIn = false;
