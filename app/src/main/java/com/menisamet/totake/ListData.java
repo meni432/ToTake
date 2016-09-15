@@ -1,5 +1,6 @@
 package com.menisamet.totake;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,12 +11,17 @@ public class ListData {
     private int id;
     private String listName;
     private List<ItemData> itemDataList;
+    private String googlePlaceId = "ChIJ1XXAkwRAHRURIj88VL6V2Sw";
+    private String fromDate = "13/02/12";
+    private String toDate = "15/03/15";
+
 
     public ListData() {
-
+        this.itemDataList = new ArrayList<>();
     }
 
     public ListData(int id, String listName) {
+        this();
         this.id = id;
         this.listName = listName;
     }
@@ -43,6 +49,37 @@ public class ListData {
     public void setItemDataList(List<ItemData> itemDataList) {
         this.itemDataList = itemDataList;
     }
+
+    public String getFromDate() {
+        return fromDate;
+    }
+
+    public void setFromDate(String fromDate) {
+        this.fromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return toDate;
+    }
+
+    public void setToDate(String toDate) {
+        this.toDate = toDate;
+    }
+
+    public void addItemDataList(ItemData itemData){
+        if (this.itemDataList != null){
+            this.itemDataList.add(itemData);
+        }
+    }
+
+    public String getGooglePlaceId() {
+        return googlePlaceId;
+    }
+
+    public void setGooglePlaceId(String googlePlaceId) {
+        this.googlePlaceId = googlePlaceId;
+    }
+
 
     @Override
     public String toString() {

@@ -24,16 +24,19 @@ public class Database {
         static_userListData.add(new ListData(1,"first list"));
         static_userListData.add(new ListData(2,"second list"));
         static_userListData.add(new ListData(3,"th list"));
-
+        ListData sliListData = new ListData(4,"this list");
+        sliListData.addItemDataList(new ItemData("item test 1", 3, false));
+        static_userListData.add(sliListData);
     }
     // end tests
 
     //Load Database Data
-    static  {
+    public static void addTestData()  {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
+        DatabaseReference myRef = database.getReference("users").child(static_FirebaseUser.getUid());
 
 
+        myRef.setValue(static_userListData);
     }
 
     /**
