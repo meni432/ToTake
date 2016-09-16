@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,8 +26,6 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.menisamet.totake.MyToTakeListActivity.EXTRA_LIST_DATA_ITEM_POSITION;
 
 public class ListOfItemActivity extends AppCompatActivity
 {
@@ -92,7 +92,9 @@ public class ListOfItemActivity extends AppCompatActivity
                         .setAction("Action", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
+                                EditText e=(EditText)findViewById(R.id.editText);
+                                String s=e.getText().toString();
+                                itemsToTake.add(new ItemData(s,1));
                             }
                         }).show();
             }
