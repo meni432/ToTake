@@ -5,6 +5,7 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.menisamet.totake.Constants;
+import com.menisamet.totake.Database;
 import com.menisamet.totake.ItemData;
 
 import org.json.JSONArray;
@@ -25,6 +26,7 @@ public class SuggestionSystemCall {
     List<ItemData> suggestionData;
     AsyncHttpClient client;
     SuggestionListener suggestionListener;
+    int listId;
 
     public SuggestionSystemCall(int listId, SuggestionListener suggestionListener){
         client = new AsyncHttpClient();
@@ -32,8 +34,9 @@ public class SuggestionSystemCall {
         this.suggestionListener = suggestionListener;
     }
 
-    public void getMySuggestion (){
-        client.get(Constants.SUGGESTION_SERVER_GET_SUGGESTIONS, new JsonHttpResponseHandler() {
+    public void addLike (String itemName){
+        Log.d(TAG," start add like request");
+        client.get(Constants.SUGGESTION_SERVER_ADD_LIKE+"?uid=2&listId="+listId+"&item="+itemName, new JsonHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -55,8 +58,8 @@ public class SuggestionSystemCall {
 
 
     public void getSuggestions(){
-
-        client.get(Constants.SUGGESTION_SERVER_GET_SUGGESTIONS, new JsonHttpResponseHandler() {
+        Log.d(TAG, " start get suggestion request");
+        client.get(Constants.SUGGESTION_SERVER_GET_SUGGESTIONS+"?uid=2&listId=992", new JsonHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -85,7 +88,7 @@ public class SuggestionSystemCall {
         });
     }
 
-    interface SuggestionListener {
+    public interface SuggestionListener {
         public void onReceiveSuggestionListener(List<ItemData> itemDatas);
     }
 

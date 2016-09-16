@@ -1,6 +1,7 @@
 package com.menisamet.totake;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,13 +19,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.menisamet.totake.Suggestion.SuggestionSystemCall;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
     Database database;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +75,7 @@ public class MainActivity extends AppCompatActivity
 
         setupWindowAnimations();
 
+        context = this;
     }
 
     @Override
@@ -137,6 +143,28 @@ public class MainActivity extends AppCompatActivity
 
     public void dbLoadClick(View view){
         Database.destGetFromDB();
+    }
+
+    public void getSuggestionOnClick(View view){
+        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(991, new SuggestionSystemCall.SuggestionListener() {
+            @Override
+            public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
+                Utility.showToast(context, "get suggestion on Click");
+            }
+        });
+
+        suggestionSystemCall.getSuggestions();
+    }
+
+    public void addLikeOnClick(View view){
+        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(991, new SuggestionSystemCall.SuggestionListener() {
+            @Override
+            public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
+
+            }
+        });
+
+        suggestionSystemCall.addLike("test item");
     }
 
 }
