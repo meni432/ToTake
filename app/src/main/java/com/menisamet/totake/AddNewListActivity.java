@@ -150,7 +150,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
 //        ListDataItem itemToSave = new ListDataItem(selectedPlace.getId(), startDate, endDate, (String)selectedPlace.getName());
 //        Database.instance().saveToDB(itemToSave, "ItemToTake");
         ListDataItem listDataItem=new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate);
-        int numOfDays=(int)((endDate.getTime()-startDate.getTime())/(60*60*60*24));
+        int numOfDays=(int)((endDate.getTime()-startDate.getTime())/(1000*60*60*24));
 
         listDataItem.addItemDataList(new ItemData("shirts ",numOfDays));
         listDataItem.addItemDataList(new ItemData("pants ",numOfDays));
