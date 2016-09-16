@@ -126,10 +126,11 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
 
     }
 
+
+
     public void addButtonClicked(View view) {
-        ListDataItem itemToSave = new ListDataItem(selectedPlace, startDate, endDate);
-        Database.saveToDB(itemToSave, "ToTake\\ItemsToTake\\" + Database.static_FirebaseUser.getUid());
+        ListDataItem itemToSave = new ListDataItem(selectedPlace.getId(), startDate, endDate, (String)selectedPlace.getName());
+        Database.instance().saveToDB(itemToSave, "ItemToTake");
         Log.d(TAG, "send to db");
     }
-
 }

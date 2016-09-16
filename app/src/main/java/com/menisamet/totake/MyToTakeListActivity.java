@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +18,63 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
+import java.util.HashMap;
 
 public class MyToTakeListActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    public static final String TAG = "TAG_" + MyToTakeListActivity.class.getCanonicalName();
 
     private GoogleApiClient mGoogleApiClient;
 
     private PlaceImageLoader mPlaceImageLoader;
     protected Context context;
+
+    protected void onStart()
+    {
+        super.onStart();
+        Log.d(TAG,"****");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("ItemToTake");
+        myRef.child(Database.static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
+        //myRef.addValueEventListener(valueEventListener);
+    }
+
+    ValueEventListener valueEventListener = new ValueEventListener()
+    {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            ListDataItem post = dataSnapshot.getValue(ListDataItem.class);
+
+            if(post != null)
+            {
+                Database.instance().static_userListData.put(post.getGooglePlaceId(),post);
+
+
+                Log.d(TAG, "%START LIST"+ Database.instance().static_userListData.size());
+
+               for(ListDataItem item : Database.instance().static_userListData.values())
+                {
+                    Log.d(TAG, "22"+item.getGooglePlaceId());
+                }
+
+                Log.d(TAG, "END LIST");
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.d(TAG, "&onCancelled*");
+        }
+    };
 
 
     @Override
@@ -113,9 +157,9 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
 
         private Context context;
-        private List<ListDataItem> listDatas;
+        private HashMap<String, ListDataItem> listDatas;
 
-        public MyAdapter(Context context, List<ListDataItem> listDatas) {
+        public MyAdapter(Context context, HashMap<String, ListDataItem> listDatas) {
             this.context = context;
             this.listDatas = listDatas;
         }
@@ -144,7 +188,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utility.checkAuthAndGoToActivity(context, ListOfItemActivity.class);
+                    Utility.checkAuthAndGoToActivity(context, ListDataItem.class);
                 }
             });
 

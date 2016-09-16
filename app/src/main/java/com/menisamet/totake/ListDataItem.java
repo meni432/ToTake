@@ -1,7 +1,6 @@
 package com.menisamet.totake;
 
 import android.annotation.TargetApi;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 
 import com.google.android.gms.location.places.Place;
@@ -16,13 +15,14 @@ import java.util.List;
 public class ListDataItem {
 
     public static final String DATE_FORMAT = "dd-MM-yyyy";
-
+    private String placeName;
+    public String placeId;
     private int id;
-    private String listName;
-    private List<ItemData> itemDataList;
-    private String googlePlaceId = "ChIJ1XXAkwRAHRURIj88VL6V2Sw";
-    private Date startDate = new Date();
-    private Date endDate = new Date();
+    public String listName;
+    public List<ItemData> itemDataList;
+    private String googlePlaceId;
+    public Date startDate = new Date();
+    public Date endDate = new Date();
     private Place place = null;
 
 
@@ -30,20 +30,14 @@ public class ListDataItem {
         this.itemDataList = new ArrayList<>();
     }
 
-    public ListDataItem(int id, String listName) {
-        this();
-        this.id = id;
-        this.listName = listName;
-    }
-
-    public ListDataItem(Place selectedPlace, Date startDate, Date endDate) {
-        this.place = selectedPlace;
+    public ListDataItem(String selectedPlaceID, Date startDate, Date endDate, String listName) {
+        this.placeId = selectedPlaceID;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.listName = (String)selectedPlace.getName();
+        this.listName = listName;
         itemDataList = new ArrayList<>();
-        addItemDataList(new ItemData("ilay", 1));
-        addItemDataList(new ItemData("noa", 2));
+      /*  addItemDataList(new ItemData("ilay", 1));
+        addItemDataList(new ItemData("noa", 2));*/
     }
 
     public int getId() {
@@ -77,11 +71,7 @@ public class ListDataItem {
     }
 
     public String getGooglePlaceId() {
-        return googlePlaceId;
-    }
-
-    public void setGooglePlaceId(String googlePlaceId) {
-        this.googlePlaceId = googlePlaceId;
+        return placeId;
     }
 
 

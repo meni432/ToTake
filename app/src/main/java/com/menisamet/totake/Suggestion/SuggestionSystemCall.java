@@ -5,7 +5,6 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.menisamet.totake.Constants;
-import com.menisamet.totake.Database;
 import com.menisamet.totake.ItemData;
 
 import org.json.JSONArray;
@@ -45,13 +44,13 @@ public class SuggestionSystemCall {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response){
-                try {
-                    Log.d(TAG, response.toString());
-                    JSONObject firstEvent = (JSONObject) response.get(String.valueOf(0));
-                    Log.d(TAG, firstEvent.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Log.d(TAG, response.toString());
+//                    JSONObject firstEvent = (JSONObject) response.get(String.valueOf(0));
+//                    Log.d(TAG, firstEvent.toString());
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
     }
@@ -59,7 +58,7 @@ public class SuggestionSystemCall {
 
     public void getSuggestions(){
         Log.d(TAG, " start get suggestion request");
-        client.get(Constants.SUGGESTION_SERVER_GET_SUGGESTIONS+"?uid=2&listId=992", new JsonHttpResponseHandler() {
+        client.get(Constants.SUGGESTION_SERVER_GET_SUGGESTIONS+"?uid=45&listId=1", new JsonHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -71,7 +70,7 @@ public class SuggestionSystemCall {
                 final List<ItemData> itemDatas = new ArrayList<>();
                 try {
                     Log.d(TAG, response.toString());
-                    JSONArray jsonArray = response.getJSONArray("");
+                    JSONArray jsonArray = response.getJSONArray("values");
                     Log.d(TAG, jsonArray.toString());
 
                     if (suggestionListener != null){
@@ -80,6 +79,7 @@ public class SuggestionSystemCall {
                             itemDatas.add(new ItemData(name, 999));
                         }
                         suggestionListener.onReceiveSuggestionListener(itemDatas);
+                        Log.d(TAG, itemDatas.toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -91,5 +91,7 @@ public class SuggestionSystemCall {
     public interface SuggestionListener {
         public void onReceiveSuggestionListener(List<ItemData> itemDatas);
     }
+
+
 
 }

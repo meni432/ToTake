@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset){
                 super.onDrawerOpened(drawerView);
-                if (Database.isLogIn()) {
+                if (Database.instance().isLogIn()) {
                     ImageView imageView = (ImageView)drawerView.findViewById(R.id.imageView);
                     TextView fullNameNavBarTextView = (TextView) drawerView.findViewById(R.id.full_name_text_view);
                     TextView emailAddressNavBarTextView = (TextView) drawerView.findViewById(R.id.email_address_text_view);
@@ -142,11 +142,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void dbLoadClick(View view){
-        Database.destGetFromDB();
+
     }
 
     public void getSuggestionOnClick(View view){
-        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(991, new SuggestionSystemCall.SuggestionListener() {
+        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(1, new SuggestionSystemCall.SuggestionListener() {
             @Override
             public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
                 Utility.showToast(context, "get suggestion on Click");
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void addLikeOnClick(View view){
-        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(991, new SuggestionSystemCall.SuggestionListener() {
+        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(1, new SuggestionSystemCall.SuggestionListener() {
             @Override
             public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
 
