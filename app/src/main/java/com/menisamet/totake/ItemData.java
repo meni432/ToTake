@@ -1,11 +1,12 @@
 package com.menisamet.totake;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 /**
  * Created by meni on 07/09/16.
  */
-public class ItemData implements Serializable {
+public class ItemData implements Serializable, Comparable<ItemData>, Comparator<ItemData> {
     private String name;
     private int numbers;
 
@@ -37,5 +38,16 @@ public class ItemData implements Serializable {
                 "name='" + name + '\'' +
                 ", numbers=" + numbers +
                 '}';
+    }
+
+    @Override
+    public int compareTo(ItemData o) {
+        return name.compareTo(o.name);
+    }
+
+
+    @Override
+    public int compare(ItemData o1, ItemData o2) {
+        return o1.name.compareTo(o2.name);
     }
 }

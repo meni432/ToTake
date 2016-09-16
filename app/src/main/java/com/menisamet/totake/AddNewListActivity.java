@@ -2,6 +2,7 @@ package com.menisamet.totake;
 
 import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.icu.util.GregorianCalendar;
@@ -45,6 +46,14 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_list);
 
+
+        android.support.v7.app.ActionBar menu = getSupportActionBar();
+        menu.setDisplayShowHomeEnabled(true);
+        menu.setLogo(R.drawable.to_take_logo);
+        menu.setDisplayShowTitleEnabled(false);
+        menu.setDisplayUseLogoEnabled(true);
+
+
         mImageView = (ImageView) findViewById(R.id.imageView);
 
         startGoogleApiClient();
@@ -77,7 +86,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());
-                // Get a PlacePhotoMetadataResult containing metadata for the first 10 photos.
+                // Get itemToAddAdapter PlacePhotoMetadataResult containing metadata for the first 10 photos.
                 placeImageLoader.placePhotosTask(place.getId(), mImageView);
                 Log.d(TAG, "place id: " + place.getId());
                 selectedPlace = place;
@@ -133,9 +142,13 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
 
 
     public void addButtonClicked(View view) {
-        ListDataItem itemToSave = new ListDataItem(selectedPlace.getId(), startDate, endDate, (String)selectedPlace.getName());
-        Database.instance().saveToDB(itemToSave, "ItemToTake");
+//        ListDataItem itemToSave = new ListDataItem(selectedPlace.getId(), startDate, endDate, (String)selectedPlace.getName());
+//        Database.instance().saveToDB(itemToSave, "ItemToTake");
         Database.instance().saveToCash(new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate));
+        Intent intent = new Intent(AddNewListActivity.this, ListOfItemActivity.class);
+        intent.putExtra(ListOfItemActivity.EXTRA_LIST_DATA_ITEM_POSITION, Database.static_userListData.size()-1);
+        startActivity(intent);
+        finish();
         Log.d(TAG, "send to db");
     }
 }

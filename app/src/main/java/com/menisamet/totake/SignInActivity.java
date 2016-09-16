@@ -55,6 +55,15 @@ public class SignInActivity extends AppCompatActivity implements
 
 
         Intent intent = getIntent();
+
+
+
+        android.support.v7.app.ActionBar menu = getSupportActionBar();
+        menu.setDisplayShowHomeEnabled(true);
+        menu.setLogo(R.drawable.to_take_logo);
+        menu.setDisplayShowTitleEnabled(false);
+        menu.setDisplayUseLogoEnabled(true);
+
         next = (Class) intent.getSerializableExtra(Utility.EXTRA_NEXT_ACTIVITY);
         if (next == null){
             next = MainActivity.class;
@@ -160,7 +169,7 @@ public class SignInActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
-                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // If sign in fails, display itemToAddAdapter message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {

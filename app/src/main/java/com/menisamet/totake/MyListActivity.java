@@ -41,7 +41,7 @@ public class MyListActivity extends AppCompatActivity {
 
 
     private void setSelectionSpinnerListener() {
-        // Create an ArrayAdapter using the string array and a default spinner layout
+        // Create an ArrayAdapter using the string array and itemToAddAdapter default spinner layout
       /*  adapter = new ArrayAdapter<ListDataItem>(this,
                 R.layout.spinner_item, Database.static_userListData.values());*/
         // Specify the layout to use when the list of choices appears

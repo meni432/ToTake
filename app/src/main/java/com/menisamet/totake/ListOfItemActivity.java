@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -22,20 +21,28 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.menisamet.totake.Suggestion.SuggestionSystemCall;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ListOfItemActivity extends AppCompatActivity
 {
+
+    public static final String EXTRA_LIST_DATA_ITEM_POSITION = "extra_list_data_item_position";
+    SuggestionSystemCall suggestionSystemCall;
     //String [] item={"sacks", "shirts", "pants"};
     List<ItemData> itemsToTake = null;
     List<ItemData> recommendations = null;
     SwipeMenuListView v;
-    ArrayAdapter<ItemData> a;
+    ArrayAdapter<ItemData> itemToAddAdapter;
     List<ItemData> itemsToAdd = null;
     ListView v_sugg;
-    ArrayAdapter<ItemData> a_sugg;
+    ArrayAdapter<ItemData> suggestionAdapter;
+
+    int listPosition;
 
 
     @Override
@@ -44,7 +51,7 @@ public class ListOfItemActivity extends AppCompatActivity
         setContentView(R.layout.activity_list_of_item);
         itemsToTake = new ArrayList<>();
         itemsToAdd=new ArrayList<>();
-        itemsToAdd.add(new ItemData("Add a",1));
+        itemsToAdd.add(new ItemData("Add itemToAddAdapter",1));
 //        itemsToTake.add(new ItemData("test 1", 2));
 //        itemsToTake.add(new ItemData("test 2", 4));
         itemsToAdd.add(new ItemData("Add b",1));
@@ -53,16 +60,26 @@ public class ListOfItemActivity extends AppCompatActivity
 //        itemsToAdd.add(new ItemData("Add c",1));
 //        itemsToTake.add(new ItemData("test 5", 7));
 //        itemsToTake.add(new ItemData("test 6", 1));
+
+
+        android.support.v7.app.ActionBar menu = getSupportActionBar();
+        menu.setDisplayShowHomeEnabled(true);
+        menu.setLogo(R.drawable.to_take_logo);
+        menu.setDisplayShowTitleEnabled(false);
+        menu.setDisplayUseLogoEnabled(true);
+
         Bundle extras = getIntent().getExtras();
-        int listPosition = extras.getInt(MyToTakeListActivity.EXTRA_LIST_DATA_ITEM_POSITION);
+        listPosition = extras.getInt(MyToTakeListActivity.EXTRA_LIST_DATA_ITEM_POSITION);
         itemsToTake = Database.static_userListData.get(listPosition).getItemDataList();
+
+        suggestionSystemCall = new SuggestionSystemCall(listPosition);
 
         v = (SwipeMenuListView) findViewById(R.id.listView); //find list from activity
         v_sugg = (ListView) findViewById(R.id.listViewSuggestions); //find list from activity
-        a = new item_adapter(this, itemsToTake);
-        a_sugg= new suggestions_adapter(this,itemsToAdd);
-        v.setAdapter(a);
-        v_sugg.setAdapter(a_sugg);
+        itemToAddAdapter = new item_adapter(this, itemsToTake);
+        suggestionAdapter = new suggestions_adapter(this,itemsToAdd);
+        v.setAdapter(itemToAddAdapter);
+        v_sugg.setAdapter(suggestionAdapter);
         v.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -87,19 +104,19 @@ public class ListOfItemActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "New item in your List!!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                EditText e=(EditText)findViewById(R.id.editText);
-                                String s=e.getText().toString();
-                                itemsToTake.add(new ItemData(s,1));
-                                a.notifyDataSetChanged();
-                            }
-                        }).show();
+                EditText e=(EditText)findViewById(R.id.editText);
+                String s=e.getText().toString();
+                e.setText("");
+                itemsToTake.add(new ItemData(s,1));
+                itemToAddAdapter.notifyDataSetChanged();
+                suggestionSystemCall.addLike(s);
+                requestSuggestionAndPutOnList();
             }
         });
+
     }
+
+
 
     private void setSwipeList(){
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -113,7 +130,7 @@ public class ListOfItemActivity extends AppCompatActivity
                         0x3F, 0x25)));
                 // set item width
                 deleteItem.setWidth(dp2px(90));
-                // set a icon
+                // set itemToAddAdapter icon
                 deleteItem.setIcon(R.drawable.ic_delete_white_48dp);
                 // add to menu
                 menu.addMenuItem(deleteItem);
@@ -128,7 +145,7 @@ public class ListOfItemActivity extends AppCompatActivity
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 itemsToTake.remove(position);
-                a.notifyDataSetChanged();
+                itemToAddAdapter.notifyDataSetChanged();
                 return false;
             }
         });
@@ -201,10 +218,12 @@ public class ListOfItemActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     int temp = (Integer.parseInt(itemNumber.getText().toString()));
+                    suggestionSystemCall.addLike(itemName.getText().toString());
+                    requestSuggestionAndPutOnList();
                     itemsToTake.add(new ItemData(itemName.getText().toString(),temp));
-                    a.notifyDataSetChanged();
+                    itemToAddAdapter.notifyDataSetChanged();
                     itemsToAdd.remove(position);
-                    a_sugg.notifyDataSetChanged();}
+                    suggestionAdapter.notifyDataSetChanged();}
             });
 
 
@@ -212,12 +231,28 @@ public class ListOfItemActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view) {
                     itemsToAdd.remove(position);
-                    a_sugg.notifyDataSetChanged();
+                    suggestionAdapter.notifyDataSetChanged();
                    }
             });
 
             return convertView;
         }
+    }
+
+    private void requestSuggestionAndPutOnList(){
+        suggestionSystemCall.setSuggestionListener(new SuggestionSystemCall.SuggestionListener() {
+            @Override
+            public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
+                itemsToAdd.addAll(itemDatas);
+                suggestionAdapter.notifyDataSetChanged();
+            }
+        });
+        suggestionSystemCall.getSuggestions(listPosition);
+
+        Set<ItemData> hs = new HashSet<>();
+        hs.addAll(itemsToAdd);
+        itemsToAdd.clear();
+        itemsToAdd.addAll(hs);
     }
 
     private int dp2px(int dp) {

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.menisamet.totake.Constants;
+import com.menisamet.totake.Database;
 import com.menisamet.totake.ItemData;
 
 import org.json.JSONArray;
@@ -27,15 +28,18 @@ public class SuggestionSystemCall {
     SuggestionListener suggestionListener;
     int listId;
 
-    public SuggestionSystemCall(int listId, SuggestionListener suggestionListener){
+    public SuggestionSystemCall(int listId){
         client = new AsyncHttpClient();
         suggestionData = new ArrayList<>();
+    }
+
+    public void setSuggestionListener(SuggestionListener suggestionListener) {
         this.suggestionListener = suggestionListener;
     }
 
     public void addLike (String itemName){
         Log.d(TAG," start add like request");
-        client.get(Constants.SUGGESTION_SERVER_ADD_LIKE+"?uid=2&listId="+listId+"&item="+itemName, new JsonHttpResponseHandler() {
+        client.get(Constants.SUGGESTION_SERVER_ADD_LIKE+"?uid="+ Database.static_FirebaseUser.getUid()+"&listId="+listId+"&item="+itemName, new JsonHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -56,9 +60,9 @@ public class SuggestionSystemCall {
     }
 
 
-    public void getSuggestions(){
+    public void getSuggestions(int listId){
         Log.d(TAG, " start get suggestion request");
-        client.get(Constants.SUGGESTION_SERVER_GET_SUGGESTIONS+"?uid=45&listId=1", new JsonHttpResponseHandler() {
+        client.get(Constants.SUGGESTION_SERVER_GET_SUGGESTIONS+"?uid="+ Database.static_FirebaseUser.getUid()+"&listId="+listId, new JsonHttpResponseHandler() {
 
             @Override
             public void onStart() {

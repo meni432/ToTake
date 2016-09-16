@@ -66,7 +66,7 @@
         android:layout_alignStart="@+id/space"
         android:layout_toStartOf="@+id/fab"
         android:shadowColor="@color/abc_input_method_navigation_guard"
-        android:text="Add here item to the list" />
+        android:hint="Add here item to the list" />
 
 </RelativeLayout>
 

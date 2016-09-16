@@ -31,11 +31,29 @@ public class Database
 
     }
 
+
+    public static Database instance()
+    {
+        if(database == null)
+            database= new Database();
+
+
+        return database;
+
+    }
+
     private void Database()
     {
         destGetFromDB();
 
 
+    }
+
+    public void syncDatabase(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("ItemToTake");
+        myRef.child(static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
+        myRef.addValueEventListener(valueEventListener);
     }
 
     public void destGetFromDB()
@@ -59,15 +77,7 @@ public class Database
         }
     };
 
-    public static Database instance()
-    {
-        if(database == null)
-            database= new Database();
 
-
-        return database;
-
-    }
 
     public void saveToDB(Object objectToSave, String path)
     {

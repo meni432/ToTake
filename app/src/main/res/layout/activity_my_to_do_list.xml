@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/add_new_list_image_button"
-                    android:background="@drawable/ic_note_add"
+                    android:background="@drawable/ic_add"
                     android:layout_gravity="center"
                     android:layout_alignParentBottom="false"
                     android:layout_alignParentRight="true"
@@ -51,6 +51,14 @@
                     android:onClick="newListOnClick"
                     android:clickable="true"
                     android:contextClickable="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/logo_place"
+                    android:src="@drawable/to_take_logo"
+                    android:layout_centerVertical="true"
+                    android:layout_alignEnd="@+id/add_new_list_image_button" />
 
 
             </RelativeLayout>

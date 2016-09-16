@@ -23,11 +23,11 @@ public class PlaceImageLoader {
 
     public void placePhotosTask(String placeId, final ImageView mImageView) {
 
-        // Create a new AsyncTask that displays the bitmap and attribution once loaded.
+        // Create itemToAddAdapter new AsyncTask that displays the bitmap and attribution once loaded.
         new PhotoTask(mImageView.getWidth(), mImageView.getHeight()) {
             @Override
             protected void onPreExecute() {
-                // Display a temporary image to show while bitmap is loading.
+                // Display itemToAddAdapter temporary image to show while bitmap is loading.
                 mImageView.setImageResource(R.mipmap.ic_launcher);
             }
 
@@ -54,7 +54,7 @@ public class PlaceImageLoader {
         }
 
         /**
-         * Loads the first photo for a place id from the Geo Data API.
+         * Loads the first photo for itemToAddAdapter place id from the Geo Data API.
          * The place id must be the first (and only) parameter.
          */
         @Override
@@ -74,7 +74,7 @@ public class PlaceImageLoader {
                     // Get the first bitmap and its attributions.
                     PlacePhotoMetadata photo = photoMetadataBuffer.get(0);
                     CharSequence attribution = photo.getAttributions();
-                    // Load a scaled bitmap for this photo.
+                    // Load itemToAddAdapter scaled bitmap for this photo.
                     Bitmap image = photo.getScaledPhoto(mGoogleApiClient, mWidth, mHeight).await()
                             .getBitmap();
 

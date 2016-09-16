@@ -50,8 +50,10 @@
             android:name=".ToolActivity"
             android:label="Tools"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".AddNewListActivity" />
-        <activity android:name=".ListOfItemActivity"></activity>
+        <activity android:name=".AddNewListActivity"
+            android:parentActivityName=".MyToTakeListActivity"/>
+        <activity android:name=".ListOfItemActivity"
+            android:parentActivityName=".MyToTakeListActivity"></activity>
     </application>
 
 </manifest>

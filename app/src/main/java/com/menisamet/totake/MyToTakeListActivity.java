@@ -47,6 +47,13 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
         Log.d(TAG,"****");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("ItemToTake");
+
+
+//        android.support.v7.app.ActionBar menu = getSupportActionBar();
+//        menu.setDisplayShowHomeEnabled(true);
+//        menu.setLogo(R.drawable.to_take_logo);
+//        menu.setDisplayShowTitleEnabled(false);
+//        menu.setDisplayUseLogoEnabled(true);
 //        myRef.child(Database.static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
         //myRef.addValueEventListener(valueEventListener);
     }
@@ -85,7 +92,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
+        // use itemToAddAdapter linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -125,11 +132,11 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
-        // Provide a reference to the views for each data item
+        // Provide itemToAddAdapter reference to the views for each data item
         // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
+        // you provide access to all the views for itemToAddAdapter data item in itemToAddAdapter view holder
         public class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
+            // each data item is just itemToAddAdapter string in this case
             protected CardView cardView;
             protected TextView textView;
             protected TextView dateTextView;
@@ -164,7 +171,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
             return viewHolder;
         }
 
-        // Replace the contents of a view (invoked by the layout manager)
+        // Replace the contents of itemToAddAdapter view (invoked by the layout manager)
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             // - get element from your dataset at this position

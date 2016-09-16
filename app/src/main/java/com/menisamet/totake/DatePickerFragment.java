@@ -1,10 +1,8 @@
 package com.menisamet.totake;
 
-import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.icu.util.Calendar;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
@@ -21,17 +19,20 @@ public class DatePickerFragment extends DialogFragment {
         this.onDateSetListener = onDateSetListener;
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
         final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
+        int year = 0, day = 0 , month = 0;
+            year = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH);
+            day = c.get(Calendar.DAY_OF_MONTH);
 
-        // Create a new instance of DatePickerDialog and return it
-        return new DatePickerDialog(getActivity(), onDateSetListener, year, month, day);
+            // Create itemToAddAdapter new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), onDateSetListener, year, month, day);
+        }
+        return new DatePickerDialog(getActivity(), onDateSetListener, 1,1,1);
     }
 
 }

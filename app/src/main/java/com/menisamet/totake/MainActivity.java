@@ -19,10 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.menisamet.totake.Suggestion.SuggestionSystemCall;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +44,13 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+
+
+        android.support.v7.app.ActionBar menu = getSupportActionBar();
+        menu.setDisplayShowHomeEnabled(true);
+        menu.setLogo(R.drawable.to_take_logo);
+        menu.setDisplayShowTitleEnabled(false);
+        menu.setDisplayUseLogoEnabled(true);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify itemToAddAdapter parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -145,26 +149,26 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void getSuggestionOnClick(View view){
-        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(1, new SuggestionSystemCall.SuggestionListener() {
-            @Override
-            public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
-                Utility.showToast(context, "get suggestion on Click");
-            }
-        });
-
-        suggestionSystemCall.getSuggestions();
-    }
-
-    public void addLikeOnClick(View view){
-        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(1, new SuggestionSystemCall.SuggestionListener() {
-            @Override
-            public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
-
-            }
-        });
-
-        suggestionSystemCall.addLike("test item");
-    }
+//    public void getSuggestionOnClick(View view){
+//        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(1, new SuggestionSystemCall.SuggestionListener() {
+//            @Override
+//            public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
+//                Utility.showToast(context, "get suggestion on Click");
+//            }
+//        });
+//
+//        suggestionSystemCall.getSuggestions();
+//    }
+//
+//    public void addLikeOnClick(View view){
+//        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(1, new SuggestionSystemCall.SuggestionListener() {
+//            @Override
+//            public void onReceiveSuggestionListener(List<ItemData> itemDatas) {
+//
+//            }
+//        });
+//
+//        suggestionSystemCall.addLike("test item");
+//    }
 
 }
