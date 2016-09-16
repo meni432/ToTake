@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -55,7 +54,7 @@ public class ListOfItemActivity extends AppCompatActivity
 //        itemsToTake.add(new ItemData("test 5", 7));
 //        itemsToTake.add(new ItemData("test 6", 1));
         Bundle extras = getIntent().getExtras();
-        int listPosition = extras.getInt(EXTRA_LIST_DATA_ITEM_POSITION);
+        int listPosition = extras.getInt(MyToTakeListActivity.EXTRA_LIST_DATA_ITEM_POSITION);
         itemsToTake = Database.static_userListData.get(listPosition).getItemDataList();
 
         v = (SwipeMenuListView) findViewById(R.id.listView); //find list from activity
