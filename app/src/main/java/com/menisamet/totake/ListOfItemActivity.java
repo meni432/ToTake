@@ -51,10 +51,10 @@ public class ListOfItemActivity extends AppCompatActivity
         setContentView(R.layout.activity_list_of_item);
         itemsToTake = new ArrayList<>();
         itemsToAdd=new ArrayList<>();
-        itemsToAdd.add(new ItemData("Add itemToAddAdapter",1));
+        itemsToAdd.add(new ItemData("apple ",1));
 //        itemsToTake.add(new ItemData("test 1", 2));
 //        itemsToTake.add(new ItemData("test 2", 4));
-        itemsToAdd.add(new ItemData("Add b",1));
+        itemsToAdd.add(new ItemData("honey",1));
 //        itemsToTake.add(new ItemData("test 3", 13));
 //        itemsToTake.add(new ItemData("test 4", 4));
 //        itemsToAdd.add(new ItemData("Add c",1));
