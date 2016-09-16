@@ -94,6 +94,7 @@ public class ListOfItemActivity extends AppCompatActivity
                                 EditText e=(EditText)findViewById(R.id.editText);
                                 String s=e.getText().toString();
                                 itemsToTake.add(new ItemData(s,1));
+                                a.notifyDataSetChanged();
                             }
                         }).show();
             }

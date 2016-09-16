@@ -47,7 +47,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
         Log.d(TAG,"****");
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("ItemToTake");
-        myRef.child(Database.static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
+//        myRef.child(Database.static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
         //myRef.addValueEventListener(valueEventListener);
     }
 
