@@ -1,7 +1,5 @@
 package com.menisamet.totake;
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,15 +13,16 @@ import java.util.List;
 /**
  * Created by meni on 04/09/16.
  */
-public class Database
-{
+public class Database {
 //
 
-    public static final String TAG = "TAG_"+Database.class.getCanonicalName();
-//    public static boolean static_isLogIn = false;
+    public static final String TAG = "TAG_" + Database.class.getCanonicalName();
+    //    public static boolean static_isLogIn = false;
     public static FirebaseUser static_FirebaseUser = null;
     //public static List<ListDataItem> static_userListData = new LinkedList<ListDataItem>();
     public static List<ListDataItem> static_userListData = new ArrayList<>();
+
+    public static boolean needUpdate = true;
 
     private static Database database;
 
@@ -31,67 +30,56 @@ public class Database
 
     }
 
-
-    public static Database instance()
-    {
-        if(database == null)
-            database= new Database();
-
+    public static Database instance() {
+        if (database == null)
+            database = new Database();
 
         return database;
 
     }
 
-    private void Database()
-    {
-        destGetFromDB();
-
-
-    }
-
-    public void syncDatabase(){
+    public static void saveCasDataToDB(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("ItemToTake");
-        myRef.child(static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
-        myRef.addValueEventListener(valueEventListener);
+        DatabaseReference myRef = database.getReference("ItemData");
+        myRef.child(static_FirebaseUser.getUid()).setValue(static_userListData);
     }
 
-    public void destGetFromDB()
-    {
+    public static void loadDBToCash(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("ItemToTake");
-        myRef.child(static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
-        myRef.addValueEventListener(valueEventListener);
+        final DatabaseReference myRef = database.getReference("ItemData");
+        myRef.child(static_FirebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (needUpdate) {
+                    List<ListDataItem> listDataItems = new ArrayList<>();
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        ListDataItem item = postSnapshot.getValue(ListDataItem.class);
+                        listDataItems.add(item);
+                    }
+                    static_userListData = listDataItems;
+                    needUpdate = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
-    ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            Log.d(TAG, "&onDataChange*");
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            Log.d(TAG, "&onCancelled*");
-        }
-    };
-
-
-
-    public void saveToDB(Object objectToSave, String path)
-    {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(path);
-        myRef.child(static_FirebaseUser.getUid()).push().setValue(objectToSave);
+    public static void setNeedUpdate(){
+        needUpdate = true;
     }
 
-    public void saveToCash(ListDataItem listDataItem){
+    public void saveToCash(ListDataItem listDataItem) {
         static_userListData.add(listDataItem);
+        saveCasDataToDB();
     }
 
 
-    public boolean isLogIn(){
+    public boolean isLogIn() {
         return (static_FirebaseUser != null);
     }
 }
