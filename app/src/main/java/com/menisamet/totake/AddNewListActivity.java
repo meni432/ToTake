@@ -150,9 +150,20 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
 //        ListDataItem itemToSave = new ListDataItem(selectedPlace.getId(), startDate, endDate, (String)selectedPlace.getName());
 //        Database.instance().saveToDB(itemToSave, "ItemToTake");
         ListDataItem listDataItem=new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate);
-        int numOfDays=(int)((endDate.getTime()-startDate.getTime())/360);
+        int numOfDays=(int)((endDate.getTime()-startDate.getTime())/(60*60*60*24));
 
         listDataItem.addItemDataList(new ItemData("shirts ",numOfDays));
+        listDataItem.addItemDataList(new ItemData("pants ",numOfDays));
+        listDataItem.addItemDataList(new ItemData("socks ",numOfDays));
+        listDataItem.addItemDataList(new ItemData("underwear ",numOfDays));
+        listDataItem.addItemDataList(new ItemData("bathing cap ",1));
+        listDataItem.addItemDataList(new ItemData("bathing suit ",2));
+        listDataItem.addItemDataList(new ItemData("toothbrush ",1));
+        listDataItem.addItemDataList(new ItemData("book ",1));
+        listDataItem.addItemDataList(new ItemData("glasses ",1));
+        listDataItem.addItemDataList(new ItemData("sunglasses ",1));
+        listDataItem.addItemDataList(new ItemData("cell phone charger ",1));
+
         Database.instance().saveToCash(listDataItem);
         Intent intent = new Intent(AddNewListActivity.this, ListOfItemActivity.class);
         intent.putExtra(ListOfItemActivity.EXTRA_LIST_DATA_ITEM_POSITION, Database.static_userListData.size()-1);
