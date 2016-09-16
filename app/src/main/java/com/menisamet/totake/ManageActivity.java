@@ -15,7 +15,7 @@ public class ManageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
 
-        if (Database.isLogIn()){
+        if (Database.instance().isLogIn()){
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             Log.d(TAG, "user log in : "+user.getDisplayName());
         }else{

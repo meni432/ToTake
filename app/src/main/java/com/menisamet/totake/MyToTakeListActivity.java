@@ -1,6 +1,7 @@
 package com.menisamet.totake;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +19,51 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 public class MyToTakeListActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String EXTRA_ITEM_DATA_LIST = "extra_time_data_list";
+    private static final String EXTRA_LIST_DATA_ITEM_POSITION = "extra_list_data_item_position";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    public static final String TAG = "TAG_" + MyToTakeListActivity.class.getCanonicalName();
 
     private GoogleApiClient mGoogleApiClient;
 
     private PlaceImageLoader mPlaceImageLoader;
     protected Context context;
+
+    protected void onStart()
+    {
+        super.onStart();
+        Log.d(TAG,"****");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("ItemToTake");
+        myRef.child(Database.static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
+        //myRef.addValueEventListener(valueEventListener);
+    }
+
+    ValueEventListener valueEventListener = new ValueEventListener()
+    {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            ListDataItem post = dataSnapshot.getValue(ListDataItem.class);
+           // Log.d(TAG, post.getListName());
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.d(TAG, "&onCancelled*");
+        }
+    };
 
 
     @Override
@@ -133,7 +166,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
         // Replace the contents of a view (invoked by the layout manager)
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.textView.setText(listDatas.get(position).getListName());
@@ -144,7 +177,10 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utility.checkAuthAndGoToActivity(context, ListOfItemActivity.class);
+//                    Utility.checkAuthAndGoToActivity(context, ListDataItem.class);
+                    Intent intent = new Intent(MyToTakeListActivity.this, ListOfItemActivity.class);
+                    intent.putExtra(EXTRA_LIST_DATA_ITEM_POSITION, position);
+                    startActivity(intent);
                 }
             });
 
