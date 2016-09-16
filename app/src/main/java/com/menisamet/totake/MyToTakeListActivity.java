@@ -21,8 +21,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
@@ -44,10 +42,6 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
     protected void onStart()
     {
         super.onStart();
-        Log.d(TAG,"****");
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("ItemToTake");
-
 
 //        android.support.v7.app.ActionBar menu = getSupportActionBar();
 //        menu.setDisplayShowHomeEnabled(true);

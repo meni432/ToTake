@@ -5,12 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
-import android.icu.util.GregorianCalendar;
-import android.icu.util.TimeUnit;
 import android.os.Build;
-import java.text.ParseException;
-import java.util.Date;
-import java.lang.*;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -31,7 +26,6 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
-import java.text.ParseException;
 import java.util.Date;
 
 import static android.icu.util.Calendar.getInstance;

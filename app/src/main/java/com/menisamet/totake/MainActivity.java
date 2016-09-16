@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity
         getWindow().setEnterTransition(fade);
     }
 
+
     public void dbLoadClick(View view){
 
     }
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity
 
 //        Database.loadDBToCash();
 //        Database.setNeedUpdate();
+        Utility.checkAuthAndGoToActivity(this, MyToTakeListActivity.class);
     }
 
     //    public void getSuggestionOnClick(View view){
