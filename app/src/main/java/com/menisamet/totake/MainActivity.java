@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity
 
         setupWindowAnimations();
 
+
         context = this;
     }
 
@@ -149,7 +150,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-//    public void getSuggestionOnClick(View view){
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+//        Database.loadDBToCash();
+//        Database.setNeedUpdate();
+    }
+
+    //    public void getSuggestionOnClick(View view){
 //        SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(1, new SuggestionSystemCall.SuggestionListener() {
 //            @Override
 //            public void onReceiveSuggestionListener(List<ItemData> itemDatas) {

@@ -108,6 +108,7 @@ public class ListOfItemActivity extends AppCompatActivity
                 String s=e.getText().toString();
                 e.setText("");
                 itemsToTake.add(new ItemData(s,1));
+                Database.saveCasDataToDB();
                 itemToAddAdapter.notifyDataSetChanged();
                 suggestionSystemCall.addLike(s);
                 requestSuggestionAndPutOnList();
@@ -221,6 +222,7 @@ public class ListOfItemActivity extends AppCompatActivity
                     suggestionSystemCall.addLike(itemName.getText().toString());
                     requestSuggestionAndPutOnList();
                     itemsToTake.add(new ItemData(itemName.getText().toString(),temp));
+                    Database.saveCasDataToDB();
                     itemToAddAdapter.notifyDataSetChanged();
                     itemsToAdd.remove(position);
                     suggestionAdapter.notifyDataSetChanged();}
