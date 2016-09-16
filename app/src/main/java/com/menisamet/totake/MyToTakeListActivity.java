@@ -1,6 +1,7 @@
 package com.menisamet.totake;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -24,10 +25,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
+import java.util.List;
 
 public class MyToTakeListActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String EXTRA_ITEM_DATA_LIST = "extra_time_data_list";
+    private static final String EXTRA_LIST_DATA_ITEM_POSITION = "extra_list_data_item_position";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -53,21 +56,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             ListDataItem post = dataSnapshot.getValue(ListDataItem.class);
-
-            if(post != null)
-            {
-                Database.instance().static_userListData.put(post.getGooglePlaceId(),post);
-
-
-                Log.d(TAG, "%START LIST"+ Database.instance().static_userListData.size());
-
-               for(ListDataItem item : Database.instance().static_userListData.values())
-                {
-                    Log.d(TAG, "22"+item.getGooglePlaceId());
-                }
-
-                Log.d(TAG, "END LIST");
-            }
+           // Log.d(TAG, post.getListName());
         }
 
         @Override
@@ -157,9 +146,9 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
 
         private Context context;
-        private HashMap<String, ListDataItem> listDatas;
+        private List<ListDataItem> listDatas;
 
-        public MyAdapter(Context context, HashMap<String, ListDataItem> listDatas) {
+        public MyAdapter(Context context, List<ListDataItem> listDatas) {
             this.context = context;
             this.listDatas = listDatas;
         }
@@ -177,7 +166,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
         // Replace the contents of a view (invoked by the layout manager)
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.textView.setText(listDatas.get(position).getListName());
@@ -188,7 +177,10 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utility.checkAuthAndGoToActivity(context, ListDataItem.class);
+//                    Utility.checkAuthAndGoToActivity(context, ListDataItem.class);
+                    Intent intent = new Intent(MyToTakeListActivity.this, ListOfItemActivity.class);
+                    intent.putExtra(EXTRA_LIST_DATA_ITEM_POSITION, position);
+                    startActivity(intent);
                 }
             });
 

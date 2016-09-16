@@ -1,9 +1,11 @@
 package com.menisamet.totake;
 
+import java.io.Serializable;
+
 /**
  * Created by meni on 07/09/16.
  */
-public class ItemData {
+public class ItemData implements Serializable {
     private String name;
     private int numbers;
 

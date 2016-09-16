@@ -9,7 +9,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by meni on 04/09/16.
@@ -22,13 +23,19 @@ public class Database
 //    public static boolean static_isLogIn = false;
     public static FirebaseUser static_FirebaseUser = null;
     //public static List<ListDataItem> static_userListData = new LinkedList<ListDataItem>();
-    public static HashMap<String, ListDataItem> static_userListData = new HashMap<>();
+    public static List<ListDataItem> static_userListData = new ArrayList<>();
 
     private static Database database;
+
+    static {
+
+    }
 
     private void Database()
     {
         destGetFromDB();
+
+
     }
 
     public void destGetFromDB()
@@ -68,6 +75,11 @@ public class Database
         DatabaseReference myRef = database.getReference(path);
         myRef.child(static_FirebaseUser.getUid()).push().setValue(objectToSave);
     }
+
+    public void saveToCash(ListDataItem listDataItem){
+        static_userListData.add(listDataItem);
+    }
+
 
     public boolean isLogIn(){
         return (static_FirebaseUser != null);

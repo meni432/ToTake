@@ -40,6 +40,15 @@ public class ListDataItem {
         addItemDataList(new ItemData("noa", 2));*/
     }
 
+
+    public ListDataItem(String representiveName, String googlePlaceId, Date startDate, Date endDate){
+        this();
+        this.placeName = representiveName;
+        this.googlePlaceId = googlePlaceId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public int getId() {
         return id;
     }

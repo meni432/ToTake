@@ -38,6 +38,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
     private Place selectedPlace = null;
     private ImageView mImageView;
     private PlaceImageLoader placeImageLoader;
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
         setAutoCompleate();
 
         placeImageLoader = new PlaceImageLoader(mGoogleApiClient);
+
+
 
     }
 
@@ -66,6 +69,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
         ((EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(13.0f);
         ((EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setPadding(0, 0, 0, 0);
 
+        editText = (EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input);
 
         autocompleteFragment.setFilter(autocompleteFilter);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -131,6 +135,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
     public void addButtonClicked(View view) {
         ListDataItem itemToSave = new ListDataItem(selectedPlace.getId(), startDate, endDate, (String)selectedPlace.getName());
         Database.instance().saveToDB(itemToSave, "ItemToTake");
+        Database.instance().saveToCash(new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate));
         Log.d(TAG, "send to db");
     }
 }
