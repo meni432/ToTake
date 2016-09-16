@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +24,8 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.menisamet.totake.MyToTakeListActivity.EXTRA_LIST_DATA_ITEM_POSITION;
 
 public class ListOfItemActivity extends AppCompatActivity
 {
@@ -45,14 +46,18 @@ public class ListOfItemActivity extends AppCompatActivity
         itemsToTake = new ArrayList<>();
         itemsToAdd=new ArrayList<>();
         itemsToAdd.add(new ItemData("Add a",1));
-        itemsToTake.add(new ItemData("test 1", 2));
-        itemsToTake.add(new ItemData("test 2", 4));
+//        itemsToTake.add(new ItemData("test 1", 2));
+//        itemsToTake.add(new ItemData("test 2", 4));
         itemsToAdd.add(new ItemData("Add b",1));
-        itemsToTake.add(new ItemData("test 3", 13));
-        itemsToTake.add(new ItemData("test 4", 4));
-        itemsToAdd.add(new ItemData("Add c",1));
-        itemsToTake.add(new ItemData("test 5", 7));
-        itemsToTake.add(new ItemData("test 6", 1));
+//        itemsToTake.add(new ItemData("test 3", 13));
+//        itemsToTake.add(new ItemData("test 4", 4));
+//        itemsToAdd.add(new ItemData("Add c",1));
+//        itemsToTake.add(new ItemData("test 5", 7));
+//        itemsToTake.add(new ItemData("test 6", 1));
+        Bundle extras = getIntent().getExtras();
+        int listPosition = extras.getInt(EXTRA_LIST_DATA_ITEM_POSITION);
+        itemsToTake = Database.static_userListData.get(listPosition).getItemDataList();
+
         v = (SwipeMenuListView) findViewById(R.id.listView); //find list from activity
         v_sugg = (ListView) findViewById(R.id.listViewSuggestions); //find list from activity
         a = new item_adapter(this, itemsToTake);

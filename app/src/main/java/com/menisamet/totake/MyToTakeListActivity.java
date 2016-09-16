@@ -30,7 +30,7 @@ import java.util.List;
 public class MyToTakeListActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener {
 
     private static final String EXTRA_ITEM_DATA_LIST = "extra_time_data_list";
-    private static final String EXTRA_LIST_DATA_ITEM_POSITION = "extra_list_data_item_position";
+    public static final String EXTRA_LIST_DATA_ITEM_POSITION = "extra_list_data_item_position";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
