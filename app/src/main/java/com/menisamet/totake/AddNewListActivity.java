@@ -6,7 +6,11 @@ import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.icu.util.GregorianCalendar;
+import android.icu.util.TimeUnit;
 import android.os.Build;
+import java.text.ParseException;
+import java.util.Date;
+import java.lang.*;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -27,7 +31,10 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
+import java.text.ParseException;
 import java.util.Date;
+
+import static android.icu.util.Calendar.getInstance;
 
 public class AddNewListActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -116,7 +123,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
             @TargetApi(Build.VERSION_CODES.N)
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar calendar = GregorianCalendar.getInstance();
+                Calendar calendar = getInstance();
                 calendar.set(year, month, dayOfMonth);
                 SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
                 if (v.getId() == R.id.start_date_button) {
@@ -139,12 +146,14 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
 
     }
 
-
-
     public void addButtonClicked(View view) {
 //        ListDataItem itemToSave = new ListDataItem(selectedPlace.getId(), startDate, endDate, (String)selectedPlace.getName());
 //        Database.instance().saveToDB(itemToSave, "ItemToTake");
-        Database.instance().saveToCash(new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate));
+        ListDataItem listDataItem=new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate);
+        int numOfDays=(int)((endDate.getTime()-startDate.getTime())/360);
+
+        listDataItem.addItemDataList(new ItemData("shirts ",numOfDays));
+        Database.instance().saveToCash(listDataItem);
         Intent intent = new Intent(AddNewListActivity.this, ListOfItemActivity.class);
         intent.putExtra(ListOfItemActivity.EXTRA_LIST_DATA_ITEM_POSITION, Database.static_userListData.size()-1);
         startActivity(intent);

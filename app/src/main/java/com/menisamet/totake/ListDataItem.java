@@ -32,8 +32,6 @@ public class ListDataItem {
 //        itemDataList = new ArrayList<>();
 //      /*  addItemDataList(new ItemData("ilay", 1));
 //        addItemDataList(new ItemData("noa", 2));*/
-//    }
-
 
     public ListDataItem(String representiveName, String googlePlaceId, Date startDate, Date endDate){
         this();
