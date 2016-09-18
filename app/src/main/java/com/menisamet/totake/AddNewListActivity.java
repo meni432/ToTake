@@ -1,11 +1,7 @@
 package com.menisamet.totake;
 
-import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -26,9 +22,12 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
-import static android.icu.util.Calendar.getInstance;
+import java.util.Date;
 
 public class AddNewListActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -114,20 +113,26 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
     public void showDatePickerDialog(final View v) {
 
         DialogFragment newFragment = new DatePickerFragment(new DatePickerDialog.OnDateSetListener() {
-            @TargetApi(Build.VERSION_CODES.N)
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar calendar = getInstance();
-                calendar.set(year, month, dayOfMonth);
-                SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+//                Calendar calendar = getInstance();
+//                calendar.set(year, month, dayOfMonth);
+                LocalDate localDate = new LocalDate(year, month, dayOfMonth);
+                DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(DATE_FORMAT);
                 if (v.getId() == R.id.start_date_button) {
-                    startDate = calendar.getTime();
+                    startDate = localDate.toDate();
                     Log.d(TAG, "start date set: " + startDate);
-                    ((TextView) v).setText(sdf.format(startDate));
+                    DateTime dateTime = new DateTime(startDate);
+                    String sf = dateTime.toString(dateTimeFormatter);
+//                    ((TextView) v).setText(sdf.format(startDate));
+                    ((TextView) v).setText(sf);
                 } else if (v.getId() == R.id.end_date_button) {
-                    endDate = calendar.getTime();
+                    endDate = localDate.toDate();
                     Log.d(TAG, "end date set: " + endDate);
-                    ((TextView) v).setText(sdf.format(endDate));
+                    DateTime dateTime = new DateTime(endDate);
+                    String sf = dateTime.toString(dateTimeFormatter);
+//                    ((TextView) v).setText(sdf.format(endDate));
+                    ((TextView) v).setText(sf);
                 }
             }
         });
@@ -146,6 +151,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
         ListDataItem listDataItem=new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate);
         int numOfDays=(int)((endDate.getTime()-startDate.getTime())/(1000*60*60*24));
 
+        ListDataItem.currentId = Database.static_userListData.size()-1;
         listDataItem.addItemDataList(new ItemData("shirts ",numOfDays));
         listDataItem.addItemDataList(new ItemData("pants ",numOfDays));
         listDataItem.addItemDataList(new ItemData("socks ",numOfDays));

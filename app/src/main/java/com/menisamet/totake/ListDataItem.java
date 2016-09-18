@@ -1,5 +1,7 @@
 package com.menisamet.totake;
 
+import com.menisamet.totake.Suggestion.SuggestionSystemCall;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,6 +12,7 @@ import java.util.List;
  */
 public class ListDataItem {
 
+    public static int currentId = 0;
     public static final String DATE_FORMAT = "dd-MM-yyyy";
     private String placeName;
     public String placeId;
@@ -51,6 +54,8 @@ public class ListDataItem {
 
     public void addItemDataList(ItemData itemData){
         if (this.itemDataList != null){
+            SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(currentId);
+            suggestionSystemCall.addLike(itemData.getName()+" "+itemData.getNumbers());
             this.itemDataList.add(itemData);
         }
     }

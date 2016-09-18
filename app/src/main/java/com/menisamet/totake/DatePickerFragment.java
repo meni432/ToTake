@@ -1,12 +1,11 @@
 package com.menisamet.totake;
 
-import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.icu.util.Calendar;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+
+import java.util.Calendar;
 
 /**
  * Created by meni on 11/09/16.
@@ -17,11 +16,12 @@ public class DatePickerFragment extends DialogFragment {
 
     DatePickerDialog.OnDateSetListener onDateSetListener;
 
+    public DatePickerFragment() {}
     public DatePickerFragment(DatePickerDialog.OnDateSetListener onDateSetListener) {
         this.onDateSetListener = onDateSetListener;
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
