@@ -50,6 +50,8 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 //        menu.setDisplayUseLogoEnabled(true);
 //        myRef.child(Database.static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
         //myRef.addValueEventListener(valueEventListener);
+
+
     }
 
     ValueEventListener valueEventListener = new ValueEventListener()
@@ -80,6 +82,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
+
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -93,6 +96,14 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter(MyToTakeListActivity.this, Database.static_userListData);
         mRecyclerView.setAdapter(mAdapter);
+
+        Database.loadDBToCash();
+        Database.setOnLoadDataListener(new Database.OnLoadDataListener() {
+            @Override
+            public void dataLoaded() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
 
         startGoogleApiClient();
@@ -122,7 +133,17 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Database.setOnLoadDataListener(new Database.OnLoadDataListener() {
+            @Override
+            public void dataLoaded() {
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
+    }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 

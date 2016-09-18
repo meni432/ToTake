@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity
 
     Database database;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +57,10 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
-            public void onDrawerSlide(View drawerView, float slideOffset){
+            public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerOpened(drawerView);
                 if (Database.instance().isLogIn()) {
-                    ImageView imageView = (ImageView)drawerView.findViewById(R.id.imageView);
+                    ImageView imageView = (ImageView) drawerView.findViewById(R.id.imageView);
                     TextView fullNameNavBarTextView = (TextView) drawerView.findViewById(R.id.full_name_text_view);
                     TextView emailAddressNavBarTextView = (TextView) drawerView.findViewById(R.id.email_address_text_view);
                     fullNameNavBarTextView.setText(Database.static_FirebaseUser.getDisplayName());
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity
             Utility.checkAuthAndGoToActivity(this, ToolActivity.class);
 //            Intent intent = new Intent(MainActivity.this, ToolActivity.class);
 //            startActivity(intent);
-        }else if (id == R.id.nav_my_lists){
+        } else if (id == R.id.nav_my_lists) {
             Utility.checkAuthAndGoToActivity(this, MyToTakeListActivity.class);
         } else if (id == R.id.nav_share) {
 
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void dbLoadClick(View view){
+    public void dbLoadClick(View view) {
 
     }
 
@@ -157,7 +158,18 @@ public class MainActivity extends AppCompatActivity
 
 //        Database.loadDBToCash();
 //        Database.setNeedUpdate();
-        Utility.checkAuthAndGoToActivity(this, MyToTakeListActivity.class);
+        if (Database.static_FirebaseUser == null) {
+            Utility.checkAuthAndGoToActivity(this, MainActivity.class);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Database.static_FirebaseUser != null) {
+            Database.loadDBToCash();
+        }
     }
 
     //    public void getSuggestionOnClick(View view){

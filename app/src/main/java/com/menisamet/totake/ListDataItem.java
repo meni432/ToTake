@@ -15,8 +15,8 @@ public class ListDataItem {
     public static int currentId = 0;
     public static final String DATE_FORMAT = "dd-MM-yyyy";
     private String placeName;
-    public String placeId;
-    public List<ItemData> itemDataList;
+    public String placeId = "";
+    private List<ItemData> itemDataList;
     private String googlePlaceId;
     public Date startDate = new Date();
     public Date endDate = new Date();
@@ -76,5 +76,6 @@ public class ListDataItem {
         }
         return "";
     }
+
 
 }

@@ -118,6 +118,7 @@ public class SignInActivity extends AppCompatActivity implements
 
 
     private void goToNextActivity() {
+        Database.loadDBToCash();
         Intent intent = new Intent(this, next);
         startActivity(intent);
         finish();

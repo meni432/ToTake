@@ -8,6 +8,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +27,9 @@ public class Database {
 
     private static Database database;
 
+    public static OnLoadDataListener onLoadDataListener;
+
+
     static {
 
     }
@@ -38,13 +42,13 @@ public class Database {
 
     }
 
-    public static void saveCasDataToDB(){
+    public static void saveCasDataToDB() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("ItemData");
         myRef.child(static_FirebaseUser.getUid()).setValue(static_userListData);
     }
 
-    public static void loadDBToCash(){
+    public static void loadDBToCash() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("ItemData");
         myRef.child(static_FirebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
@@ -53,11 +57,23 @@ public class Database {
                 if (needUpdate) {
                     List<ListDataItem> listDataItems = new ArrayList<>();
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        ListDataItem item = postSnapshot.getValue(ListDataItem.class);
-                        listDataItems.add(item);
+//                        ListDataItem item = postSnapshot.getValue(ListDataItem.class);
+                        Date startDate = postSnapshot.child("startDate").getValue(Date.class);
+                        Date endDate = postSnapshot.child("endDate").getValue(Date.class);
+                        String listName = postSnapshot.child("listName").getValue(String.class);
+                        String googlePlaceId = postSnapshot.child("googlePlaceId").getValue(String.class);
+                        List<ItemData> itemDataLists = new ArrayList<>();
+                        for (DataSnapshot listSnapshot : postSnapshot.child("itemDataList").getChildren()) {
+                            itemDataLists.add(listSnapshot.getValue(ItemData.class));
+                        }
+                        ListDataItem dataItem = new ListDataItem(listName, googlePlaceId, startDate, endDate);
+                        dataItem.setItemDataList(itemDataLists);
+                        listDataItems.add(dataItem);
                     }
                     static_userListData = listDataItems;
-                    needUpdate = false;
+                    if (onLoadDataListener != null) {
+                        onLoadDataListener.dataLoaded();
+                    }
                 }
             }
 
@@ -69,7 +85,8 @@ public class Database {
 
     }
 
-    public static void setNeedUpdate(){
+
+    public static void setNeedUpdate() {
         needUpdate = true;
     }
 
@@ -81,5 +98,14 @@ public class Database {
 
     public boolean isLogIn() {
         return (static_FirebaseUser != null);
+    }
+
+
+    public static void setOnLoadDataListener(OnLoadDataListener onLoadDataListener) {
+        Database.onLoadDataListener = onLoadDataListener;
+    }
+
+    interface OnLoadDataListener {
+        public void dataLoaded();
     }
 }

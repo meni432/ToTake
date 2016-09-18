@@ -12,38 +12,5 @@
     tools:context="com.menisamet.totake.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView2" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DB Load"
-        android:id="@+id/button"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="138dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="addLikeOnClick"
-        android:id="@+id/button2"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:onClick="addLikeOnClick" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="getSuggestionOnClick"
-        android:id="@+id/button3"
-        android:layout_alignTop="@+id/button2"
-        android:layout_alignParentStart="true"
-        android:onClick="getSuggestionOnClick" />
-
 
 </RelativeLayout>
