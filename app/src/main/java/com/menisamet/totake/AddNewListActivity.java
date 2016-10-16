@@ -62,7 +62,6 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
         placeImageLoader = new PlaceImageLoader(mGoogleApiClient);
 
 
-
     }
 
     private void setAutoCompleate() {
@@ -78,7 +77,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
         ((EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setTextSize(13.0f);
         ((EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setPadding(0, 0, 0, 0);
 
-        editText = (EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input);
+        editText = (EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input);
 
         autocompleteFragment.setFilter(autocompleteFilter);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -112,7 +111,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
 
     public void showDatePickerDialog(final View v) {
 
-        DialogFragment newFragment = new DatePickerFragment(new DatePickerDialog.OnDateSetListener() {
+        DatePickerFragment.onDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 //                Calendar calendar = getInstance();
@@ -135,7 +134,9 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
                     ((TextView) v).setText(sf);
                 }
             }
-        });
+        };
+
+        DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), getString(R.string.date_picker));
     }
 
@@ -146,29 +147,36 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
     }
 
     public void addButtonClicked(View view) {
+
+
 //        ListDataItem itemToSave = new ListDataItem(selectedPlace.getId(), startDate, endDate, (String)selectedPlace.getName());
 //        Database.instance().saveToDB(itemToSave, "ItemToTake");
-        ListDataItem listDataItem=new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate);
-        int numOfDays=(int)((endDate.getTime()-startDate.getTime())/(1000*60*60*24));
+        String imageName = (int)(Math.random()*100)+""+editText.getText();
+        String imagePath = Utility.saveToInternalStorage(this, mImageView.getDrawingCache(), imageName);
+        Log.d(TAG, "imageName: "+imageName+" imagePath: "+imagePath);
+        ListDataItem listDataItem = new ListDataItem(editText.getText().toString(), selectedPlace.getId(), startDate, endDate,imagePath, imageName);
+        int numOfDays = (int) ((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
-        ListDataItem.currentId = Database.static_userListData.size()-1;
-        listDataItem.addItemDataList(new ItemData("shirts ",numOfDays));
-        listDataItem.addItemDataList(new ItemData("pants ",numOfDays));
-        listDataItem.addItemDataList(new ItemData("socks ",numOfDays));
-        listDataItem.addItemDataList(new ItemData("underwear ",numOfDays));
-        listDataItem.addItemDataList(new ItemData("bathing cap ",1));
-        listDataItem.addItemDataList(new ItemData("bathing suit ",2));
-        listDataItem.addItemDataList(new ItemData("toothbrush ",1));
-        listDataItem.addItemDataList(new ItemData("book ",1));
-        listDataItem.addItemDataList(new ItemData("glasses ",1));
-        listDataItem.addItemDataList(new ItemData("sunglasses ",1));
-        listDataItem.addItemDataList(new ItemData("cell phone charger ",1));
+        ListDataItem.currentId = Database.static_userListData.size() - 1;
+        listDataItem.addItemDataList(new ItemData("shirts ", numOfDays));
+        listDataItem.addItemDataList(new ItemData("pants ", numOfDays));
+        listDataItem.addItemDataList(new ItemData("socks ", numOfDays));
+        listDataItem.addItemDataList(new ItemData("underwear ", numOfDays));
+        listDataItem.addItemDataList(new ItemData("bathing cap ", 1));
+        listDataItem.addItemDataList(new ItemData("bathing suit ", 2));
+        listDataItem.addItemDataList(new ItemData("toothbrush ", 1));
+        listDataItem.addItemDataList(new ItemData("book ", 1));
+        listDataItem.addItemDataList(new ItemData("glasses ", 1));
+        listDataItem.addItemDataList(new ItemData("sunglasses ", 1));
+        listDataItem.addItemDataList(new ItemData("cell phone charger ", 1));
 
         Database.instance().saveToCash(listDataItem);
         Intent intent = new Intent(AddNewListActivity.this, ListOfItemActivity.class);
-        intent.putExtra(ListOfItemActivity.EXTRA_LIST_DATA_ITEM_POSITION, Database.static_userListData.size()-1);
+        intent.putExtra(ListOfItemActivity.EXTRA_LIST_DATA_ITEM_POSITION, Database.static_userListData.size() - 1);
         startActivity(intent);
         finish();
         Log.d(TAG, "send to db");
     }
+
+
 }

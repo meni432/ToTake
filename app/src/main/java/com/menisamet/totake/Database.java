@@ -62,11 +62,13 @@ public class Database {
                         Date endDate = postSnapshot.child("endDate").getValue(Date.class);
                         String listName = postSnapshot.child("listName").getValue(String.class);
                         String googlePlaceId = postSnapshot.child("googlePlaceId").getValue(String.class);
+                        String imagePath = postSnapshot.child("imagePath").getValue(String.class);
+                        String imageName = postSnapshot.child("imageName").getValue(String.class);
                         List<ItemData> itemDataLists = new ArrayList<>();
                         for (DataSnapshot listSnapshot : postSnapshot.child("itemDataList").getChildren()) {
                             itemDataLists.add(listSnapshot.getValue(ItemData.class));
                         }
-                        ListDataItem dataItem = new ListDataItem(listName, googlePlaceId, startDate, endDate);
+                        ListDataItem dataItem = new ListDataItem(listName, googlePlaceId, startDate, endDate, imagePath, imageName);
                         dataItem.setItemDataList(itemDataLists);
                         listDataItems.add(dataItem);
                     }

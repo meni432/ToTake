@@ -19,11 +19,9 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 public class MyToTakeListActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener {
 
@@ -39,34 +37,9 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
     private PlaceImageLoader mPlaceImageLoader;
     protected Context context;
 
-    protected void onStart()
-    {
-        super.onStart();
-
-//        android.support.v7.app.ActionBar menu = getSupportActionBar();
-//        menu.setDisplayShowHomeEnabled(true);
-//        menu.setLogo(R.drawable.to_take_logo);
-//        menu.setDisplayShowTitleEnabled(false);
-//        menu.setDisplayUseLogoEnabled(true);
-//        myRef.child(Database.static_FirebaseUser.getUid()).addValueEventListener(valueEventListener);
-        //myRef.addValueEventListener(valueEventListener);
+    ExecutorService executor;
 
 
-    }
-
-    ValueEventListener valueEventListener = new ValueEventListener()
-    {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            ListDataItem post = dataSnapshot.getValue(ListDataItem.class);
-           // Log.d(TAG, post.getListName());
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            Log.d(TAG, "&onCancelled*");
-        }
-    };
 
 
     @Override
@@ -94,8 +67,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(MyToTakeListActivity.this, Database.static_userListData);
-        mRecyclerView.setAdapter(mAdapter);
+
 
         Database.loadDBToCash();
         Database.setOnLoadDataListener(new Database.OnLoadDataListener() {
@@ -111,6 +83,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
 
         context = this;
+
 //        Database.addTestData();
 
     }
@@ -122,6 +95,9 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+
+        mAdapter = new MyAdapter(MyToTakeListActivity.this, Database.static_userListData);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     public void newListOnClick(View view){
@@ -194,7 +170,27 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
             holder.textView.setText(listDatas.get(position).getListName());
             String fromToRepresentiveText = listDatas.get(position).getRepresentativeFromToDate();
             holder.dateTextView.setText(fromToRepresentiveText);
+
+
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
+                    mPlaceImageLoader.placePhotosTask(listDatas.get(position).getGooglePlaceId(), holder.imageView);
+                }
+            };
+
+//            runnable.start();
+
+
+//            mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
 //            mPlaceImageLoader.placePhotosTask(listDatas.get(position).getGooglePlaceId(), holder.imageView);
+//            Utility.loadImageFromStorage(holder.imageView, listDatas.get(position).getImagePath(), listDatas.get(position).getImageName());
+
+//            Picasso.with(getApplicationContext()).load("file://"+listDatas.get(position).getImagePath()+""+listDatas.get(position).getListName()+".jpg").into(holder.imageView);
+            Log.d(TAG, "load data");
+
+            //https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyBTNxNSDzkAnLt4gs74l7KaZfybEsgjOyM
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,6 +212,8 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
 
         }
+
+
     }
 }
 //

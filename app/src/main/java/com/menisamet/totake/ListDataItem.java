@@ -15,12 +15,15 @@ public class ListDataItem {
     public static int currentId = 0;
     public static final String DATE_FORMAT = "dd-MM-yyyy";
     private String placeName;
-    public String placeId = "";
+    //    public String placeId = "";
     private List<ItemData> itemDataList;
     private String googlePlaceId;
     public Date startDate = new Date();
     public Date endDate = new Date();
-//    private Place place = null;
+    private String imagePath;
+    private String imageName;
+
+    //    private Place place = null;
 
 
     public ListDataItem() {
@@ -36,12 +39,22 @@ public class ListDataItem {
 //      /*  addItemDataList(new ItemData("ilay", 1));
 //        addItemDataList(new ItemData("noa", 2));*/
 
-    public ListDataItem(String representiveName, String googlePlaceId, Date startDate, Date endDate){
+    public ListDataItem(String representiveName, String googlePlaceId, Date startDate, Date endDate, String imagePath, String imageName) {
         this();
         this.placeName = representiveName;
         this.googlePlaceId = googlePlaceId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.imagePath = imagePath;
+        this.imageName = imageName;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public List<ItemData> getItemDataList() {
@@ -52,29 +65,38 @@ public class ListDataItem {
         this.itemDataList = itemDataList;
     }
 
-    public void addItemDataList(ItemData itemData){
-        if (this.itemDataList != null){
+    public void addItemDataList(ItemData itemData) {
+        if (this.itemDataList != null) {
             SuggestionSystemCall suggestionSystemCall = new SuggestionSystemCall(currentId);
-            suggestionSystemCall.addLike(itemData.getName()+" "+itemData.getNumbers());
+            suggestionSystemCall.addLike(itemData.getName() + " " + itemData.getNumbers());
             this.itemDataList.add(itemData);
         }
     }
 
     public String getGooglePlaceId() {
-        return placeId;
+        return googlePlaceId;
     }
 
 
-    public String getListName(){
+    public String getListName() {
         return placeName;
     }
 
-    public String getRepresentativeFromToDate(){
+    public String getRepresentativeFromToDate() {
         if (endDate != null && startDate != null) {
             SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
             return sdf.format(startDate) + " - " + sdf.format(endDate);
         }
         return "";
+    }
+
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
 

@@ -14,12 +14,10 @@ public class DatePickerFragment extends DialogFragment {
 
     public static final String TAG = "TAG_" + DatePickerFragment.class.getCanonicalName();
 
-    DatePickerDialog.OnDateSetListener onDateSetListener;
+    public static DatePickerDialog.OnDateSetListener onDateSetListener;
 
     public DatePickerFragment() {}
-    public DatePickerFragment(DatePickerDialog.OnDateSetListener onDateSetListener) {
-        this.onDateSetListener = onDateSetListener;
-    }
+
 
 
     @Override
