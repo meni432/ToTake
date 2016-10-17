@@ -2,12 +2,15 @@ package com.menisamet.totake;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlacePhotoMetadata;
 import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
+import com.google.android.gms.location.places.PlacePhotoResult;
 import com.google.android.gms.location.places.Places;
 
 /**
@@ -100,5 +103,43 @@ public class PlaceImageLoader {
                 this.bitmap = bitmap;
             }
         }
+    }
+
+
+    /**
+     * Load a bitmap from the photos API asynchronously
+     * by using buffers and result callbacks.
+     */
+    public void placePhotosAsync(final String placeId, final ImageView mImageView) {
+//            final String placeId = "ChIJrTLr-GyuEmsRBfy61i59si0"; // Australian Cruise Group
+        Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, placeId)
+                .setResultCallback(new ResultCallback<PlacePhotoMetadataResult>() {
+
+
+                    @Override
+                    public void onResult(PlacePhotoMetadataResult photos) {
+                        if (!photos.getStatus().isSuccess()) {
+                            return;
+                        }
+
+                        PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                        if (photoMetadataBuffer.getCount() > 0) {
+                            // Display the first bitmap in an ImageView in the size of the view
+                            photoMetadataBuffer.get(0)
+                                    .getScaledPhoto(mGoogleApiClient, mImageView.getWidth(),
+                                            mImageView.getHeight())
+                                    .setResultCallback(new ResultCallback<PlacePhotoResult>() {
+                                        @Override
+                                        public void onResult(@NonNull PlacePhotoResult placePhotoResult) {
+                                            if (!placePhotoResult.getStatus().isSuccess()) {
+                                                return;
+                                            }
+                                            mImageView.setImageBitmap(placePhotoResult.getBitmap());
+                                        }
+                                    });
+                        }
+                        photoMetadataBuffer.release();
+                    }
+                });
     }
 }

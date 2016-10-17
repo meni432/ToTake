@@ -1,5 +1,7 @@
 package com.menisamet.totake;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,6 +74,7 @@ public class Database {
                         dataItem.setItemDataList(itemDataLists);
                         listDataItems.add(dataItem);
                     }
+                    Log.d(TAG, "data load from db");
                     static_userListData = listDataItems;
                     if (onLoadDataListener != null) {
                         onLoadDataListener.dataLoaded();

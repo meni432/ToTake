@@ -45,9 +45,9 @@
         </activity>
         <activity
             android:name=".MyToTakeListActivity"
-            android:label="My Todo List"
+            android:label="My Trip List"
             android:parentActivityName=".MyToTakeListActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            />
         <activity
             android:name=".ToolActivity"
             android:label="Tools"

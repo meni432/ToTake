@@ -19,7 +19,9 @@
         android:backgroundTint="@color/common_google_signin_btn_text_light_disabled"
         android:layout_above="@+id/listViewSuggestions"
         android:layout_alignStart="@+id/listViewSuggestions"
-        android:layout_below="@+id/fab" />
+        android:layout_below="@+id/fab"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5.0sp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -40,7 +42,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        />
 
     <Space
         android:layout_width="match_parent"

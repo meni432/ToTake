@@ -4,16 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -23,13 +24,14 @@ import com.google.android.gms.location.places.Places;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-public class MyToTakeListActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener {
+public class MyToTakeListActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String EXTRA_ITEM_DATA_LIST = "extra_time_data_list";
     public static final String EXTRA_LIST_DATA_ITEM_POSITION = "extra_list_data_item_position";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ListView mListView;
     public static final String TAG = "TAG_" + MyToTakeListActivity.class.getCanonicalName();
 
     private GoogleApiClient mGoogleApiClient;
@@ -40,42 +42,45 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
     ExecutorService executor;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_to_do_list);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mListView = (ListView)findViewById(R.id.trip_list_view);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
-
-        // use itemToAddAdapter linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+//        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+//
+//        // use this setting to improve performance if you know that changes
+//        // in content do not change the layout size of the RecyclerView
+//        mRecyclerView.setHasFixedSize(true);
+//
+//        // use itemToAddAdapter linear layout manager
+//        mLayoutManager = new LinearLayoutManager(this);
+//        mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
 
 
-        Database.loadDBToCash();
+//        mAdapter = new MyAdapter(MyToTakeListActivity.this, Database.static_userListData);
+//        mRecyclerView.setAdapter(mAdapter);
+
         Database.setOnLoadDataListener(new Database.OnLoadDataListener() {
             @Override
             public void dataLoaded() {
-                mAdapter.notifyDataSetChanged();
+                Log.d(TAG, "data load from db");
+                Log.d(TAG, Database.static_userListData.toString());
+//                mAdapter.notifyDataSetChanged();
+//                mAdapter = new MyAdapter(MyToTakeListActivity.this, Database.static_userListData);
+//                mRecyclerView.setAdapter(mAdapter);
+
+                loadListDataToView();
+
+
             }
         });
+        Database.loadDBToCash();
 
 
         startGoogleApiClient();
@@ -84,8 +89,20 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
         context = this;
 
-//        Database.addTestData();
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Utility.checkAuthAndGoToActivity(context, AddNewListActivity.class);
+            }
+        });
 
+
+    }
+
+    private void loadListDataToView(){
+        TripListArrayAdapter tripListArrayAdapter = new TripListArrayAdapter(this, R.layout.todo_list_item, Database.static_userListData);
+        mListView.setAdapter(tripListArrayAdapter);
     }
 
     private synchronized void startGoogleApiClient() {
@@ -96,11 +113,10 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
                 .enableAutoManage(this, this)
                 .build();
 
-        mAdapter = new MyAdapter(MyToTakeListActivity.this, Database.static_userListData);
-        mRecyclerView.setAdapter(mAdapter);
+
     }
 
-    public void newListOnClick(View view){
+    public void newListOnClick(View view) {
         Utility.checkAuthAndGoToActivity(this, AddNewListActivity.class);
     }
 
@@ -112,13 +128,69 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
     @Override
     protected void onResume() {
         super.onResume();
-        Database.setOnLoadDataListener(new Database.OnLoadDataListener() {
-            @Override
-            public void dataLoaded() {
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+//        Database.setOnLoadDataListener(new Database.OnLoadDataListener() {
+//            @Override
+//            public void dataLoaded() {
+//                mAdapter.notifyDataSetChanged();
+//            }
+//        });
 
+    }
+
+    class TripListArrayAdapter extends ArrayAdapter<ListDataItem> {
+
+        public TripListArrayAdapter(Context context, int resource, List<ListDataItem> objects) {
+            super(context, resource, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater vi;
+                vi = LayoutInflater.from(getContext());
+                view = vi.inflate(R.layout.todo_list_item, null);
+            }
+
+            ListDataItem item = getItem(position);
+
+            if (item != null) {
+                TextView textView = (TextView) view.findViewById(R.id.info_text);
+                TextView dateTextView = (TextView) view.findViewById(R.id.from_to_date_text_view);
+                ImageView imageView = (ImageView) view.findViewById(R.id.place_image_view);
+
+                if (textView != null) {
+                    textView.setText(item.getListName());
+                }
+
+                if (dateTextView != null) {
+                    dateTextView.setText(item.getRepresentativeFromToDate());
+                }
+
+                if (imageView != null) {
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                    // load place image
+                    if (imageView != null) {
+                        mPlaceImageLoader.placePhotosAsync(item.getGooglePlaceId(), imageView);
+                    }
+                }
+
+
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                    Utility.checkAuthAndGoToActivity(context, ListDataItem.class);
+                        Intent intent = new Intent(MyToTakeListActivity.this, ListOfItemActivity.class);
+                        intent.putExtra(EXTRA_LIST_DATA_ITEM_POSITION, position);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            return view;
+        }
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
@@ -138,7 +210,7 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
                 this.cardView = (CardView) view.findViewById(R.id.card_view);
                 this.textView = (TextView) view.findViewById(R.id.info_text);
                 this.imageView = (ImageView) view.findViewById(R.id.place_image_view);
-                this.dateTextView = (TextView)view.findViewById(R.id.from_to_date_text_view);
+                this.dateTextView = (TextView) view.findViewById(R.id.from_to_date_text_view);
             }
         }
 
@@ -171,26 +243,12 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
             String fromToRepresentiveText = listDatas.get(position).getRepresentativeFromToDate();
             holder.dateTextView.setText(fromToRepresentiveText);
 
+            holder.imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
-                    mPlaceImageLoader.placePhotosTask(listDatas.get(position).getGooglePlaceId(), holder.imageView);
-                }
-            };
-
-//            runnable.start();
-
-
-//            mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
-//            mPlaceImageLoader.placePhotosTask(listDatas.get(position).getGooglePlaceId(), holder.imageView);
-//            Utility.loadImageFromStorage(holder.imageView, listDatas.get(position).getImagePath(), listDatas.get(position).getImageName());
-
-//            Picasso.with(getApplicationContext()).load("file://"+listDatas.get(position).getImagePath()+""+listDatas.get(position).getListName()+".jpg").into(holder.imageView);
-            Log.d(TAG, "load data");
-
-            //https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=CnRtAAAATLZNl354RwP_9UKbQ_5Psy40texXePv4oAlgP4qNEkdIrkyse7rPXYGd9D_Uj1rVsQdWT4oRz4QrYAJNpFX7rzqqMlZw2h2E2y5IKMUZ7ouD_SlcHxYq1yL4KbKUv3qtWgTK0A6QbGh87GB3sscrHRIQiG2RrmU_jF4tENr9wGS_YxoUSSDrYjWmrNfeEHSGSc3FyhNLlBU&key=AIzaSyBTNxNSDzkAnLt4gs74l7KaZfybEsgjOyM
+            // load place image
+            if (holder.imageView != null) {
+                mPlaceImageLoader.placePhotosAsync(listDatas.get(position).getGooglePlaceId(), holder.imageView);
+            }
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,6 +274,3 @@ public class MyToTakeListActivity extends AppCompatActivity implements  GoogleAp
 
     }
 }
-//
-
-//

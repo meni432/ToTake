@@ -1,5 +1,7 @@
 package com.menisamet.totake;
 
+import android.graphics.Bitmap;
+
 import com.menisamet.totake.Suggestion.SuggestionSystemCall;
 
 import java.text.SimpleDateFormat;
@@ -22,6 +24,16 @@ public class ListDataItem {
     public Date endDate = new Date();
     private String imagePath;
     private String imageName;
+
+    protected Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    protected void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
+    private Bitmap bitmap;
 
     //    private Place place = null;
 
