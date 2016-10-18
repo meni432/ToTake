@@ -20,6 +20,8 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.menisamet.totake.Models.ListDataItem;
+import com.menisamet.totake.Services.PlaceImageLoader;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -50,6 +52,13 @@ public class MyToTakeListActivity extends AppCompatActivity implements GoogleApi
 
         mListView = (ListView)findViewById(R.id.trip_list_view);
 
+        android.support.v7.app.ActionBar menu = getSupportActionBar();
+        menu.setDisplayShowHomeEnabled(true);
+        menu.setIcon(R.mipmap.ic_launcher);
+        menu.setDisplayShowTitleEnabled(true);
+        menu.setDisplayUseLogoEnabled(true);
+        menu.setTitle(R.string.to_take);
+        menu.setSubtitle(getString(R.string.my_trip_list));
 //        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 //
 //        // use this setting to improve performance if you know that changes

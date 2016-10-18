@@ -1,8 +1,8 @@
-package com.menisamet.totake;
+package com.menisamet.totake.Models;
 
 import android.graphics.Bitmap;
 
-import com.menisamet.totake.Suggestion.SuggestionSystemCall;
+import com.menisamet.totake.Services.SuggestionSystemCall;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

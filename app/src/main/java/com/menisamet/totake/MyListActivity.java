@@ -13,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.menisamet.totake.Models.ListDataItem;
+
 public class MyListActivity extends AppCompatActivity {
 
     Spinner spinner;

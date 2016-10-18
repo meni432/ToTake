@@ -1,4 +1,4 @@
-package com.menisamet.totake.Suggestion;
+package com.menisamet.totake.Services;
 
 import android.util.Log;
 
@@ -6,7 +6,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.menisamet.totake.Constants;
 import com.menisamet.totake.Database;
-import com.menisamet.totake.ItemData;
+import com.menisamet.totake.Models.ItemData;
 
 import org.json.JSONArray;
 import org.json.JSONException;

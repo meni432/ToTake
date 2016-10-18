@@ -8,23 +8,71 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
     tools:context="com.menisamet.totake.ToolActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Be the nerd"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp" />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Be the nerd"-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--tools:layout_editor_absoluteY="0dp"-->
+        <!--tools:layout_editor_absoluteX="0dp" />-->
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText"
+                android:layout_alignRight="@+id/tags_laoyut"
+                android:layout_alignEnd="@+id/tags_laoyut"
+                android:layout_alignLeft="@+id/tags_laoyut"
+                android:layout_alignStart="@+id/tags_laoyut" />
+
+        <ScrollView
+            android:id="@+id/tags_laoyut"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:layout_marginLeft="6dp"
+            android:background="@android:color/white"
+            android:visibility="visible"
+            android:layout_below="@+id/editText">
+
+            <com.cunoraz.tagview.TagView
+                android:id="@+id/tag_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp" />
+
+        </ScrollView>
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+        <ScrollView
+            android:id="@+id/selected_tags_laoyut"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:layout_marginLeft="6dp"
+            android:background="@android:color/white"
+            android:visibility="visible"
+            android:layout_below="@+id/editText">
+
+            <com.cunoraz.tagview.TagView
+                android:id="@+id/selected_tag_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp" />
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
 </android.support.design.widget.CoordinatorLayout>

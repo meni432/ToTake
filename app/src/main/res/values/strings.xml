@@ -11,6 +11,8 @@
     <string name="pick_start_date">Start Date</string>
     <string name="pick_end_date">End Date</string>
     <string name="date_picker">datePicker</string>
+    <string name="to_take">To Take</string>
+    <string name="my_trip_list">My Trip List</string>
 
     <string-array name="sample_array">
         <item>Mercury</item>

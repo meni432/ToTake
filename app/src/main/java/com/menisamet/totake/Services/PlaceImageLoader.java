@@ -1,4 +1,4 @@
-package com.menisamet.totake;
+package com.menisamet.totake.Services;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -12,6 +12,7 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.PlacePhotoResult;
 import com.google.android.gms.location.places.Places;
+import com.menisamet.totake.R;
 
 /**
  * Created by meni on 14/09/16.

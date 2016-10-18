@@ -21,7 +21,8 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
-import com.menisamet.totake.Suggestion.SuggestionSystemCall;
+import com.menisamet.totake.Models.ItemData;
+import com.menisamet.totake.Services.SuggestionSystemCall;
 
 import java.util.ArrayList;
 import java.util.HashSet;
