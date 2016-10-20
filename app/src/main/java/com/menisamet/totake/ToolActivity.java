@@ -1,159 +1,218 @@
 package com.menisamet.totake;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.cunoraz.tagview.Tag;
-import com.cunoraz.tagview.TagView;
-import com.menisamet.totake.Models.TagClass;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.menisamet.totake.Helper.RecyclerItemClickListener;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+
+import static com.menisamet.totake.Constants.NUMBER_OF_SUGGESTION_LINES;
 
 public class ToolActivity extends AppCompatActivity {
-    private TagView tagGroup;
-//    private TagView selectedTagGroup;
 
-    private EditText editText;
+    public static final String TAG = "TAG_"+ToolActivity.class.getCanonicalName();
 
+    private RecyclerView mSuggestionRecyclerView;
+    private RecyclerView.Adapter mSuggestionsAdapter;
 
-    /**
-     * sample country list
-     */
-    private ArrayList<TagClass> tagList;
-//    private ArrayList<TagClass> selectedTagList;
+    private RecyclerView mSelectedRecyclerView;
+    private RecyclerView.Adapter mSelectedAdapter;
+
+    private Random mRandom = new Random();
+
+    private Context mContext;
+
+    private ArrayList<String> mSelectedArrayList;
+    ScaleInAnimationAdapter mAlphaAdapterSelections;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tool);
-        tagGroup = (TagView) findViewById(R.id.tag_group);
-        editText = (EditText) findViewById(R.id.editText);
 
-        prepareTags();
+        mContext = this;
 
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        mSuggestionRecyclerView = (RecyclerView) findViewById(R.id.suggestion_recycle_view);
+        mSelectedRecyclerView = (RecyclerView) findViewById(R.id.selected_recycle_view);
 
+
+        StaggeredGridLayoutManager gridLayoutManager =
+                new StaggeredGridLayoutManager(NUMBER_OF_SUGGESTION_LINES, StaggeredGridLayoutManager.HORIZONTAL);
+
+        StaggeredGridLayoutManager gridLayoutManager1 =
+                new StaggeredGridLayoutManager(NUMBER_OF_SUGGESTION_LINES, StaggeredGridLayoutManager.HORIZONTAL);
+
+
+        mSuggestionRecyclerView.setLayoutManager(gridLayoutManager);
+        mSelectedRecyclerView.setLayoutManager(gridLayoutManager1);
+
+
+        final ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < 15; i++){
+            StringBuilder stringBuilder = new StringBuilder();
+            int rand = mRandom.nextInt(10);
+            for (int j = 0; j < rand; j++){
+                stringBuilder.append(' ');
             }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setTags(s);
+            stringBuilder.append("card "+i);
+            for (int j = 0; j < rand; j++){
+                stringBuilder.append(' ');
             }
+            list.add(stringBuilder.toString());
+        }
 
+
+        mSuggestionsAdapter = new SuggestionCardAdapter(list);
+        ((SuggestionCardAdapter) mSuggestionsAdapter).setIconRecurse(R.drawable.plus_circle);
+        ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(mSuggestionsAdapter);
+        alphaAdapter.setDuration(400);
+        alphaAdapter.setFirstOnly(false);
+        mSuggestionRecyclerView.setAdapter(alphaAdapter);
+
+
+
+        mSelectedArrayList = new ArrayList<>();
+        mSelectedAdapter = new SuggestionCardAdapter(mSelectedArrayList);
+        ((SuggestionCardAdapter) mSelectedAdapter).setIconRecurse(R.drawable.minus_circle);
+         mAlphaAdapterSelections = new ScaleInAnimationAdapter(mSelectedAdapter);
+        mAlphaAdapterSelections.setDuration(700);
+        mAlphaAdapterSelections.setFirstOnly(false);
+        mSelectedRecyclerView.setAdapter(new AlphaInAnimationAdapter(mAlphaAdapterSelections));
+
+
+        mSuggestionRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onItemClick(View view, int position) {
+                String item = list.remove(position);
+                mSuggestionsAdapter.notifyItemRemoved(position);
+                addItemToSelectedList(item);
             }
-        });
+        }));
 
-        tagGroup.setOnTagLongClickListener(new TagView.OnTagLongClickListener() {
+
+        mSelectedRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onTagLongClick(Tag tag, int position) {
-                Toast.makeText(ToolActivity.this, "Long Click: " + tag.text, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        tagGroup.setOnTagClickListener(new TagView.OnTagClickListener() {
-            @Override
-            public void onTagClick(Tag tag, int position) {
-                editText.setText(tag.text);
-                editText.setSelection(tag.text.length());//to set cursor position
-
-            }
-        });
-        tagGroup.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
-
-            @Override
-            public void onTagDeleted(final TagView view, final Tag tag, final int position) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ToolActivity.this);
-                builder.setMessage("\"" + tag.text + "\" will be delete. Are you sure?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onItemClick(View view, final int position) {
+                String item = mSelectedArrayList.get(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setMessage(getString(R.string.remove)+item).setTitle(R.string.are_you_sure);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        view.remove(position);
-                        Toast.makeText(ToolActivity.this, "\"" + tag.text + "\" deleted", Toast.LENGTH_SHORT).show();
+                        mSelectedArrayList.remove(position);
+                        mSelectedAdapter.notifyItemRemoved(position);
+                        //TODO implement the logic of remove from last items, currently only remove from the view
                     }
                 });
-                builder.setNegativeButton("No", null);
-                builder.show();
 
+                builder.setNegativeButton(R.string.cancel, null);
+
+                Dialog dialog = builder.create();
+                dialog.show();
+
+            }
+        }));
+
+
+    }
+
+    private void addItemToSelectedList(String item){
+        Log.d(TAG, "add item to selected list: "+item);
+        mSelectedArrayList.add(0, item);
+        mAlphaAdapterSelections.notifyItemInserted(0);
+        mSelectedRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                mSelectedRecyclerView.smoothScrollToPosition(0);
             }
         });
-
-
     }
+    private static final String[] COUNTRIES = new String[] {
+            "Belgium", "Belarus", "France", "Italy", "Germany", "Spain"
+    };
 
-    private void prepareTags() {
-        tagList = new ArrayList<>();
-        JSONArray jsonArray;
-        JSONObject temp;
-        try {
-            jsonArray = new JSONArray(Constants.COUNTRIES);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                temp = jsonArray.getJSONObject(i);
-                TagClass tagClass = new TagClass(temp.getString("code"), temp.getString("name"));
-                tagList.add(tagClass);
+    public class SuggestionCardAdapter extends RecyclerView.Adapter<SuggestionCardAdapter.SuggestionViewHolder> {
 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        private ArrayList<String> suggestionList;
+        private int iconRecurse;
+
+        public SuggestionCardAdapter(ArrayList<String> suggestionList) {
+            this.suggestionList = suggestionList;
         }
 
-    }
-
-    private void setTags(CharSequence cs) {
-        /**
-         * for empty edittext
-         */
-        if (cs.toString().equals("")) {
-            tagGroup.addTags(new ArrayList<Tag>());
-            return;
+        public void setIconRecurse(int iconRecurse) {
+            this.iconRecurse = iconRecurse;
         }
 
-        String text = cs.toString();
-        ArrayList<Tag> tags = new ArrayList<>();
-        Tag tag;
+        @Override
+        public SuggestionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.suggestion_card_item, parent, false);
+            SuggestionViewHolder viewHolder = new SuggestionViewHolder(v);
+            return viewHolder;
+        }
 
-
-        for (int i = 0; i < tagList.size(); i++) {
-            if (tagList.get(i).getName().toLowerCase().startsWith(text.toLowerCase())) {
-                tag = new Tag(tagList.get(i).getName());
-                tag.radius = 10f;
-                tag.layoutColor = Color.parseColor(tagList.get(i).getColor());
-                if (i % 2 == 0) // you can set deletable or not
-                    tag.isDeletable = true;
-                tags.add(tag);
+        @Override
+        public void onBindViewHolder(SuggestionViewHolder holder, final int position) {
+            holder.mNameTextView.setText(suggestionList.get(position));
+            holder.mCardView.setCardBackgroundColor(getRandomHSVColor());
+            if (iconRecurse != 0){
+                holder.mImageView.setImageResource(iconRecurse);
+                holder.mImageView.setColorFilter(Color.WHITE);
             }
         }
-        tagGroup.addTags(tags);
+
+        @Override
+        public int getItemCount() {
+            return suggestionList.size();
+        }
+
+        public class SuggestionViewHolder extends RecyclerView.ViewHolder {
+
+            protected TextView mNameTextView;
+            protected CardView mCardView;
+            protected ImageView mImageView;
+
+            public SuggestionViewHolder(View itemView) {
+                super(itemView);
+                mCardView = (CardView) itemView.findViewById(R.id.card_view);
+                mNameTextView = (TextView) itemView.findViewById(R.id.item_text);
+                mImageView = (ImageView) itemView.findViewById(R.id.imageView);
+            }
+        }
+
+
+
+
 
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+
+    public int getRandomHSVColor() {
+        int[] colorSet = {0xFFF44336, 0xFFE91E63, 0xFF673AB7, 0xFF3F51B5, 0xFF2196F3, 0xFF03A9F4, 0xFF009688, 0xFFFF5722, 0xFF795548};
+        int random = mRandom.nextInt(colorSet.length);
+        return colorSet[random];
+
+    }
+
+
 }

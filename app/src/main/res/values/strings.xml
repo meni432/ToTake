@@ -13,6 +13,11 @@
     <string name="date_picker">datePicker</string>
     <string name="to_take">To Take</string>
     <string name="my_trip_list">My Trip List</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="remove">"Remove "</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_new_trip_list">Add new Trip List</string>
 
     <string-array name="sample_array">
         <item>Mercury</item>

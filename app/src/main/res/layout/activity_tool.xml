@@ -9,68 +9,50 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
+    android:id="@+id/tool_coordinator_layout"
     tools:context="com.menisamet.totake.ToolActivity">
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Be the nerd"-->
-        <!--android:id="@+id/textView"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--tools:layout_editor_absoluteY="0dp"-->
-        <!--tools:layout_editor_absoluteX="0dp" />-->
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText"
-                android:layout_alignRight="@+id/tags_laoyut"
-                android:layout_alignEnd="@+id/tags_laoyut"
-                android:layout_alignLeft="@+id/tags_laoyut"
-                android:layout_alignStart="@+id/tags_laoyut" />
 
-        <ScrollView
-            android:id="@+id/tags_laoyut"
+        <TextView
+            android:text="Suggestions"
             android:layout_width="match_parent"
-            android:layout_height="194dp"
-            android:layout_marginLeft="6dp"
-            android:background="@android:color/white"
-            android:visibility="visible"
-            android:layout_below="@+id/editText">
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:textStyle="normal|bold"
+            android:textSize="24sp" />
 
-            <com.cunoraz.tagview.TagView
-                android:id="@+id/tag_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp" />
-
-        </ScrollView>
-
-        <android.support.v4.widget.Space
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/suggestion_recycle_view"
             android:layout_width="match_parent"
-            android:layout_height="10dp" />
-        <ScrollView
-            android:id="@+id/selected_tags_laoyut"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+
+
+        <TextView
+            android:text="My Last Items"
             android:layout_width="match_parent"
-            android:layout_height="194dp"
-            android:layout_marginLeft="6dp"
-            android:background="@android:color/white"
-            android:visibility="visible"
-            android:layout_below="@+id/editText">
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:textStyle="normal|bold"
+            android:textSize="24sp" />
 
-            <com.cunoraz.tagview.TagView
-                android:id="@+id/selected_tag_group"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/selected_recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent">
 
-        </ScrollView>
+        </android.support.v7.widget.RecyclerView>
+
 
 
     </LinearLayout>

@@ -52,9 +52,11 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
 
         android.support.v7.app.ActionBar menu = getSupportActionBar();
         menu.setDisplayShowHomeEnabled(true);
-        menu.setLogo(R.drawable.to_take_logo);
-        menu.setDisplayShowTitleEnabled(false);
+        menu.setIcon(R.mipmap.ic_launcher);
+        menu.setDisplayShowTitleEnabled(true);
         menu.setDisplayUseLogoEnabled(true);
+        menu.setTitle(R.string.to_take);
+        menu.setSubtitle(getString(R.string.add_new_trip_list));
 
 
         mImageView = (ImageView) findViewById(R.id.imageView);

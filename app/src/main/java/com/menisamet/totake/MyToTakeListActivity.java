@@ -10,6 +10,8 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -106,6 +108,27 @@ public class MyToTakeListActivity extends AppCompatActivity implements GoogleApi
             }
         });
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.trip_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.miSearch:
+                Utility.showToast(this, "search clicked!");
+                return true;
+            case R.id.miDrawable:
+                Utility.showToast(this, "drawable clicked!");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
 
     }
 

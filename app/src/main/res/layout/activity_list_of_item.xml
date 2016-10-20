@@ -35,15 +35,25 @@
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false" />
 
-    <ListView
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="73dp"-->
+        <!--android:id="@+id/listViewSuggestions"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_marginRight="5dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--/>-->
+
+    <com.menisamet.totake.Helper.CardsRecyclerView
         android:layout_width="match_parent"
-        android:layout_height="73dp"
-        android:id="@+id/listViewSuggestions"
+        android:id="@+id/suggestion_card_recycler_view"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        />
+        android:layout_alignParentStart="true">
+    </com.menisamet.totake.Helper.CardsRecyclerView>
 
     <Space
         android:layout_width="match_parent"
@@ -62,14 +72,14 @@
         android:layout_toEndOf="@+id/listView" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
         android:layout_alignBottom="@+id/fab"
-        android:layout_alignStart="@+id/space"
-        android:layout_toStartOf="@+id/fab"
         android:shadowColor="@color/abc_input_method_navigation_guard"
-        android:hint="Add here item to the list" />
+        android:hint="Add here item to the list"
+        android:layout_alignEnd="@+id/space2"
+        android:layout_toEndOf="@+id/fab" />
 
 </RelativeLayout>
 
