@@ -21,8 +21,11 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.menisamet.totake.Helper.DatePickerFragment;
+import com.menisamet.totake.Helper.Utility;
 import com.menisamet.totake.Models.ItemData;
 import com.menisamet.totake.Models.ListDataItem;
+import com.menisamet.totake.Services.Database;
 import com.menisamet.totake.Services.PlaceImageLoader;
 
 import org.joda.time.DateTime;
@@ -175,7 +178,7 @@ public class AddNewListActivity extends AppCompatActivity implements GoogleApiCl
         listDataItem.addItemDataList(new ItemData("sunglasses ", 1));
         listDataItem.addItemDataList(new ItemData("cell phone charger ", 1));
 
-        Database.instance().saveToCash(listDataItem);
+        Database.saveToCash(listDataItem);
         Intent intent = new Intent(AddNewListActivity.this, ListOfItemActivity.class);
         intent.putExtra(ListOfItemActivity.EXTRA_LIST_DATA_ITEM_POSITION, Database.static_userListData.size() - 1);
         startActivity(intent);

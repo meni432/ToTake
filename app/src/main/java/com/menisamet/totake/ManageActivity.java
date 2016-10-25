@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.menisamet.totake.Services.Database;
 
 public class ManageActivity extends AppCompatActivity {
 
@@ -15,7 +16,7 @@ public class ManageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
 
-        if (Database.instance().isLogIn()){
+        if (Database.isLogIn()){
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             Log.d(TAG, "user log in : "+user.getDisplayName());
         }else{

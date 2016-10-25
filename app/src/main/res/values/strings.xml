@@ -29,4 +29,7 @@
         <item>Uranus</item>
         <item>Neptune</item>
     </string-array>
+
+    <string name="facebook_app_id">1833769566866429</string>
+
 </resources>

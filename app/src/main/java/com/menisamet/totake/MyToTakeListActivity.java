@@ -22,7 +22,9 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.menisamet.totake.Helper.Utility;
 import com.menisamet.totake.Models.ListDataItem;
+import com.menisamet.totake.Services.Database;
 import com.menisamet.totake.Services.PlaceImageLoader;
 
 import java.util.List;

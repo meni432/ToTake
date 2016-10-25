@@ -17,8 +17,6 @@
         android:layout_height="400dp"
         android:background="@drawable/abc_ic_menu_paste_mtrl_am_alpha"
         android:backgroundTint="@color/common_google_signin_btn_text_light_disabled"
-        android:layout_above="@+id/listViewSuggestions"
-        android:layout_alignStart="@+id/listViewSuggestions"
         android:layout_below="@+id/fab"
         android:divider="@android:color/transparent"
         android:dividerHeight="5.0sp"/>
@@ -31,7 +29,6 @@
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/listViewSuggestions"
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false" />
 
@@ -67,7 +64,7 @@
     <Space
         android:layout_width="20px"
         android:layout_height="20px"
-        android:layout_above="@+id/listViewSuggestions"
+        android:layout_above="@+id/suggestion_card_recycler_view"
         android:layout_below="@+id/listView"
         android:layout_toEndOf="@+id/listView" />
 
@@ -78,7 +75,6 @@
         android:layout_alignBottom="@+id/fab"
         android:shadowColor="@color/abc_input_method_navigation_guard"
         android:hint="Add here item to the list"
-        android:layout_alignEnd="@+id/space2"
         android:layout_toEndOf="@+id/fab" />
 
 </RelativeLayout>

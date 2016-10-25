@@ -21,7 +21,9 @@ import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.menisamet.totake.Helper.CardsRecyclerView;
+import com.menisamet.totake.Helper.Utility;
 import com.menisamet.totake.Models.ItemData;
+import com.menisamet.totake.Services.Database;
 import com.menisamet.totake.Services.SuggestionSystemCall;
 
 import java.util.ArrayList;
@@ -58,11 +60,9 @@ public class ListOfItemActivity extends AppCompatActivity {
 //        itemsToTake.add(new ItemData("test 1", 2));
 //        itemsToTake.add(new ItemData("test 2", 4));
         itemsToAdd.add(new ItemData("honey", 1));
-//        itemsToTake.add(new ItemData("test 3", 13));
-//        itemsToTake.add(new ItemData("test 4", 4));
-//        itemsToAdd.add(new ItemData("Add c",1));
-//        itemsToTake.add(new ItemData("test 5", 7));
-//        itemsToTake.add(new ItemData("test 6", 1));
+        itemsToAdd.add(new ItemData("ירוק וחום לשנה", 4));
+        itemsToAdd.add(new ItemData("Add c",1));
+        itemsToAdd.add(new ItemData("אנציקלופדית אבן שושן", 7));
 
 
         Bundle extras = getIntent().getExtras();
@@ -214,7 +214,7 @@ public class ListOfItemActivity extends AppCompatActivity {
                 }
             });
             itemName.setText(itemData.getName());
-            itemNumber.setText(itemData.getNumbers() + "");
+            itemNumber.setText(Integer.toString(itemData.getNumbers()));
             return convertView;
         }
     }

@@ -5,7 +5,6 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.menisamet.totake.Constants;
-import com.menisamet.totake.Database;
 import com.menisamet.totake.Models.ItemData;
 
 import org.json.JSONArray;

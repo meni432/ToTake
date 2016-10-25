@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.menisamet.totake.Helper.Utility;
+import com.menisamet.totake.Services.Database;
 import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerOpened(drawerView);
-                if (Database.instance().isLogIn()) {
+                if (Database.isLogIn()) {
                     ImageView imageView = (ImageView) drawerView.findViewById(R.id.imageView);
                     TextView fullNameNavBarTextView = (TextView) drawerView.findViewById(R.id.full_name_text_view);
                     TextView emailAddressNavBarTextView = (TextView) drawerView.findViewById(R.id.email_address_text_view);
