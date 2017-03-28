@@ -92,7 +92,7 @@ public abstract class Database {
         Database.onLoadDataListener = onLoadDataListener;
     }
 
-    interface OnLoadDataListener {
+    public interface OnLoadDataListener {
         public void dataLoaded();
     }
 }

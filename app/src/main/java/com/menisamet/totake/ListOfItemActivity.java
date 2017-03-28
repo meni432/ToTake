@@ -130,7 +130,7 @@ public class ListOfItemActivity extends AppCompatActivity {
     private void setSuggestionRecycleAdapter(){
         mCardsRecyclerView.setNumLinesAndOrientation(1, CardsRecyclerView.HORIZONTAL);
         mSuggestionAdapter = new CardsRecyclerView.RecycleViewCardAdapter<ItemData>(itemsToAdd);
-        mSuggestionAdapter.setImageGlobalRecurse(R.drawable.plus_circle);
+        mSuggestionAdapter.setImageGlobalRecurse(android.R.drawable.btn_plus);
         mSuggestionAdapter.setCardGlobalColor(CardsRecyclerView.RANDOM_COLOR);
         mCardsRecyclerView.setAdapter(mSuggestionAdapter);
         mCardsRecyclerView.setCardClickListener(new CardsRecyclerView.CardClickListener() {
