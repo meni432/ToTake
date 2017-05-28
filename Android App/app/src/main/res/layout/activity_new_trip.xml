@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.menisamet.totake.NewTripActivity">
+
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="74dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_below="@+id/place_autocomplete_fragment"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:id="@+id/fromTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="From" />
+
+        <Button
+            android:id="@+id/from_data_button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:onClick="showFromDatePickerDialog"
+            android:text="@string/from" />
+
+        <TextView
+            android:id="@+id/toTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="To" />
+
+        <Button
+            android:id="@+id/to_data_button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:onClick="showToDatePickerDialog"
+            android:text="@string/to" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/place_autocomplete_fragment"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/place_autocomplete_fragment"
+        android:layout_marginBottom="129dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
+        android:enabled="false"
+        android:text="Add Trip"
+        android:onClick="addTrip"/>
+</RelativeLayout>

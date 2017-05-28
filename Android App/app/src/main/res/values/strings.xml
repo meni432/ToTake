@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">ToTake</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_fragment">home fragment</string>
+    <string name="trip_fragment">trip fragment</string>
+    <string name="trips">Trips</string>
+    <string name="application_name">To Take</string>
+    <string name="application_slogen">You pack once</string>
+    <string name="title_activity_trip">TripActivity</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_item_list">Item List</string>
+    <string name="view_item_list">Item List</string>
+    <string name="view_build_list">Build</string>
+    <string name="is_seleted">is deleted</string>
+    <string name="add_to_your_list">add to your list!</string>
+    <string name="undo">UNDO</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+
+
+    <!--App Server-->
+    <string name="server_base_url">http://totake.website:8080/</string>
+</resources>
