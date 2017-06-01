@@ -1,7 +1,6 @@
 package website.totake.SqlStructure;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import website.totake.Trip;
 
 import javax.persistence.*;
 
@@ -22,7 +21,6 @@ public class SqlItem {
     private String mItemEHName;
     @Column(name = "he_name")
     private String mItemHEName;
-
 
     public SqlItem() {}
 

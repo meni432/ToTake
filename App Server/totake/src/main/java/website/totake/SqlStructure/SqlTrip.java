@@ -31,6 +31,7 @@ public class SqlTrip {
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id", unique = true))
     private List<SqlItem> items;
 
+
     public SqlTrip() {
     }
 
