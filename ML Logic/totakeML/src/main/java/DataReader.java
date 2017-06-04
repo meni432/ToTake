@@ -59,6 +59,7 @@ public class DataReader {
 
 
     public static Map<Integer, String> itemNames = null;
+
     private static Map<Integer, String> loadItemNames() {
         List<String> lines = readFileAsList("all-items-240517.csv");
         Map<Integer, String> itemIdToName = new HashMap<>();

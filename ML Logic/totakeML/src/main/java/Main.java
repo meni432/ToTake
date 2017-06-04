@@ -1,5 +1,3 @@
-import org.junit.Assert;
-
 import java.util.*;
 
 /**
@@ -7,7 +5,7 @@ import java.util.*;
  */
 public class Main {
 
-    public static double multiplayVectors(int[] vecA, int[] vecB) {
+    public static double multiplyVectors(int[] vecA, int[] vecB) {
         double ans = 0;
         assert (vecA.length == vecB.length);
         for (int i = 0; i < vecA.length; i++) {
@@ -66,7 +64,7 @@ public class Main {
                     int[] vectorB = itemUserMatrix[indexItemB];
                     if ((normVector(vectorA) * normVector(vectorB)) > 0) {
                         itemItemCosine[indexItemA][indexItemB] =
-                                multiplayVectors(vectorA, vectorB) / (normVector(vectorA) * normVector(vectorB));
+                                multiplyVectors(vectorA, vectorB) / (normVector(vectorA) * normVector(vectorB));
                     }
                 }
             }
