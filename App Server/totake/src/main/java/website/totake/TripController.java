@@ -7,11 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 import website.totake.Services.ItemDetailsService;
 import website.totake.Services.ItemService;
 import website.totake.Services.TripService;
-import website.totake.SqlStructure.SqlItem;
+import website.totake.Services.UserService;
 import website.totake.SqlStructure.SqlTrip;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,29 +28,24 @@ public class TripController {
     @Autowired
     private ItemDetailsService itemDetailsService;
 
+    @Autowired
+    private UserService userService;
+
+
+
     @RequestMapping("/getTrip")
     public SqlTrip getTrip(@RequestParam(value = "tripId", defaultValue = "-1") long tripId) {
-        SqlTrip sqlTrip = tripService.addNewTrip("Israel", "ישראל", new Date(111), new Date(999));
-        SqlItem sqlItem = itemService.addNewItem("Test 2 item", "פריט בדיקה");
-        itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, 3, 1);
-        sqlTrip = tripService.save(sqlTrip);
-        return sqlTrip;
-
-//        Trip trip = new Trip("DestTest", new Date(111), new Date(222), tripId);
-//        trip.addItem(new Item("item 1", 1));
-//        trip.addItem(new Item("item 2", 2));
-//        return trip;
+        return tripService.getTrip(tripId);
     }
 
     @RequestMapping("/getTripList")
-    public List<Integer> getTripList(@RequestParam(value = "userId", defaultValue = "-1") int userId) {
-        ArrayList<Integer> ansIds = new ArrayList<>();
-        int size = (int)(Math.random()*10) + 3;
-        for (int i = 0; i < 5; i++) {
-            ansIds.add((int) (Math.random()*100));
+    public List<Long> getTripList(@RequestParam(value = "userId", defaultValue = "-1") long userId) {
+        List<Long> tripIdsList = new ArrayList<>();
+        List<SqlTrip> userTrips = userService.getUser(userId).getTrips();
+        for (SqlTrip trip: userTrips) {
+            tripIdsList.add(trip.getTripId());
         }
-        return ansIds;
+        return tripIdsList;
     }
-
 
 }

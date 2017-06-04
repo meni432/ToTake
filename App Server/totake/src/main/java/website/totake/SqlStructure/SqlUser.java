@@ -17,7 +17,7 @@ public class SqlUser {
     @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "user_name")
+    @Column(name = "user_name", unique = true)
     private String userName;
 
     @OneToMany
@@ -42,6 +42,7 @@ public class SqlUser {
         return userName;
     }
 
+    @Transient
     public List<SqlTrip> getTrips() {
         return trips;
     }
