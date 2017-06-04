@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     showFragment(mHomeFragment);
+                    // this is tahel
                     return true;
                 case R.id.navigation_trips:
                     showFragment(mTripFragment);
