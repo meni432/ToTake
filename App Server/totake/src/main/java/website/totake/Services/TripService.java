@@ -1,10 +1,9 @@
-package website.totake;
+package website.totake.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import website.totake.Repositories.SqlTripRepository;
-import website.totake.SqlStructure.SqlItem;
 import website.totake.SqlStructure.SqlTrip;
 
 import java.util.Date;

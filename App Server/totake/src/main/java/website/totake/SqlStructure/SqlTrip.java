@@ -40,7 +40,6 @@ public class SqlTrip {
     public SqlTrip() {
     }
 
-
     public SqlTrip(String destinationEnName, String getDestinationHeName, Date startDate, Date endDate) {
         this.destinationEnName = destinationEnName;
         this.getDestinationHeName = getDestinationHeName;

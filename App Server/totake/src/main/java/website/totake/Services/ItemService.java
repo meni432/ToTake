@@ -1,4 +1,4 @@
-package website.totake;
+package website.totake.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

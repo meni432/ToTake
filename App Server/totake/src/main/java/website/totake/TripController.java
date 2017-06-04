@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import website.totake.Repositories.SqlItemRepository;
-import website.totake.Repositories.SqlTripRepository;
+import website.totake.Services.ItemDetailsService;
+import website.totake.Services.ItemService;
+import website.totake.Services.TripService;
 import website.totake.SqlStructure.SqlItem;
-import website.totake.SqlStructure.SqlItemDetails;
 import website.totake.SqlStructure.SqlTrip;
 
 import java.util.ArrayList;
