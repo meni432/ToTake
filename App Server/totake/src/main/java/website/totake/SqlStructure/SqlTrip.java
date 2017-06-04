@@ -4,7 +4,9 @@ import website.totake.Item;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by meni on 26/05/17.
@@ -25,24 +27,19 @@ public class SqlTrip {
     @Column(name = "end_date")
     private Date endDate;
 
-    @OneToMany
-    @JoinTable(name = "trip_items",
-            joinColumns = @JoinColumn(name = "trip_id", referencedColumnName = "trip_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "item_id", unique = true))
-    private List<SqlItem> items;
+    @OneToMany(mappedBy = "primaryKey.trip",
+            cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<SqlItemDetails> sqlItemDetails = new HashSet<>();
+
+
+    public Set<SqlItemDetails> getSqlItemDetails() {
+        return sqlItemDetails;
+    }
 
 
     public SqlTrip() {
     }
 
-    public void addItem(SqlItem item) {
-        if (!items.contains(item)) {
-            items.add(item);
-            if (item.getOwner() != this) {
-                item.setOwner(this);
-            }
-        }
-    }
 
     public SqlTrip(String destinationEnName, String getDestinationHeName, Date startDate, Date endDate) {
         this.destinationEnName = destinationEnName;
@@ -71,9 +68,6 @@ public class SqlTrip {
         return endDate;
     }
 
-    public List<SqlItem> getItems() {
-        return items;
-    }
 
     @Override
     public String toString() {
@@ -83,7 +77,7 @@ public class SqlTrip {
                 ", getDestinationHeName='" + getDestinationHeName + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", items=" + items +
+//                ", items=" + items +
                 '}';
     }
 }
