@@ -16,7 +16,9 @@ import android.view.View;
 import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Item;
+import com.menisamet.totake.Modals.User;
 import com.menisamet.totake.Server.Listeners.AllItemsResponseListener;
+import com.menisamet.totake.Server.Listeners.UserLoadListener;
 import com.menisamet.totake.Server.LogicInterface;
 import com.menisamet.totake.Server.LogicService;
 
@@ -73,20 +75,26 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        guiInterface.connect(1); //TODO change to real code not hardcoded
-
-        LogicInterface logicInterface = LogicService.getInstance();
-        logicInterface.getAllItems(new AllItemsResponseListener() {
+        guiInterface.setContext(getApplicationContext());
+        guiInterface.setUserId(1, new UserLoadListener() {
             @Override
-            public void onResponse(List<Item> items) {
-                if (items != null) {
-                    Log.d(TAG, "from items array: " + items);
-                }
-                else {
-                    Log.d(TAG, "from items array: null object");
-                }
+            public void onUserLoad(User user) {
+                System.out.println(user);
             }
-        }, getBaseContext());
+        });
+
+//        LogicInterface logicInterface = LogicService.getInstance();
+//        logicInterface.getAllItems(new AllItemsResponseListener() {
+//            @Override
+//            public void onResponse(List<Item> items) {
+//                if (items != null) {
+//                    Log.d(TAG, "from items array: " + items);
+//                }
+//                else {
+//                    Log.d(TAG, "from items array: null object");
+//                }
+//            }
+//        }, getBaseContext());
 
     }
 

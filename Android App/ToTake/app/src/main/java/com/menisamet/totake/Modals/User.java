@@ -16,7 +16,6 @@ public class User {
     public User(String userName, int userId) {
         this.userName = userName;
         this.userId = userId;
-//        this.userTripList = new ArrayList<Trip>();
         this.userTripList= new ArrayList<Trip>();
     }
 
@@ -29,7 +28,7 @@ public class User {
     public User(User user) {
         this.userName = user.getNameUser();
         this.userId = user.getIdUser();
-        this.userTripList = new ArrayList<Trip>(user.getUserTripList());
+        this.userTripList = new ArrayList<Trip>(user.getTrips());
     }
 
     public int getNumOfTrips(){
@@ -44,7 +43,7 @@ public class User {
         return userId;
     }
 
-    public List<Trip> getUserTripList() {
+    public List<Trip> getTrips() {
         return userTripList;
     }
 
@@ -56,7 +55,7 @@ public class User {
      * @param tripId which trip to return
      * @return the wanted trip
      */
-    public Trip getTrip(int tripId){
+    public Trip getTrip(long tripId){
         for (int i = 0; i < getNumOfTrips(); i++) {
             if(userTripList.get(i).getTripID() == tripId) return userTripList.get(i);
         }
