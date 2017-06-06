@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import website.totake.Repositories.SqlItemRepository;
 import website.totake.Repositories.SqlTripRepository;
 import website.totake.SqlStructure.SqlItem;
+import website.totake.SqlStructure.SqlItemDetails;
 import website.totake.SqlStructure.SqlTrip;
 
 import java.util.ArrayList;
@@ -25,11 +26,14 @@ public class TripController {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private ItemDetailsService itemDetailsService;
+
     @RequestMapping("/getTrip")
     public SqlTrip getTrip(@RequestParam(value = "tripId", defaultValue = "-1") long tripId) {
-        SqlTrip sqlTrip = tripService.getTrip(tripId);
+        SqlTrip sqlTrip = tripService.addNewTrip("Israel", "ישראל", new Date(111), new Date(999));
         SqlItem sqlItem = itemService.addNewItem("Test 2 item", "פריט בדיקה");
-        sqlTrip.addItem(sqlItem);
+        itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, 3, 1);
         sqlTrip = tripService.save(sqlTrip);
         return sqlTrip;
 
