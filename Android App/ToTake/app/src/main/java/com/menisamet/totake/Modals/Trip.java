@@ -16,7 +16,7 @@ public class Trip implements TripInterface {
     private String mDestinationName;
     private Date mStartDate;
     private Date mEndDate;
-    private List<Item> mListOfItems; //a list of item to take to this trip
+    private List<Item> items;
     private int tripID;
 
     public Trip() {}
@@ -26,19 +26,19 @@ public class Trip implements TripInterface {
         this.mStartDate = startDate;
         this.mEndDate = endDate;
         this.tripID = tripID;
-        mListOfItems =  new ArrayList<>();
+        items =  new ArrayList<>();
         initialSampleItems(20);
     }
 
     private void initialSampleItems(int numberOfItems) {
         List<Item> items = Item.createItemList(numberOfItems);
         for (Item item : items) {
-            mListOfItems.add(item);
+            this.items.add(item);
         }
     }
 
     public void setItemAmount(int itemId, long newAmount){
-        mListOfItems.get(itemId).setmItemAmount(newAmount);
+        items.get(itemId).setmItemAmount(newAmount);
     }
     @Override
     public String getDestinationName() {
@@ -59,22 +59,16 @@ public class Trip implements TripInterface {
         return mEndDate;
     }
 
-    /**
-     * @return the list of item (the arrayList itself
-     */
-    public List<Item> getmListOfItems() {
-        return mListOfItems;
+    public List<Item> getItems() {
+        return items;
     }
 
-    /**
-     * @param item to add to this trip items list
-     */
     public void addItemToList(Item item){
-        mListOfItems.add(item);
+        items.add(item);
     }
 
     public void removeItemFromList(int itemId){
-        mListOfItems.remove(itemId);
+        items.remove(itemId);
     }
 
     /**

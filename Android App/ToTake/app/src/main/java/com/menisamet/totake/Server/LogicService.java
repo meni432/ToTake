@@ -18,6 +18,7 @@ import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
 import com.menisamet.totake.Server.Listeners.AddNewTripResponseListener;
 import com.menisamet.totake.Server.Listeners.AllItemsResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
+import com.menisamet.totake.Server.Listeners.UserLoadListener;
 import com.menisamet.totake.Server.Services.GsonRequest;
 
 import java.lang.reflect.Type;
@@ -31,6 +32,7 @@ import java.util.List;
 
 public class LogicService implements LogicInterface {
     public static final String TAG = LogicService.class.getCanonicalName();
+
     private static final LogicService ourInstance = new LogicService();
     private static String mServerUrl = "http://totake.website:8080";
 
@@ -38,26 +40,18 @@ public class LogicService implements LogicInterface {
         return ourInstance;
     }
 
+    private RequestQueue mRequestQueue;
+    private Context mCurrentContext = null;
+
+    private long mCurrentUserId;
+
     private LogicService() {
-        Log.d(TAG, "server base url: " + mServerUrl);
-    }
-
-
-    private Response.ErrorListener createMyReqErrorListener() {
-        return new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // Do whatever you want to do with error.getMessage();
-            }
-        };
     }
 
 
     @Override
-    public void getAllItems(final AllItemsResponseListener allItemsResponseListener, Context context) {
+    public void getAllItems(final AllItemsResponseListener allItemsResponseListener) {
 
-        RequestQueue mRequestQueue = Volley.newRequestQueue(context);
-        mRequestQueue.start();
         GsonRequest<Item[]> gsonRequest = new GsonRequest<>(mServerUrl + "/getAllItems", Item[].class, null, new Response.Listener<Item[]>() {
             @Override
             public void onResponse(Item[] response) {
@@ -75,55 +69,141 @@ public class LogicService implements LogicInterface {
     }
 
     @Override
-    public List<Trip> getUserTripList(int userId) {
-        return Trip.createTripList(10);
+    public void setContext(Context context) {
+        if (mCurrentContext != context) {
+            mRequestQueue = Volley.newRequestQueue(context);
+            mRequestQueue.start();
+        }
     }
 
     @Override
-    public String getUserName(int userId) {
-        return null;
+    public void setUserId(final long userId, final UserLoadListener userLoadListener) {
+        GsonRequest<User> gsonRequest = new GsonRequest<>(mServerUrl + "/getUser?userId="+userId, User.class, null, new Response.Listener<User>() {
+            @Override
+            public void onResponse(User response) {
+                if (response != null) {
+                    userLoadListener.onUserLoad(response);
+                    mCurrentUserId = userId;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                userLoadListener.onUserLoad(null);
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
     }
 
     @Override
-    public User getUser(int userId) {
-        return new User("totake user",1);
+    public void addNewItem(Trip trip, String itemName, long amount, final AddNewItemResponseListener addNewItemResponseListener) {
+        String path = "/addNewItem?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemName="+itemName+"&amount="+amount;
+        GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
+            @Override
+            public void onResponse(Item response) {
+                addNewItemResponseListener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                addNewItemResponseListener.onResponse(null);
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
     }
 
     @Override
-    public void addNewItem(String itemName, long amount, int tripId, AddNewItemResponseListener addNewItemResponseListener) {
-        Item item = new Item("Item sample", 10, 11);
-        addNewItemResponseListener.onResponse(item);
+    public void notifyChangeAmount(Trip trip, Item item) {
+        String path = "/notifyChangeAmount?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID()+"&amount="+item.getItemAmount();
+        GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
+            @Override
+            public void onResponse(Item response) {
+                Log.d(TAG, "update item amount");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "cannot update item ammount");
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
     }
 
     @Override
-    public void notifyChangeAmount(int tripId, int itemId, Long newAmount) {
+    public void deleteTrip(Trip trip) {
+        String path = "/deleteTrip?userId="+mCurrentUserId+"&tripId="+trip.getTripID();
+        GsonRequest<Trip> gsonRequest = new GsonRequest<>(mServerUrl + path, Trip.class, null, new Response.Listener<Trip>() {
+            @Override
+            public void onResponse(Trip response) {
+                Log.d(TAG, "trip deleted");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "cannotd delete trip");
+            }
+        });
 
+        mRequestQueue.add(gsonRequest);
     }
 
     @Override
-    public void deleteTrip(int userId, int tripID) {
+    public void deleteItemFromTrip(Trip trip, Item item) {
+        String path = "/deleteItemFromTrip?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID();
+        GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
+            @Override
+            public void onResponse(Item response) {
+                Log.d(TAG, "delete item");
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "cannot delete item");
+            }
+        });
 
+        mRequestQueue.add(gsonRequest);
     }
 
     @Override
-    public void deleteItemFromTrip(int userId, int tripId, int itemId) {
+    public void addNewTrip(String destinationName, Date startDate, Date endDate, final AddNewTripResponseListener addNewTripResponseListener) {
+        String path = "/addNewTrip?userId="+mCurrentUserId+"&destinationName="+destinationName+"&startDate="+startDate+"&endDate="+endDate;
+        GsonRequest<Trip> gsonRequest = new GsonRequest<>(mServerUrl + path, Trip.class, null, new Response.Listener<Trip>() {
+            @Override
+            public void onResponse(Trip response) {
+                addNewTripResponseListener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                addNewTripResponseListener.onResponse(null);
+            }
+        });
 
+        mRequestQueue.add(gsonRequest);
     }
 
     @Override
-    public void addNewTrip(String destinationName, Date Start, Date end, int userId, AddNewTripResponseListener addNewTripResponseListener) {
+    public void addNewUser(String userName, String userEmail, final UserLoadListener userLoadListener) {
+        String path = "/addUser?userName="+userName+"&userEmail="+userEmail;
+        GsonRequest<User> gsonRequest = new GsonRequest<>(mServerUrl + path, User.class, null, new Response.Listener<User>() {
+            @Override
+            public void onResponse(User response) {
+                userLoadListener.onUserLoad(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                userLoadListener.onUserLoad(null);
+            }
+        });
 
+        mRequestQueue.add(gsonRequest);
     }
 
-    @Override
-    public boolean ifUserExist(int userId) {
-        return false;
-    }
-
-    @Override
-    public User addNewUser(int userId, String userName, String userMail) {
-        return new User("created user", 1, Trip.createTripList(10));
-    }
 
     @Override
     public void getRecommendationList(int tripId, RecommendationListResponseListener recommendationListResponseListener) {

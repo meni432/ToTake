@@ -18,6 +18,7 @@ import com.menisamet.totake.GuiElement.CardsRecyclerView;
 import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Item;
+import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 
 import java.util.List;
@@ -94,13 +95,15 @@ public class ExploreFragment extends Fragment {
         mRvSelectedItems = (RecyclerView) getView().findViewById(R.id.rvExploreSelectedList);
         mSearchEditText = (EditText) getView().findViewById(R.id.search_edit_text);
 
+        guiInterface.setContext(getContext());
+
         initialSelectedItemView();
         initialSuggestionView();
     }
 
     private void initialSelectedItemView() {
-//        mItems = Item.createItemList(100); // TODO Meni - get from logic
-        mItems = guiInterface.getUserDetails().getTrip(msCurrentTripId).getmListOfItems();
+        final Trip trip = guiInterface.getTripById(msCurrentTripId);
+        mItems = trip.getItems();
         final ExploreSelectedListAdapter exploreSelectedListAdapter = new ExploreSelectedListAdapter(getContext(), mItems, msCurrentTripId);
         mRvSelectedItems.setAdapter(exploreSelectedListAdapter);
         mRvSelectedItems.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -111,7 +114,7 @@ public class ExploreFragment extends Fragment {
                 long originalAmount = item.getItemAmount();
                 if (originalAmount > 0) {
                     item.setmItemAmount(originalAmount - 1);
-                    guiInterface.notifyChangeAmount(msCurrentTripId, item.getItemID(), item.getItemAmount());
+                    guiInterface.notifyChangeAmount(trip, item);
                     exploreSelectedListAdapter.notifyDataSetChanged();
                 } else {
                     item.setmItemAmount(0);
@@ -123,7 +126,7 @@ public class ExploreFragment extends Fragment {
             public void onIncClicked(View view, int position) {
                 Item item = mItems.get(position);
                 item.setmItemAmount(item.getItemAmount() + 1);
-                guiInterface.notifyChangeAmount(msCurrentTripId, item.getItemID(), item.getItemAmount());
+                guiInterface.notifyChangeAmount(trip, item);
                 exploreSelectedListAdapter.notifyDataSetChanged();
             }
         });
@@ -131,7 +134,7 @@ public class ExploreFragment extends Fragment {
             @Override
             public void onDeleteClicked(View view, int position) {
                 Item item = mItems.get(position);
-                guiInterface.deleteItemFromTrip(msCurrentTripId, item.getItemID());
+                guiInterface.deleteItemFromTrip(trip, item);
 //                mItems.remove(position);
 //                exploreSelectedListAdapter.notifyItemRemoved(position);
                 exploreSelectedListAdapter.notifyDataSetChanged();
@@ -182,7 +185,8 @@ public class ExploreFragment extends Fragment {
             }
         });
 
-        guiInterface.getRecommendationList(msCurrentTripId, new RecommendationListResponseListener() {
+        Trip trip = guiInterface.getTripById(msCurrentTripId);
+        guiInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
             @Override
             public void onResponse(List<Item> recommendedItems) {
                 mSuggestionItems = recommendedItems;

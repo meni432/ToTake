@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import website.totake.Repositories.SqlItemRepository;
-import website.totake.Repositories.SqlTripRepository;
-import website.totake.SqlStructure.SqlItem;
-import website.totake.SqlStructure.SqlItemDetails;
+import website.totake.Services.ItemDetailsService;
+import website.totake.Services.ItemService;
+import website.totake.Services.TripService;
+import website.totake.Services.UserService;
 import website.totake.SqlStructure.SqlTrip;
+import website.totake.SqlStructure.SqlUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,29 +30,43 @@ public class TripController {
     @Autowired
     private ItemDetailsService itemDetailsService;
 
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("/addNewTrip")
+    public SqlTrip addNewTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                           @RequestParam(name = "destinationName", defaultValue = "-1") String destinationName,
+                           @RequestParam(name = "startDate", defaultValue = "-1") Date startDate,
+                           @RequestParam(name = "endDate", defaultValue = "-1") Date endDate) {
+
+        SqlUser sqlUser = userService.getUser(userId);
+        SqlTrip sqlTrip = tripService.addNewTrip(destinationName, destinationName, startDate, endDate);
+        sqlUser.getTrips().add(sqlTrip);
+        userService.save(sqlUser);
+
+        return sqlTrip;
+    }
+
+
+    @RequestMapping("/deleteTrip")
+    public void deleteTrip(@RequestParam(name = "userId", defaultValue = "-1") long id,
+                           @RequestParam(name = "tripId", defaultValue = "-1") long tripId) {
+        // TODO need to implemnt
+    }
+
     @RequestMapping("/getTrip")
     public SqlTrip getTrip(@RequestParam(value = "tripId", defaultValue = "-1") long tripId) {
-        SqlTrip sqlTrip = tripService.addNewTrip("Israel", "ישראל", new Date(111), new Date(999));
-        SqlItem sqlItem = itemService.addNewItem("Test 2 item", "פריט בדיקה");
-        itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, 3, 1);
-        sqlTrip = tripService.save(sqlTrip);
-        return sqlTrip;
-
-//        Trip trip = new Trip("DestTest", new Date(111), new Date(222), tripId);
-//        trip.addItem(new Item("item 1", 1));
-//        trip.addItem(new Item("item 2", 2));
-//        return trip;
+        return tripService.getTrip(tripId);
     }
 
     @RequestMapping("/getTripList")
-    public List<Integer> getTripList(@RequestParam(value = "userId", defaultValue = "-1") int userId) {
-        ArrayList<Integer> ansIds = new ArrayList<>();
-        int size = (int)(Math.random()*10) + 3;
-        for (int i = 0; i < 5; i++) {
-            ansIds.add((int) (Math.random()*100));
+    public List<Long> getTripList(@RequestParam(value = "userId", defaultValue = "-1") long userId) {
+        List<Long> tripIdsList = new ArrayList<>();
+        List<SqlTrip> userTrips = userService.getUser(userId).getTrips();
+        for (SqlTrip trip: userTrips) {
+            tripIdsList.add(trip.getTripId());
         }
-        return ansIds;
+        return tripIdsList;
     }
-
 
 }
