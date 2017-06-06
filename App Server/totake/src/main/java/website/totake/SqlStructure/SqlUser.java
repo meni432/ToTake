@@ -20,6 +20,9 @@ public class SqlUser {
     @Column(name = "user_name", unique = true)
     private String userName;
 
+    @Column(name = "email_address", unique = true)
+    private String emailAddress;
+
     @OneToMany
     @JoinTable(name = "users_trips",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
@@ -30,8 +33,9 @@ public class SqlUser {
 
     }
 
-    public SqlUser (String userName) {
+    public SqlUser(String userName, String emailAddress) {
         this.userName = userName;
+        this.emailAddress = emailAddress;
     }
 
     public long getUserId() {

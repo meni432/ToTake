@@ -1,4 +1,4 @@
-package website.totake.Services;
+package website.totake.Services.Interfaces;
 
 import website.totake.SqlStructure.SqlUser;
 
@@ -8,6 +8,7 @@ import website.totake.SqlStructure.SqlUser;
 public interface IUserService {
     public SqlUser getUser(long userId);
     public Iterable<SqlUser> getAllUsers();
-    public SqlUser addNewUser(String username);
+    public SqlUser addNewUser(String username, String userEmail);
     public SqlUser save(SqlUser user);
+    public SqlUser findUserByUserName(String username);
 }

@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import website.totake.Repositories.SqlUserRepository;
+import website.totake.Services.Interfaces.IUserService;
 import website.totake.SqlStructure.SqlUser;
+
+import java.util.List;
 
 /**
  * Created by meni on 05/06/17.
@@ -26,8 +29,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public SqlUser addNewUser(String username) {
-        SqlUser newUser = new SqlUser(username);
+    public SqlUser addNewUser(String username, String userEmail) {
+        SqlUser newUser = new SqlUser(username, userEmail);
         SqlUser result = sqlUserRepository.save(newUser);
         return result;
     }
@@ -35,5 +38,14 @@ public class UserService implements IUserService {
     @Override
     public SqlUser save(SqlUser user) {
         return sqlUserRepository.save(user);
+    }
+
+    @Override
+    public SqlUser findUserByUserName(String username) {
+        List<SqlUser> sqlUsers = sqlUserRepository.findByUserName(username);
+        if (sqlUsers.size() == 1) {
+            return sqlUsers.get(0);
+        }
+        return null;
     }
 }

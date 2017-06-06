@@ -1,4 +1,4 @@
-package website.totake.Services;
+package website.totake.Services.Interfaces;
 
 import website.totake.SqlStructure.SqlTrip;
 

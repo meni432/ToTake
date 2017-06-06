@@ -9,8 +9,10 @@ import website.totake.Services.ItemService;
 import website.totake.Services.TripService;
 import website.totake.Services.UserService;
 import website.totake.SqlStructure.SqlTrip;
+import website.totake.SqlStructure.SqlUser;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,7 +33,26 @@ public class TripController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/addNewTrip")
+    public SqlTrip addNewTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                           @RequestParam(name = "destinationName", defaultValue = "-1") String destinationName,
+                           @RequestParam(name = "startDate", defaultValue = "-1") Date startDate,
+                           @RequestParam(name = "endDate", defaultValue = "-1") Date endDate) {
 
+        SqlUser sqlUser = userService.getUser(userId);
+        SqlTrip sqlTrip = tripService.addNewTrip(destinationName, destinationName, startDate, endDate);
+        sqlUser.getTrips().add(sqlTrip);
+        userService.save(sqlUser);
+
+        return sqlTrip;
+    }
+
+
+    @RequestMapping("/deleteTrip")
+    public void deleteTrip(@RequestParam(name = "userId", defaultValue = "-1") long id,
+                           @RequestParam(name = "tripId", defaultValue = "-1") long tripId) {
+        // TODO need to implemnt
+    }
 
     @RequestMapping("/getTrip")
     public SqlTrip getTrip(@RequestParam(value = "tripId", defaultValue = "-1") long tripId) {
