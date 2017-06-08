@@ -1,5 +1,6 @@
 package website.totake.SqlStructure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.catalina.User;
 import website.totake.Trip;
 
@@ -16,6 +17,7 @@ public class SqlTripItemId implements Serializable{
     private SqlTrip trip;
     private SqlItem item;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     public SqlTrip getTrip() {
         return trip;
@@ -25,6 +27,7 @@ public class SqlTripItemId implements Serializable{
         this.trip = trip;
     }
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     public SqlItem getItem() {
         return item;

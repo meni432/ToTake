@@ -19,7 +19,7 @@ public class TripService  implements ITripSerivce {
     private SqlTripRepository sqlTripRepository;
 
     public SqlTrip getTrip(long tripId) {
-        SqlTrip trip = sqlTripRepository.findOne(tripId);
+        SqlTrip trip = sqlTripRepository.findTripByTripId(tripId);
         return trip;
     }
 

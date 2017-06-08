@@ -55,7 +55,7 @@ public class ItemController {
     }
 
     @RequestMapping("/addNewItem")
-    public SqlItemDetails addNewItem(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+    public SqlItem addNewItem(@RequestParam(name = "userId", defaultValue = "-1") long userId,
                               @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
                               @RequestParam(name = "itemName", defaultValue = "none") String itemName,
                               @RequestParam(name = "amount", defaultValue = "-1") int amount) {
@@ -63,7 +63,7 @@ public class ItemController {
         SqlTrip sqlTrip = tripService.getTrip(tripId);
         SqlItem sqlItem = itemService.addNewItem(itemName, itemName);
         SqlItemDetails sqlItemDetails = itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, amount, 0);
-        return sqlItemDetails;
+        return sqlItemDetails.getItem();
     }
 
     @RequestMapping("/getAllItems")

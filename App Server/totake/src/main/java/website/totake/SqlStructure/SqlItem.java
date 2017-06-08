@@ -36,6 +36,8 @@ public class SqlItem {
     }
 
 
+    @JsonIgnore
+    @Transient
     public Set<SqlItemDetails> getSqlItemDetails() {
         return sqlItemDetails;
     }
