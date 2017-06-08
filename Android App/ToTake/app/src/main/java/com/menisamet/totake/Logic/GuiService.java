@@ -37,12 +37,7 @@ public class GuiService implements GuiInterface {
     }
 
     private GuiService() {
-        server.getAllItems(new AllItemsResponseListener() {
-            @Override
-            public void onResponse(List<Item> items) {
-                mAllItems = items;
-            }
-        });
+
     }
 
 

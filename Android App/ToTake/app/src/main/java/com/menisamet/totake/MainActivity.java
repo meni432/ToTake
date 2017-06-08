@@ -76,12 +76,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         guiInterface.setContext(getApplicationContext());
-        guiInterface.setUserId(1, new UserLoadListener() {
-            @Override
-            public void onUserLoad(User user) {
-                System.out.println(user);
-            }
-        });
+//        guiInterface.setUserId(1, new UserLoadListener() {
+//            @Override
+//            public void onUserLoad(User user) {
+//                System.out.println(user);
+//            }
+//        });
 
 //        LogicInterface logicInterface = LogicService.getInstance();
 //        logicInterface.getAllItems(new AllItemsResponseListener() {
@@ -96,6 +96,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 //            }
 //        }, getBaseContext());
 
+        LogicInterface logicInterface = LogicService.getInstance();
+        logicInterface.setContext(getBaseContext());
+        logicInterface.getAllItems(new AllItemsResponseListener() {
+            @Override
+            public void onResponse(List<Item> items) {
+                if (items != null) {
+                    Log.d(TAG, "from items array: " + items);
+                } else {
+                    Log.d(TAG, "from items array: null object");
+                }
+            }
+        });
     }
 
     @Override
