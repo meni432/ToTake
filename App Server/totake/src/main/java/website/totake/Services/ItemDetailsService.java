@@ -38,20 +38,24 @@ public class ItemDetailsService implements IItemDetailsService {
 
     @Override
     public void removeByTripIdAndItemId(SqlTrip sqlTrip, SqlItem sqlItem) {
-        sqlItemDetailsRepository.removeByTripIdAndItemId(sqlTrip.getTripId(), sqlItem.getItemID());
+        //TODO need to implement
+        throw new RuntimeException("removeByTripIdAndItemId not implemnt yet");
     }
 
     @Override
     public void removeByTripIdAndItemId(long tripId, long itemId) {
-        sqlItemDetailsRepository.removeByTripIdAndItemId(tripId, itemId);
+        //TODO need to implement
+        throw new RuntimeException("removeByTripIdAndItemId not implemnt yet");
     }
 
     @Override
     public SqlItemDetails getItemDetails(long tripId, long itemId) {
-        List<SqlItemDetails> sqlItemDetails = sqlItemDetailsRepository.findByTripIdAndItemId(tripId, itemId);
-        if(sqlItemDetails.size() == 1) {
-            return sqlItemDetails.get(0);
-        }
-        return null;
+//        List<SqlItemDetails> sqlItemDetails = sqlItemDetailsRepository.findByTripIdAndItemId(tripId, itemId);
+//        if(sqlItemDetails.size() == 1) {
+//            return sqlItemDetails.get(0);
+//        }
+//        return null;
+        //TODO need to impltment
+        throw new RuntimeException("getItemDetails not implemnt yet");
     }
 }
