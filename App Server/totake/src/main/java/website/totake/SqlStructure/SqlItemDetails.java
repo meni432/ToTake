@@ -70,7 +70,7 @@ public class SqlItemDetails {
     public String getItemTripName() {
         return getItem().getItemEHName();
     }
-    
+      
     @Transient
     public long getItemTripId() {
         return getItem().getItemID();
