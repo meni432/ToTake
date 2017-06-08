@@ -1,5 +1,6 @@
 package website.totake.SqlStructure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
@@ -50,6 +51,7 @@ public class SqlItemDetails {
     }
 
     @Transient
+    @JsonIgnore
     public SqlTrip getTrip() {
         return getPrimaryKey().getTrip();
     }
@@ -59,6 +61,7 @@ public class SqlItemDetails {
     }
 
     @Transient
+//    @JsonIgnore
     public SqlItem getItem() {
         return getPrimaryKey().getItem();
     }
@@ -66,6 +69,5 @@ public class SqlItemDetails {
     public void setItem(SqlItem item) {
         getPrimaryKey().setItem(item);
     }
-
 
 }
