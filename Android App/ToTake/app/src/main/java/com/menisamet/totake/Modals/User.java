@@ -8,8 +8,11 @@ import java.util.List;
  */
 
 public class User {
+    @SerializedName("userName")
     private String userName;
+    @SerializedName("userId")
     private int userId;
+    @SerializedName("trips")
     private List<Trip> userTripList;
 
     public User() {};
