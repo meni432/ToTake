@@ -42,11 +42,12 @@ public class GuiService implements GuiInterface {
 
 
     @Override
-    public void setUserId(long userId, UserLoadListener userLoadListener) {
+    public void setUserId(long userId, final UserLoadListener userLoadListener) {
         server.setUserId(userId, new UserLoadListener() {
             @Override
             public void onUserLoad(User user) {
                 currentUser = user;
+                userLoadListener.onUserLoad(user);
             }
         });
     }

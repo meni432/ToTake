@@ -103,7 +103,7 @@ public class ExploreFragment extends Fragment {
 
     private void initialSelectedItemView() {
         final Trip trip = guiInterface.getTripById(msCurrentTripId);
-        mItems = trip.getItems();
+//        mItems = (List<Item>) guiInterface.getTripById(trip.getTripID());
         final ExploreSelectedListAdapter exploreSelectedListAdapter = new ExploreSelectedListAdapter(getContext(), mItems, msCurrentTripId);
         mRvSelectedItems.setAdapter(exploreSelectedListAdapter);
         mRvSelectedItems.setLayoutManager(new LinearLayoutManager(getContext()));

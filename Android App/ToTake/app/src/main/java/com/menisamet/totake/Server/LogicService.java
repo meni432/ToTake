@@ -34,7 +34,7 @@ public class LogicService implements LogicInterface {
     public static final String TAG = LogicService.class.getCanonicalName();
 
     private static final LogicService ourInstance = new LogicService();
-    private static String mServerUrl = "http://192.0.0.1:8080";
+    private static String mServerUrl = "http://totake.website:8080";
 
     public static LogicService getInstance() {
         return ourInstance;
@@ -91,6 +91,7 @@ public class LogicService implements LogicInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, error.toString());
                 userLoadListener.onUserLoad(null);
             }
         });

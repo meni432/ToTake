@@ -76,6 +76,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         guiInterface.setContext(getApplicationContext());
+        guiInterface.setUserId(15, new UserLoadListener() {
+            @Override
+            public void onUserLoad(User user) {
+                Log.d(TAG, "user :" + user);
+            }
+        });
 //        guiInterface.setUserId(1, new UserLoadListener() {
 //            @Override
 //            public void onUserLoad(User user) {
