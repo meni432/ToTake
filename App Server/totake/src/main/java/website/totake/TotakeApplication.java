@@ -7,6 +7,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+@EnableAutoConfiguration
+@ComponentScan(basePackageClasses = ItemController.class)
+@ComponentScan(basePackageClasses = TripController.class)
+@ComponentScan(basePackageClasses = UserController.class)
 public class TotakeApplication {
 
 	public static void main(String[] args) {
