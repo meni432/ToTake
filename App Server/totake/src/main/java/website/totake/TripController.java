@@ -52,6 +52,7 @@ public class TripController {
     public void deleteTrip(@RequestParam(name = "userId", defaultValue = "-1") long id,
                            @RequestParam(name = "tripId", defaultValue = "-1") long tripId) {
         // TODO need to implemnt
+        throw new RuntimeException("deleteTrip not impltment yet");
     }
 
     @RequestMapping("/getTrip")
