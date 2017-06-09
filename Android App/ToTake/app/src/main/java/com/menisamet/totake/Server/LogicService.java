@@ -91,7 +91,7 @@ public class LogicService implements LogicInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, error.toString());
+                Log.e(TAG, error.toString());
                 userLoadListener.onUserLoad(null);
             }
         });
