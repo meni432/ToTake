@@ -13,13 +13,13 @@ import java.util.List;
 
 public class Item implements ItemInterface, CardsRecyclerView.CardElement{
 
-    @SerializedName("itemTripName")
+    @SerializedName("itemInTripName")
     private String mItemName;
     @SerializedName("amount")
     private long mItemAmount;
 //    @SerializedName("isDone")
     private boolean mIsDone;
-    @SerializedName("itemTripId")
+    @SerializedName("itemInTripId")
     private int itemID;
 
     public Item() {};

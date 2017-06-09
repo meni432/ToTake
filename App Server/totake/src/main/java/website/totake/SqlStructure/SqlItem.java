@@ -1,6 +1,7 @@
 package website.totake.SqlStructure;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -46,16 +47,14 @@ public class SqlItem {
         this.sqlItemDetails = sqlItemDetails;
     }
 
+    @JsonProperty("itemInTripId")
     public long getItemID() {
         return itemID;
     }
 
+    @JsonProperty("itemInTripName")
     public String getItemEHName() {
         return mItemEHName;
-    }
-
-    public String getItemHEName() {
-        return mItemHEName;
     }
 
     @JsonIgnore
