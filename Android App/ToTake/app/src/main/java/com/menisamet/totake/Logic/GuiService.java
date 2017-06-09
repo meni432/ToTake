@@ -97,18 +97,40 @@ public class GuiService implements GuiInterface {
     }
 
     @Override
+    public void assignItemToTrip(final Trip trip, Item item, long amount, final AddNewItemResponseListener addNewItemResponseListener) {
+        server.assignItemToTrip(trip, item, amount, new AddNewItemResponseListener() {
+            @Override
+            public void onResponse(Item item) {
+                trip.addItemToList(item);
+                addNewItemResponseListener.onResponse(item);
+            }
+        });
+    }
+
+    @Override
     public void deleteItemFromTrip(Trip trip, Item item) {
         server.deleteItemFromTrip(trip, item);
     }
 
     @Override
-    public void getAllItems(AllItemsResponseListener allItemsResponseListener) {
-        allItemsResponseListener.onResponse(mAllItems);
+    public void getAllItems(final AllItemsResponseListener allItemsResponseListener) {
+        if (mAllItems == null) {
+            server.getAllItems(new AllItemsResponseListener() {
+                @Override
+                public void onResponse(List<Item> items) {
+                    mAllItems = items;
+                    allItemsResponseListener.onResponse(mAllItems);
+                }
+            });
+        } else {
+            allItemsResponseListener.onResponse(mAllItems);
+        }
     }
 
     @Override
     public void getRecommendationList(Trip trip, RecommendationListResponseListener recommendationListResponseListener) {
-
+        //TODO need to change for realy recomendation protocol
+        recommendationListResponseListener.onResponse(mAllItems);
     }
 
     @Override

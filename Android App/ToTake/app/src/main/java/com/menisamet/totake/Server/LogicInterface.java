@@ -24,6 +24,7 @@ public interface LogicInterface {
     public void setContext(Context context);
     public void setUserId(long userId, UserLoadListener userLoadListener);
     public void addNewItem(Trip trip, String itemName, long amount, AddNewItemResponseListener addNewItemResponseListener);
+    public void assignItemToTrip(Trip trip, Item item, long amount, AddNewItemResponseListener addNewItemResponseListener);
     public void notifyChangeAmount(Trip trip, Item item);
     public void deleteTrip(Trip trip);
     public void deleteItemFromTrip(Trip trip, Item item);

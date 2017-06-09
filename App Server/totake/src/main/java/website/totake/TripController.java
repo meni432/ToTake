@@ -41,7 +41,7 @@ public class TripController {
 
         SqlUser sqlUser = userService.getUser(userId);
         SqlTrip sqlTrip = tripService.addNewTrip(destinationName, destinationName, startDate, endDate);
-        sqlUser.getTrips().add(sqlTrip);
+        sqlUser.addTrip(sqlTrip);
         userService.save(sqlUser);
 
         return sqlTrip;

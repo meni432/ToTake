@@ -118,6 +118,24 @@ public class LogicService implements LogicInterface {
     }
 
     @Override
+    public void assignItemToTrip(Trip trip, Item item, long amount, final AddNewItemResponseListener addNewItemResponseListener) {
+        String path = "/assignItemToUser?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID()+"&amount="+amount;
+        GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
+            @Override
+            public void onResponse(Item response) {
+                addNewItemResponseListener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                addNewItemResponseListener.onResponse(null);
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
+    }
+
+    @Override
     public void notifyChangeAmount(Trip trip, Item item) {
         String path = "/notifyChangeAmount?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID()+"&amount="+item.getItemAmount();
         GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
