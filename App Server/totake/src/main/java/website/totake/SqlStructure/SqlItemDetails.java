@@ -34,8 +34,8 @@ public class SqlItemDetails {
         this.primaryKey = primaryKey;
     }
 
-    public boolean getAmount() {
-        return (amount == 1) ? true : false;
+    public int getAmount() {
+        return amount;
     }
 
     public void setAmount(int amount) {
@@ -67,12 +67,12 @@ public class SqlItemDetails {
     }
 
     @Transient
-    public String getItemTripName() {
+    public String getItemInTripName() {
         return getItem().getItemEHName();
     }
 
     @Transient
-    public long getItemTripId() {
+    public long getItemInTripId() {
         return getItem().getItemID();
     }
 
