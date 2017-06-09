@@ -37,21 +37,17 @@ public class GuiService implements GuiInterface {
     }
 
     private GuiService() {
-        server.getAllItems(new AllItemsResponseListener() {
-            @Override
-            public void onResponse(List<Item> items) {
-                mAllItems = items;
-            }
-        });
+
     }
 
 
     @Override
-    public void setUserId(long userId, UserLoadListener userLoadListener) {
+    public void setUserId(long userId, final UserLoadListener userLoadListener) {
         server.setUserId(userId, new UserLoadListener() {
             @Override
             public void onUserLoad(User user) {
                 currentUser = user;
+                userLoadListener.onUserLoad(user);
             }
         });
     }

@@ -26,6 +26,7 @@ public class TripActivity extends AppCompatActivity implements ItemListFragment.
         setContentView(R.layout.activity_trip);
 
         mCurrentTripId = getIntent().getIntExtra(ARGS_TRIP_ID, -1);
+        mExploreFragment.msCurrentTripId = mCurrentTripId;
 
         // Find the toolbar view inside the activity layout
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -52,6 +52,7 @@ public class LogicService implements LogicInterface {
     @Override
     public void getAllItems(final AllItemsResponseListener allItemsResponseListener) {
 
+
         GsonRequest<Item[]> gsonRequest = new GsonRequest<>(mServerUrl + "/getAllItems", Item[].class, null, new Response.Listener<Item[]>() {
             @Override
             public void onResponse(Item[] response) {
@@ -73,6 +74,7 @@ public class LogicService implements LogicInterface {
         if (mCurrentContext != context) {
             mRequestQueue = Volley.newRequestQueue(context);
             mRequestQueue.start();
+            mCurrentContext = context;
         }
     }
 
@@ -89,6 +91,7 @@ public class LogicService implements LogicInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error.toString());
                 userLoadListener.onUserLoad(null);
             }
         });

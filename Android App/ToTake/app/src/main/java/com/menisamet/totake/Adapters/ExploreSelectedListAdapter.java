@@ -100,6 +100,7 @@ public class ExploreSelectedListAdapter extends RecyclerView.Adapter<ExploreSele
 
     @Override
     public int getItemCount() {
+        if (mItems == null) return 0;
         return mItems.size();
     }
 
