@@ -23,6 +23,7 @@ import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -108,6 +109,7 @@ public class ExploreFragment extends Fragment {
         guiInterface.getRecommendationList(mTrip, new RecommendationListResponseListener() {
             @Override
             public void onResponse(List<Item> recommendedItems) {
+                mSuggestionItems = new LinkedList<Item>(recommendedItems);
                 initialSuggestionView();
             }
         });
@@ -157,7 +159,6 @@ public class ExploreFragment extends Fragment {
 
     private void initialSuggestionView() {
 //        mSuggestionItems = Item.createItemList(20); //TODO Meni - get from logic
-        mSuggestionItems = Item.createItemList(10);
         mRecyclerView = (CardsRecyclerView) getView().findViewById(R.id.suggestion_card_recycle_view);
         mRecyclerView.setNumLinesAndOrientation(1, CardsRecyclerView.HORIZONTAL);
         mRAdapter = new CardsRecyclerView.RecycleViewCardAdapter<>(mSuggestionItems);
@@ -212,16 +213,18 @@ public class ExploreFragment extends Fragment {
     private void removeFromSuggestion(int position, boolean isChoosing) {
         // TODO Meni - notify logic
         // TODO Meni - chnage to hide
-        mSuggestionItems.remove(position);
-        mRAdapter.notifyItemRemoved(position);
+//        mSuggestionItems.remove(position);
+//        mRAdapter.notifyItemRemoved(position);
     }
 
-    private void assignItemToList(int position) {
-        Item item = mItems.get(position);
+    private void assignItemToList(final int position) {
+        Item item = mSuggestionItems.get(position);
         guiInterface.assignItemToTrip(mTrip, item, item.getItemAmount(), new AddNewItemResponseListener() {
             @Override
             public void onResponse(Item item) {
                 mExploreSelectedListAdapter.notifyDataSetChanged();
+//                mSuggestionItems.remove(position);
+//                mRAdapter.notifyDataSetChanged();
             }
         });
     }

@@ -128,9 +128,14 @@ public class GuiService implements GuiInterface {
     }
 
     @Override
-    public void getRecommendationList(Trip trip, RecommendationListResponseListener recommendationListResponseListener) {
+    public void getRecommendationList(Trip trip, final RecommendationListResponseListener recommendationListResponseListener) {
         //TODO need to change for realy recomendation protocol
-        recommendationListResponseListener.onResponse(mAllItems);
+        getAllItems(new AllItemsResponseListener() {
+            @Override
+            public void onResponse(List<Item> items) {
+                recommendationListResponseListener.onResponse(items);
+            }
+        });
     }
 
     @Override
