@@ -36,4 +36,14 @@ public class SqlTripItemId implements Serializable{
     public void setItem(SqlItem item) {
         this.item = item;
     }
+
+    @Override
+    public int hashCode() {
+        return trip.hashCode()*item.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

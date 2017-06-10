@@ -34,7 +34,7 @@ public class LogicService implements LogicInterface {
     public static final String TAG = LogicService.class.getCanonicalName();
 
     private static final LogicService ourInstance = new LogicService();
-    private static String mServerUrl = "http://192.0.0.1:8080";
+    private static String mServerUrl = "http://totake.website:8080";
 
     public static LogicService getInstance() {
         return ourInstance;
@@ -91,6 +91,7 @@ public class LogicService implements LogicInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error.toString());
                 userLoadListener.onUserLoad(null);
             }
         });
@@ -101,6 +102,24 @@ public class LogicService implements LogicInterface {
     @Override
     public void addNewItem(Trip trip, String itemName, long amount, final AddNewItemResponseListener addNewItemResponseListener) {
         String path = "/addNewItem?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemName="+itemName+"&amount="+amount;
+        GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
+            @Override
+            public void onResponse(Item response) {
+                addNewItemResponseListener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                addNewItemResponseListener.onResponse(null);
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
+    }
+
+    @Override
+    public void assignItemToTrip(Trip trip, Item item, long amount, final AddNewItemResponseListener addNewItemResponseListener) {
+        String path = "/assignItemToUser?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID()+"&amount="+amount;
         GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
             @Override
             public void onResponse(Item response) {

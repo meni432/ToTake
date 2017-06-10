@@ -50,4 +50,10 @@ public class SqlUser {
     public List<SqlTrip> getTrips() {
         return trips;
     }
+
+    public void addTrip(SqlTrip sqlTrip) {
+        if (trips != null) {
+            trips.add(sqlTrip);
+        }
+    }
 }

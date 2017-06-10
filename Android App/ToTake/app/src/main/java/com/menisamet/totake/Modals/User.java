@@ -17,14 +17,18 @@ public class User {
     @SerializedName("trips")
     private List<Trip> userTripList;
 
-    public User() {};
+    public User() {
+    }
+
+    ;
+
     public User(String userName, int userId) {
         this.userName = userName;
         this.userId = userId;
-        this.userTripList= new ArrayList<Trip>();
+        this.userTripList = new ArrayList<Trip>();
     }
 
-    public User(String userName, int userId, ArrayList<Trip> userTrips){
+    public User(String userName, int userId, ArrayList<Trip> userTrips) {
         this.userName = userName;
         this.userId = userId;
         this.userTripList = new ArrayList<Trip>(userTrips);
@@ -34,10 +38,6 @@ public class User {
         this.userName = user.getNameUser();
         this.userId = user.getIdUser();
         this.userTripList = new ArrayList<Trip>(user.getTrips());
-    }
-
-    public int getNumOfTrips(){
-        return userTripList.size();
     }
 
     public String getNameUser() {
@@ -52,7 +52,7 @@ public class User {
         return userTripList;
     }
 
-    public void addNewTrip(Trip trip){
+    public void addNewTrip(Trip trip) {
         userTripList.add(trip);
     }
 
@@ -60,29 +60,39 @@ public class User {
      * @param tripId which trip to return
      * @return the wanted trip
      */
-    public Trip getTrip(long tripId){
-        for (int i = 0; i < getNumOfTrips(); i++) {
-            if(userTripList.get(i).getTripID() == tripId) return userTripList.get(i);
+    public Trip getTrip(long tripId) {
+        for (Trip trip : userTripList) {
+            if (trip.getTripID() == tripId) {
+                return trip;
+            }
         }
         return null;
     }
 
-    public void deleteTrip(int tripId){
-        for (int i = 0; i < getNumOfTrips(); i++) {
-            if(userTripList.get(i).getTripID() == tripId) {
+    public void deleteTrip(int tripId) {
+        for (int i = 0; i < userTripList.size(); i++) {
+            if (userTripList.get(i).getTripID() == tripId) {
                 userTripList.remove(i);
                 return;
             }
         }
     }
 
-    public void addItemToTrip(int tripId, Item item){
-        for (int i = 0; i < getNumOfTrips(); i++) {
-            if(userTripList.get(i).getTripID() == tripId) {
+    public void addItemToTrip(int tripId, Item item) {
+        for (int i = 0; i < userTripList.size(); i++) {
+            if (userTripList.get(i).getTripID() == tripId) {
                 userTripList.get(i).addItemToList(item);
                 return;
             }
         }
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userName='" + userName + '\'' +
+                ", userId=" + userId +
+                ", userTripList=" + userTripList +
+                '}';
+    }
 }

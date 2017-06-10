@@ -54,52 +54,56 @@ public class ExploreSelectedListAdapter extends RecyclerView.Adapter<ExploreSele
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         final Item item = mItems.get(position);
 
-        TextView itemNameTextView = viewHolder.itemNameTextView;
-        TextView itemAmountTextView = viewHolder.itemAmountTextView;
-        ImageButton incButton = viewHolder.incButton;
-        ImageButton decButton = viewHolder.decButton;
-        LinearLayout exploreSelectedItemLinearLayout = viewHolder.exploreSelectedItemLinearLayout;
-        ImageButton deleteButton = viewHolder.deleteButton;
+        if (item != null) {
+
+            TextView itemNameTextView = viewHolder.itemNameTextView;
+            TextView itemAmountTextView = viewHolder.itemAmountTextView;
+            ImageButton incButton = viewHolder.incButton;
+            ImageButton decButton = viewHolder.decButton;
+            LinearLayout exploreSelectedItemLinearLayout = viewHolder.exploreSelectedItemLinearLayout;
+            ImageButton deleteButton = viewHolder.deleteButton;
 
 
-        itemNameTextView.setText(item.getItemName());
-        itemAmountTextView.setText(String.valueOf(item.getItemAmount()));
-        if (position % 2 == 0) {
-            exploreSelectedItemLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorCardFooter));
-        } else {
-            exploreSelectedItemLinearLayout.setBackgroundColor(Color.TRANSPARENT);
+            itemNameTextView.setText(item.getItemName());
+            itemAmountTextView.setText(String.valueOf(item.getItemAmount()));
+            if (position % 2 == 0) {
+                exploreSelectedItemLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.colorCardFooter));
+            } else {
+                exploreSelectedItemLinearLayout.setBackgroundColor(Color.TRANSPARENT);
+            }
+
+            incButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemIncButtonClickedListener != null) {
+                        onItemIncButtonClickedListener.onIncClicked(v, position);
+                    }
+                }
+            });
+
+            decButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemDecButtonClickedListener != null) {
+                        onItemDecButtonClickedListener.onDecClicked(v, position);
+                    }
+                }
+            });
+
+            deleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemDeleteButtonClickedListener != null) {
+                        onItemDeleteButtonClickedListener.onDeleteClicked(v, position);
+                    }
+                }
+            });
         }
-
-        incButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemIncButtonClickedListener != null) {
-                    onItemIncButtonClickedListener.onIncClicked(v, position);
-                }
-            }
-        });
-
-        decButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemDecButtonClickedListener != null) {
-                    onItemDecButtonClickedListener.onDecClicked(v, position);
-                }
-            }
-        });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemDeleteButtonClickedListener != null) {
-                    onItemDeleteButtonClickedListener.onDeleteClicked(v, position);
-                }
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
+        if (mItems == null) return 0;
         return mItems.size();
     }
 

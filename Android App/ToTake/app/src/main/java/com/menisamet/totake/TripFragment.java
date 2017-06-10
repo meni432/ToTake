@@ -12,10 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.menisamet.totake.Adapters.TripDetailAdapter;
+import com.menisamet.totake.Logic.GuiInterface;
+import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Trip;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -27,8 +30,9 @@ import java.util.Date;
  * create an instance of this fragment.
  */
 public class TripFragment extends Fragment {
-    ArrayList<Trip> trips;
+    List<Trip> trips;
 
+    GuiInterface guiInterface = GuiService.getInstance();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -111,7 +115,8 @@ public class TripFragment extends Fragment {
 
         RecyclerView rvTrips = (RecyclerView) getView().findViewById(R.id.rvTrips);
 
-        trips = Trip.createTripList(100);//test
+//        trips = Trip.createTripList(100);//test
+        trips = guiInterface.getAllTrips();
         TripDetailAdapter tripDetailAdapter = new TripDetailAdapter(trips, getContext());
         rvTrips.setAdapter(tripDetailAdapter);
         rvTrips.setLayoutManager(new LinearLayoutManager(getContext()));

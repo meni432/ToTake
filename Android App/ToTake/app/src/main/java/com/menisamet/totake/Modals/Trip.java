@@ -1,5 +1,6 @@
 package com.menisamet.totake.Modals;
 
+import com.google.gson.annotations.SerializedName;
 import com.menisamet.totake.Server.Interfaces.TripInterface;
 
 import java.text.DateFormat;
@@ -13,10 +14,15 @@ import java.util.List;
  */
 
 public class Trip implements TripInterface {
+    @SerializedName("destinationEnName")
     private String mDestinationName;
+//    @SerializedName("startDate")
     private Date mStartDate;
+//    @SerializedName("endDate")
     private Date mEndDate;
+    @SerializedName("sqlItemDetails")
     private List<Item> items;
+    @SerializedName("tripId")
     private int tripID;
 
     public Trip() {}
@@ -91,6 +97,10 @@ public class Trip implements TripInterface {
         final String displayFormt = "%s to %s";
         final String dateFromat = "dd/MM/yyyy";
 
+        if (this.getStartDate() == null || this.getEndDate() == null) {
+            return "NO Dates";
+        }
+
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
         DateFormat df = new SimpleDateFormat(dateFromat);
@@ -103,4 +113,14 @@ public class Trip implements TripInterface {
         return String.format(displayFormt, startDate, endDate);
     }
 
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "mDestinationName='" + mDestinationName + '\'' +
+                ", mStartDate=" + mStartDate +
+                ", mEndDate=" + mEndDate +
+                ", items=" + items +
+                ", tripID=" + tripID +
+                '}';
+    }
 }

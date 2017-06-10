@@ -66,6 +66,19 @@ public class ItemController {
         return sqlItemDetails.getItem();
     }
 
+
+    @RequestMapping("/assignItemToUser")
+    public SqlItem assignItemToUser(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                                    @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                                    @RequestParam(name = "itemId", defaultValue = "-1") long itemId,
+                                    @RequestParam(name = "amount", defaultValue = "-1") int amount) {
+
+        SqlTrip sqlTrip = tripService.getTrip(tripId);
+        SqlItem sqlItem = itemService.getItem(itemId);
+        SqlItemDetails sqlItemDetails = itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, amount, 0);
+        return sqlItemDetails.getItem();
+    }
+
     @RequestMapping("/getAllItems")
     public Iterable<SqlItem> getAllItems() {
         return itemService.getAllItems();

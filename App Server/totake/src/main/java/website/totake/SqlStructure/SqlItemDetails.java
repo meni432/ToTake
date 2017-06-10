@@ -66,6 +66,17 @@ public class SqlItemDetails {
         return getPrimaryKey().getItem();
     }
 
+    @Transient
+    public String getItemInTripName() {
+        return getItem().getItemEHName();
+    }
+
+    @Transient
+    public long getItemInTripId() {
+        return getItem().getItemID();
+    }
+
+
     public void setItem(SqlItem item) {
         getPrimaryKey().setItem(item);
     }

@@ -26,7 +26,8 @@ public interface GuiInterface {
     public Trip getTripById(long id);
     public void addNewTrip(String destinationName, Date Start, Date end, AddNewTripResponseListener addNewTripResponseListener);
     public void deleteTrip(Trip trip);
-    public void addNewItem(Trip trip, String itemName, long amount, AddNewItemResponseListener addNewItemResponseListener); //need trip id to know to which list to add
+    public void addNewItem(Trip trip, String itemName, long amount, AddNewItemResponseListener addNewItemResponseListener);
+    public void assignItemToTrip(Trip trip, Item item, long amount, AddNewItemResponseListener addNewItemResponseListener);
     public void deleteItemFromTrip(Trip trip, Item item);
     public void getAllItems(final AllItemsResponseListener allItemsResponseListener);
     public void getRecommendationList(Trip trip, RecommendationListResponseListener recommendationListResponseListener);
