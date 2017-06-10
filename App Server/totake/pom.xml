@@ -96,25 +96,25 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<!--<artifactId>spring-boot-starter-web</artifactId>-->
+		<!--<plugins>-->
+			<!--<plugin>-->
+				<!--<groupId>org.apache.maven.plugins</groupId>-->
+				<!--<artifactId>maven-compiler-plugin</artifactId>-->
+				<!--<version>3.1</version>-->
 				<!--<configuration>-->
-					<!--<executable>true</executable>-->
+					<!--<source>1.7</source>-->
+					<!--<target>1.7</target>-->
 				<!--</configuration>-->
-			</plugin>
-		</plugins>
+			<!--</plugin>-->
+			<!--<plugin>-->
+				<!--<groupId>org.springframework.boot</groupId>-->
+				<!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+				<!--&lt;!&ndash;<artifactId>spring-boot-starter-web</artifactId>&ndash;&gt;-->
+				<!--&lt;!&ndash;<configuration>&ndash;&gt;-->
+					<!--&lt;!&ndash;<executable>true</executable>&ndash;&gt;-->
+				<!--&lt;!&ndash;</configuration>&ndash;&gt;-->
+			<!--</plugin>-->
+		<!--</plugins>-->
 	</build>
 
 

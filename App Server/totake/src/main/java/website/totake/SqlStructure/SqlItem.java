@@ -26,7 +26,7 @@ public class SqlItem {
     private String mItemHEName;
 
     @OneToMany(mappedBy = "primaryKey.item",
-            cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SqlItemDetails> sqlItemDetails = new HashSet<>();
 
     public SqlItem() {}
