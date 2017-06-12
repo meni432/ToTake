@@ -1,53 +1,23 @@
+/**
+ * Created by tahel on 12/06/2017.
+ */
 import java.util.*;
 
 /**
- * Created by meni on 22/05/17.
+ * Created by tahel on 12/06/2017.
  */
-public class SlopeOne {
+public class SlopeOneRate extends SlopeOne {
 
-    protected UserItemsContainer ans = DataReader.userItemsArray(null);
-    protected List<List<Integer>> recommendationLists;
-    protected double[][] itemItemCosine; //every item relationship to every other item
-    protected   int[][] itemUserMatrix; //save for every item if user take this item
-
-    public SlopeOne(UserItemsContainer ans){
-        this.ans = ans;
-        itemItemCosine = new double[ans.getMaxItemId() + 1][ans.getMaxItemId() + 1];
-        itemUserMatrix = new int[ans.getMaxItemId() + 1][ans.getMaxUserId() + 1];
+    private int [][] itemUserRate;
+    public SlopeOneRate(){
+        super();
+        itemUserRate = new int[ans.getMaxItemId() + 1][ans.getMaxUserId() + 1];
     }
 
-    public SlopeOne(){
-        itemItemCosine = new double[ans.getMaxItemId() + 1][ans.getMaxItemId() + 1];
-        itemUserMatrix = new int[ans.getMaxItemId() + 1][ans.getMaxUserId() + 1];
+    public SlopeOneRate(UserItemsContainer ans){
+        super(ans);
+        itemUserRate = new int[ans.getMaxItemId() + 1][ans.getMaxUserId() + 1];
     }
-
-    public static double multiplyVectors(int[] vecA, int[] vecB) {
-        double ans = 0;
-        assert (vecA.length == vecB.length);
-        for (int i = 0; i < vecA.length; i++) {
-            ans = vecA[i] * vecB[i];
-        }
-        return ans;
-    }
-
-    public static double normVector(int[] vec) {
-        double ans = 0;
-        for (int i = 0; i < vec.length; i++) {
-            ans += vec[i] * vec[i];
-        }
-        return Math.sqrt(ans);
-    }
-
-    public static double[][] randomMatrix(int n, int m) {
-        double[][] ans = new double[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                ans[i][j] = Math.random();
-            }
-        }
-        return ans;
-    }
-
 
 
     public void slopeOne() {
@@ -68,8 +38,10 @@ public class SlopeOne {
         //Item-to-Item algorithm offers an interesting point of reference
         for (UserItem userItem : ans.getUserItems()) {
             if (userItem.userId > 0 && userItem.itemId > 0) {
+                itemUserRate[userItem.itemId][userItem.userId] = userItem.rate;
                 itemUserMatrix[userItem.itemId][userItem.userId] = 1;
             }
+            //else itemUserMatrix[userItem.itemId][userItem.userId]=0;
         }
 
         //run over all item and multiply every two items (and div the normal)
@@ -126,22 +98,5 @@ public class SlopeOne {
         printRecommendation();
     }
 
-    public void printRecommendation(){
-
-        for (int i = 0; i < recommendationLists.size(); i++) {
-
-            System.out.println("------- recommendation for id " + i + " --------");
-            for (int itemId : recommendationLists.get(i)) {
-                System.out.print("[(" + itemId + ") " + DataReader.getItemName(itemId) + "] , ");
-            }
-            System.out.println("\n");
-            System.out.println("the list of item the user select: ");
-            for (int j = 0; j < ans.getMaxItemId(); j++) {
-                if (itemUserMatrix[j][i] > 0) {
-                    System.out.print("[(" + j + ") " + DataReader.getItemName(j) + "], ");
-                }
-            }
-            System.out.println("\n");
-        }
-    }
 }
+
