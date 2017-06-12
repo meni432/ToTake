@@ -70,7 +70,7 @@ public class Trip implements TripInterface {
     }
 
     public void addItemToList(Item item){
-        items.add(item);
+        items.add(0, item);
     }
 
     public void removeItemFromList(int itemId){

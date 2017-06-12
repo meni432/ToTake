@@ -23,6 +23,8 @@ public class SqlTrip {
     private String destinationEnName;
     @Column(name = "destination_he_name")
     private String getDestinationHeName;
+    @Column(name = "destination_google_id")
+    private String destinationGoogleId;
     @Column(name = "start_date")
     private Date startDate;
     @Column(name = "end_date")
