@@ -7,18 +7,27 @@ import java.util.Map;
 public class UserItem {
     int userId;
     int itemId;
+    int rate; //0-5
 
     @Override
     public String toString() {
         return "UserItem{" +
                 "userId=" + userId +
                 ", itemId=" + itemId +
+                " , rate=" + rate +
                 '}';
     }
 
     public UserItem(int userId, int itemId) {
         this.userId = userId;
         this.itemId = itemId;
+    }
+
+
+    public UserItem(int userId, int itemId, int weight) {
+        this.userId = userId;
+        this.itemId = itemId;
+        this.rate = weight;
     }
 }
 
@@ -27,6 +36,7 @@ class UserItemsContainer {
     private int maxUserId;
     private int maxItemId;
     private  Map<Integer, Integer> itemFreq;
+    private  Map<Integer, Integer> userRateForItem;
 
     @Override
     public String toString() {
@@ -39,10 +49,18 @@ class UserItemsContainer {
     }
 
     public UserItemsContainer(List<UserItem> userItems, int maxUserId, int maxItemId, Map<Integer, Integer> itemFreq) {
-        this.userItems = userItems;
-        this.maxUserId = maxUserId;
+        this.userItems = userItems; //list of user items
+        this.maxUserId = maxUserId; //
         this.maxItemId = maxItemId;
         this.itemFreq = itemFreq;
+    }
+
+    public UserItemsContainer(List<UserItem> userItems, int maxUserId, int maxItemId, Map<Integer, Integer> itemFreq,Map<Integer, Integer> userRateForItem) {
+        this.userItems = userItems; //list of user items
+        this.maxUserId = maxUserId; //
+        this.maxItemId = maxItemId;
+        this.itemFreq = itemFreq;
+        this.userRateForItem = userRateForItem;
     }
 
     public List<UserItem> getUserItems() {
@@ -59,5 +77,9 @@ class UserItemsContainer {
 
     public Map<Integer, Integer> getItemFreq() {
         return itemFreq;
+    }
+
+    public Map<Integer, Integer> getUserRateForItem() {
+        return userRateForItem;
     }
 }
