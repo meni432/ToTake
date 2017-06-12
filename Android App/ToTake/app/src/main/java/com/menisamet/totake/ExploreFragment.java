@@ -23,6 +23,7 @@ import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -109,7 +110,11 @@ public class ExploreFragment extends Fragment {
         guiInterface.getRecommendationList(mTrip, new RecommendationListResponseListener() {
             @Override
             public void onResponse(List<Item> recommendedItems) {
-                mSuggestionItems = new LinkedList<Item>(recommendedItems);
+                List<Item> items = new ArrayList<Item>();
+                for (Item item : recommendedItems) {
+                    items.add(item);
+                }
+                mSuggestionItems = items;
                 initialSuggestionView();
             }
         });
@@ -170,7 +175,7 @@ public class ExploreFragment extends Fragment {
             public void onCardClick(View view, int position) {
                 if (position > -1) {
                     assignItemToList(position);
-                    removeFromSuggestion(position, true);
+//                    removeFromSuggestion(position, true);
                 }
             }
         });
@@ -204,7 +209,7 @@ public class ExploreFragment extends Fragment {
         guiInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
             @Override
             public void onResponse(List<Item> recommendedItems) {
-                mSuggestionItems = recommendedItems;
+                mSuggestionItems = new ArrayList<Item>(recommendedItems);
                 mRAdapter.notifyDataSetChanged();
             }
         });
@@ -213,8 +218,8 @@ public class ExploreFragment extends Fragment {
     private void removeFromSuggestion(int position, boolean isChoosing) {
         // TODO Meni - notify logic
         // TODO Meni - chnage to hide
-//        mSuggestionItems.remove(position);
-//        mRAdapter.notifyItemRemoved(position);
+        mSuggestionItems.remove(position);
+        mRAdapter.notifyItemRemoved(position);
     }
 
     private void assignItemToList(final int position) {
@@ -222,9 +227,9 @@ public class ExploreFragment extends Fragment {
         guiInterface.assignItemToTrip(mTrip, item, item.getItemAmount(), new AddNewItemResponseListener() {
             @Override
             public void onResponse(Item item) {
-                mExploreSelectedListAdapter.notifyDataSetChanged();
-//                mSuggestionItems.remove(position);
-//                mRAdapter.notifyDataSetChanged();
+                mRvSelectedItems.scrollToPosition(0);
+                mExploreSelectedListAdapter.notifyItemInserted(0);
+                removeFromSuggestion(position, true);
             }
         });
     }

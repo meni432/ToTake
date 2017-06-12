@@ -2,6 +2,7 @@ package com.menisamet.totake.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Item;
@@ -24,19 +27,19 @@ import java.util.List;
 
 public class ExploreSelectedListAdapter extends RecyclerView.Adapter<ExploreSelectedListAdapter.ViewHolder> {
 
+    //TODO to be continue https://github.com/chthai64/SwipeRevealLayout
     private List<Item> mItems;
     private Context mContext;
-    private int mTripId;
 
 
     private OnItemIncButtonClickedListener onItemIncButtonClickedListener;
     private OnItemDecButtonClickedListener onItemDecButtonClickedListener;
     private OnItemDeleteButtonClickedListener onItemDeleteButtonClickedListener;
 
+
     public ExploreSelectedListAdapter(Context context, List<Item> items, int tripId) {
         this.mContext = context;
         this.mItems = items;
-        this.mTripId = tripId;
     }
 
     @Override
@@ -55,7 +58,6 @@ public class ExploreSelectedListAdapter extends RecyclerView.Adapter<ExploreSele
         final Item item = mItems.get(position);
 
         if (item != null) {
-
             TextView itemNameTextView = viewHolder.itemNameTextView;
             TextView itemAmountTextView = viewHolder.itemAmountTextView;
             ImageButton incButton = viewHolder.incButton;
@@ -101,6 +103,7 @@ public class ExploreSelectedListAdapter extends RecyclerView.Adapter<ExploreSele
         }
     }
 
+
     @Override
     public int getItemCount() {
         if (mItems == null) return 0;
@@ -108,6 +111,7 @@ public class ExploreSelectedListAdapter extends RecyclerView.Adapter<ExploreSele
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public SwipeRevealLayout swipeRevealLayout;
         public LinearLayout exploreSelectedItemLinearLayout;
         public TextView itemNameTextView;
         public TextView itemAmountTextView;
