@@ -10,6 +10,6 @@ import java.util.Date;
 public interface ITripSerivce {
     public SqlTrip getTrip(long tripId);
     public Iterable<SqlTrip> getAllTrips();
-    public SqlTrip addNewTrip(String destinationEnName, String getDestinationHeName, Date startDate, Date endDate);
+    public SqlTrip addNewTrip(String destinationEnName, String getDestinationHeName, String destinationGoogleId, Date startDate, Date endDate);
     public SqlTrip save(SqlTrip sqlTrip);
 }

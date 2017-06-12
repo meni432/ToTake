@@ -231,17 +231,18 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.OnConne
         });
 
         Trip trip = guiInterface.getTripById(msCurrentTripId);
-        guiInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
-            @Override
-            public void onResponse(List<Item> recommendedItems) {
-                mSuggestionItems = new ArrayList<Item>(recommendedItems);
-                mRAdapter.notifyDataSetChanged();
-            }
-        });
+//        guiInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
+//            @Override
+//            public void onResponse(List<Item> recommendedItems) {
+//                mSuggestionItems = new ArrayList<Item>(recommendedItems);
+//                mRAdapter.notifyDataSetChanged();
+//            }
+//        });
     }
 
     private void removeFromSuggestion(int position, boolean isChoosing) {
         mSuggestionItems.remove(position);
+        Log.d(TAG, mSuggestionItems.toString());
         mRAdapter.notifyDataSetChanged();
     }
 

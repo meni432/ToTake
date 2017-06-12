@@ -131,7 +131,7 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
 
 
     public void addTrip(View v) {
-        guiInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate, new AddNewTripResponseListener() {
+        guiInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate,mPlace.getId(), new AddNewTripResponseListener() {
             @Override
             public void onResponse(Trip trip) {
                 finish();

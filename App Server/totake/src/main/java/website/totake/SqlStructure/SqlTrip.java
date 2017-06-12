@@ -44,11 +44,12 @@ public class SqlTrip {
     public SqlTrip() {
     }
 
-    public SqlTrip(String destinationEnName, String getDestinationHeName, Date startDate, Date endDate) {
+    public SqlTrip(String destinationEnName, String getDestinationHeName, String googlePlaceId, Date startDate, Date endDate) {
         this.destinationEnName = destinationEnName;
         this.getDestinationHeName = getDestinationHeName;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.destinationGoogleId = googlePlaceId;
     }
 
     public long getTripId() {
@@ -71,6 +72,9 @@ public class SqlTrip {
         return endDate;
     }
 
+    public String getDestinationGoogleId() {
+        return destinationGoogleId;
+    }
 
     @Override
     public String toString() {

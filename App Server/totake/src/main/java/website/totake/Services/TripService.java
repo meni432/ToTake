@@ -27,8 +27,8 @@ public class TripService  implements ITripSerivce {
         return sqlTripRepository.findAll();
     }
 
-    public SqlTrip addNewTrip(String destinationEnName, String getDestinationHeName, Date startDate, Date endDate) {
-        SqlTrip newTrip = new SqlTrip(destinationEnName, getDestinationHeName, startDate, endDate);
+    public SqlTrip addNewTrip(String destinationEnName, String getDestinationHeName, String destinationGoogleId, Date startDate, Date endDate) {
+        SqlTrip newTrip = new SqlTrip(destinationEnName, getDestinationHeName, destinationGoogleId, startDate, endDate);
         SqlTrip result = sqlTripRepository.save(newTrip);
         return result;
     }

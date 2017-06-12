@@ -24,7 +24,7 @@ public interface GuiInterface {
     public User getUser();
     public List<Trip> getAllTrips();
     public Trip getTripById(long id);
-    public void addNewTrip(String destinationName, Date Start, Date end, AddNewTripResponseListener addNewTripResponseListener);
+    public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId,  final AddNewTripResponseListener addNewTripResponseListener);
     public void deleteTrip(Trip trip);
     public void addNewItem(Trip trip, String itemName, long amount, AddNewItemResponseListener addNewItemResponseListener);
     public void assignItemToTrip(Trip trip, Item item, long amount, AddNewItemResponseListener addNewItemResponseListener);

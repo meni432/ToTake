@@ -71,7 +71,7 @@ public class GuiService implements GuiInterface {
     }
 
     @Override
-    public void addNewTrip(String destinationName, Date startDate, Date endDate, final AddNewTripResponseListener addNewTripResponseListener) {
+    public void addNewTrip(final String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener) {
         server.addNewTrip(destinationName, startDate, endDate, new AddNewTripResponseListener() {
             @Override
             public void onResponse(Trip trip) {
