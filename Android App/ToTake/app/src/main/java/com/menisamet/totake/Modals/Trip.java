@@ -1,5 +1,6 @@
 package com.menisamet.totake.Modals;
 
+import com.google.gson.annotations.SerializedName;
 import com.menisamet.totake.Server.Interfaces.TripInterface;
 
 import java.text.DateFormat;
@@ -13,10 +14,15 @@ import java.util.List;
  */
 
 public class Trip implements TripInterface {
+    @SerializedName("destinationEnName")
     private String mDestinationName;
+//    @SerializedName("startDate")
     private Date mStartDate;
+//    @SerializedName("endDate")
     private Date mEndDate;
-    private List<Item> mListOfItems; //a list of item to take to this trip
+    @SerializedName("sqlItemDetails")
+    private List<Item> items;
+    @SerializedName("tripId")
     private int tripID;
 
     public Trip() {}
@@ -26,19 +32,19 @@ public class Trip implements TripInterface {
         this.mStartDate = startDate;
         this.mEndDate = endDate;
         this.tripID = tripID;
-        mListOfItems =  new ArrayList<>();
+        items =  new ArrayList<>();
         initialSampleItems(20);
     }
 
     private void initialSampleItems(int numberOfItems) {
         List<Item> items = Item.createItemList(numberOfItems);
         for (Item item : items) {
-            mListOfItems.add(item);
+            this.items.add(item);
         }
     }
 
     public void setItemAmount(int itemId, long newAmount){
-        mListOfItems.get(itemId).setmItemAmount(newAmount);
+        items.get(itemId).setmItemAmount(newAmount);
     }
     @Override
     public String getDestinationName() {
@@ -59,22 +65,16 @@ public class Trip implements TripInterface {
         return mEndDate;
     }
 
-    /**
-     * @return the list of item (the arrayList itself
-     */
-    public List<Item> getmListOfItems() {
-        return mListOfItems;
+    public List<Item> getItems() {
+        return items;
     }
 
-    /**
-     * @param item to add to this trip items list
-     */
     public void addItemToList(Item item){
-        mListOfItems.add(item);
+        items.add(0,item);
     }
 
     public void removeItemFromList(int itemId){
-        mListOfItems.remove(itemId);
+        items.remove(itemId);
     }
 
     /**
@@ -97,6 +97,10 @@ public class Trip implements TripInterface {
         final String displayFormt = "%s to %s";
         final String dateFromat = "dd/MM/yyyy";
 
+        if (this.getStartDate() == null || this.getEndDate() == null) {
+            return "NO Dates";
+        }
+
         // Create an instance of SimpleDateFormat used for formatting
         // the string representation of date (month/day/year)
         DateFormat df = new SimpleDateFormat(dateFromat);
@@ -109,4 +113,14 @@ public class Trip implements TripInterface {
         return String.format(displayFormt, startDate, endDate);
     }
 
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "mDestinationName='" + mDestinationName + '\'' +
+                ", mStartDate=" + mStartDate +
+                ", mEndDate=" + mEndDate +
+                ", items=" + items +
+                ", tripID=" + tripID +
+                '}';
+    }
 }

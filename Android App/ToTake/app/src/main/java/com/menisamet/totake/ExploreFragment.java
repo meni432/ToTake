@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,12 @@ import com.menisamet.totake.GuiElement.CardsRecyclerView;
 import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Item;
+import com.menisamet.totake.Modals.Trip;
+import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -35,6 +40,7 @@ public class ExploreFragment extends Fragment {
     private static String TAG = ExploreFragment.class.getCanonicalName();
     GuiInterface guiInterface = GuiService.getInstance();
     public static int msCurrentTripId = 0;
+    private Trip mTrip;
     private List<Item> mItems;
     private List<Item> mSuggestionItems;
     private List<Item> mSuggestionSearchItems;
@@ -45,6 +51,9 @@ public class ExploreFragment extends Fragment {
     private CardsRecyclerView mRecyclerView;
     private CardsRecyclerView.RecycleViewCardAdapter<Item> mRAdapter;
     private CardsRecyclerView.RecycleViewCardAdapter<Item> mSearchAdapter;
+
+    // Selected Item Adapter elemnt
+    private ExploreSelectedListAdapter mExploreSelectedListAdapter;
 
     private EditText mSearchEditText;
 
@@ -94,54 +103,67 @@ public class ExploreFragment extends Fragment {
         mRvSelectedItems = (RecyclerView) getView().findViewById(R.id.rvExploreSelectedList);
         mSearchEditText = (EditText) getView().findViewById(R.id.search_edit_text);
 
+        guiInterface.setContext(getContext());
+
         initialSelectedItemView();
-        initialSuggestionView();
+        mTrip = guiInterface.getTripById(msCurrentTripId);
+        guiInterface.getRecommendationList(mTrip, new RecommendationListResponseListener() {
+            @Override
+            public void onResponse(List<Item> recommendedItems) {
+                List<Item> items = new ArrayList<Item>();
+                for (Item item : recommendedItems) {
+                    items.add(item);
+                }
+                mSuggestionItems = items;
+                initialSuggestionView();
+            }
+        });
     }
 
     private void initialSelectedItemView() {
-//        mItems = Item.createItemList(100); // TODO Meni - get from logic
-        mItems = guiInterface.getUserDetails().getTrip(msCurrentTripId).getmListOfItems();
-        final ExploreSelectedListAdapter exploreSelectedListAdapter = new ExploreSelectedListAdapter(getContext(), mItems, msCurrentTripId);
-        mRvSelectedItems.setAdapter(exploreSelectedListAdapter);
+        Log.d(TAG, "current trip id : " + msCurrentTripId);
+        mTrip = guiInterface.getTripById(msCurrentTripId);
+        mItems = mTrip.getItems();
+        mExploreSelectedListAdapter = new ExploreSelectedListAdapter(getContext(), mItems, msCurrentTripId);
+        mRvSelectedItems.setAdapter(mExploreSelectedListAdapter);
         mRvSelectedItems.setLayoutManager(new LinearLayoutManager(getContext()));
-        exploreSelectedListAdapter.setOnItemDecButtonClickedListener(new ExploreSelectedListAdapter.OnItemDecButtonClickedListener() {
+        mExploreSelectedListAdapter.setOnItemDecButtonClickedListener(new ExploreSelectedListAdapter.OnItemDecButtonClickedListener() {
             @Override
             public void onDecClicked(View view, int position) {
                 Item item = mItems.get(position);
                 long originalAmount = item.getItemAmount();
                 if (originalAmount > 0) {
                     item.setmItemAmount(originalAmount - 1);
-                    guiInterface.notifyChangeAmount(msCurrentTripId, item.getItemID(), item.getItemAmount());
-                    exploreSelectedListAdapter.notifyDataSetChanged();
+                    guiInterface.notifyChangeAmount(mTrip, item);
+                    mExploreSelectedListAdapter.notifyDataSetChanged();
                 } else {
                     item.setmItemAmount(0);
                 }
             }
         });
-        exploreSelectedListAdapter.setOnItemIncButtonClickedListener(new ExploreSelectedListAdapter.OnItemIncButtonClickedListener() {
+        mExploreSelectedListAdapter.setOnItemIncButtonClickedListener(new ExploreSelectedListAdapter.OnItemIncButtonClickedListener() {
             @Override
             public void onIncClicked(View view, int position) {
                 Item item = mItems.get(position);
                 item.setmItemAmount(item.getItemAmount() + 1);
-                guiInterface.notifyChangeAmount(msCurrentTripId, item.getItemID(), item.getItemAmount());
-                exploreSelectedListAdapter.notifyDataSetChanged();
+                guiInterface.notifyChangeAmount(mTrip, item);
+                mExploreSelectedListAdapter.notifyDataSetChanged();
             }
         });
-        exploreSelectedListAdapter.setOnItemDeleteButtonClickedListener(new ExploreSelectedListAdapter.OnItemDeleteButtonClickedListener() {
+        mExploreSelectedListAdapter.setOnItemDeleteButtonClickedListener(new ExploreSelectedListAdapter.OnItemDeleteButtonClickedListener() {
             @Override
             public void onDeleteClicked(View view, int position) {
                 Item item = mItems.get(position);
-                guiInterface.deleteItemFromTrip(msCurrentTripId, item.getItemID());
+                guiInterface.deleteItemFromTrip(mTrip, item);
 //                mItems.remove(position);
 //                exploreSelectedListAdapter.notifyItemRemoved(position);
-                exploreSelectedListAdapter.notifyDataSetChanged();
+                mExploreSelectedListAdapter.notifyDataSetChanged();
             }
         });
     }
 
     private void initialSuggestionView() {
 //        mSuggestionItems = Item.createItemList(20); //TODO Meni - get from logic
-        mSuggestionItems = Item.createItemList(10);
         mRecyclerView = (CardsRecyclerView) getView().findViewById(R.id.suggestion_card_recycle_view);
         mRecyclerView.setNumLinesAndOrientation(1, CardsRecyclerView.HORIZONTAL);
         mRAdapter = new CardsRecyclerView.RecycleViewCardAdapter<>(mSuggestionItems);
@@ -152,7 +174,8 @@ public class ExploreFragment extends Fragment {
             @Override
             public void onCardClick(View view, int position) {
                 if (position > -1) {
-                    removeFromSuggestion(position, true);
+                    assignItemToList(position);
+//                    removeFromSuggestion(position, true);
                 }
             }
         });
@@ -182,10 +205,11 @@ public class ExploreFragment extends Fragment {
             }
         });
 
-        guiInterface.getRecommendationList(msCurrentTripId, new RecommendationListResponseListener() {
+        Trip trip = guiInterface.getTripById(msCurrentTripId);
+        guiInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
             @Override
             public void onResponse(List<Item> recommendedItems) {
-                mSuggestionItems = recommendedItems;
+                mSuggestionItems = new ArrayList<Item>(recommendedItems);
                 mRAdapter.notifyDataSetChanged();
             }
         });
@@ -196,6 +220,18 @@ public class ExploreFragment extends Fragment {
         // TODO Meni - chnage to hide
         mSuggestionItems.remove(position);
         mRAdapter.notifyItemRemoved(position);
+    }
+
+    private void assignItemToList(final int position) {
+        Item item = mSuggestionItems.get(position);
+        guiInterface.assignItemToTrip(mTrip, item, item.getItemAmount(), new AddNewItemResponseListener() {
+            @Override
+            public void onResponse(Item item) {
+                mRvSelectedItems.scrollToPosition(0);
+                mExploreSelectedListAdapter.notifyItemInserted(0);
+                removeFromSuggestion(position, true);
+            }
+        });
     }
 
     private Snackbar generateDeleteSnackbar(final Item item, final View.OnClickListener undoOnClick, final Snackbar.Callback onDismissedCallback) {

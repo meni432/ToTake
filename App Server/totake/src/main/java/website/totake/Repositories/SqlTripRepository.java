@@ -7,4 +7,5 @@ import website.totake.SqlStructure.SqlTrip;
  * Created by meni on 26/05/17.
  */
 public interface SqlTripRepository  extends CrudRepository<SqlTrip, Long> {
+    public SqlTrip findTripByTripId(long tripId);
 }

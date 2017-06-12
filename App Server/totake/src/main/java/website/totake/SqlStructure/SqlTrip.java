@@ -1,5 +1,6 @@
 package website.totake.SqlStructure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import website.totake.Item;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class SqlTrip {
     private Set<SqlItemDetails> sqlItemDetails = new HashSet<>();
 
 
+//    @JsonIgnore
     public Set<SqlItemDetails> getSqlItemDetails() {
         return sqlItemDetails;
     }
@@ -39,7 +41,6 @@ public class SqlTrip {
 
     public SqlTrip() {
     }
-
 
     public SqlTrip(String destinationEnName, String getDestinationHeName, Date startDate, Date endDate) {
         this.destinationEnName = destinationEnName;

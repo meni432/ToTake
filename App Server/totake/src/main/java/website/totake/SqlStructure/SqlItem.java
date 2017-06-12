@@ -1,6 +1,7 @@
 package website.totake.SqlStructure;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,7 +26,7 @@ public class SqlItem {
     private String mItemHEName;
 
     @OneToMany(mappedBy = "primaryKey.item",
-            cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<SqlItemDetails> sqlItemDetails = new HashSet<>();
 
     public SqlItem() {}
@@ -36,6 +37,8 @@ public class SqlItem {
     }
 
 
+    @JsonIgnore
+    @Transient
     public Set<SqlItemDetails> getSqlItemDetails() {
         return sqlItemDetails;
     }
@@ -44,16 +47,14 @@ public class SqlItem {
         this.sqlItemDetails = sqlItemDetails;
     }
 
+    @JsonProperty("itemInTripId")
     public long getItemID() {
         return itemID;
     }
 
+    @JsonProperty("itemInTripName")
     public String getItemEHName() {
         return mItemEHName;
-    }
-
-    public String getItemHEName() {
-        return mItemHEName;
     }
 
     @JsonIgnore

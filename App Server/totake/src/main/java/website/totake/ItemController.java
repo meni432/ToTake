@@ -4,36 +4,83 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import website.totake.Repositories.SqlItemRepository;
+import website.totake.Services.ItemDetailsService;
+import website.totake.Services.ItemService;
+import website.totake.Services.TripService;
+import website.totake.Services.UserService;
 import website.totake.SqlStructure.SqlItem;
-
-import java.util.ArrayList;
-import java.util.List;
+import website.totake.SqlStructure.SqlItemDetails;
+import website.totake.SqlStructure.SqlTrip;
 
 /**
  * Created by meni on 26/05/17.
  */
 @RestController
 public class ItemController {
-    @Autowired
-    private SqlItemRepository sqlItemRepository;
+//    @Autowired
+//    private SqlItemRepository sqlItemRepository;
 
-    @RequestMapping("/getAllItems")
-    public List<website.totake.Item> getAllItems() {
-        ArrayList<website.totake.Item> allItems = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            allItems.add(new website.totake.Item("SqlItem "+i, 1));
-        }
-        return allItems;
+    @Autowired
+    private TripService tripService;
+
+    @Autowired
+    private ItemService itemService;
+
+    @Autowired
+    private ItemDetailsService itemDetailsService;
+
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("/deleteItemFromTrip")
+    public Item deleteItemFromTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                                   @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                                   @RequestParam(name = "itemId", defaultValue = "-1") long itemId) {
+
+        itemDetailsService.removeByTripIdAndItemId(tripId, itemId);
+        return null;
     }
 
-    @RequestMapping("/addItem")
-    public SqlItem addItem(@RequestParam(name = "heName", defaultValue = "none") String heName,
-                           @RequestParam(name = "enName", defaultValue = "none") String enName) {
+    @RequestMapping("/notifyChangeAmount")
+    public SqlItemDetails notifyChangeAmount(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                                   @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                                   @RequestParam(name = "itemId", defaultValue = "-1") long itemId,
+                                   @RequestParam(name = "amount", defaultValue = "-1") int amount) {
 
-        SqlItem sqlTableItem = new SqlItem(heName, enName);
-        SqlItem result = sqlItemRepository.save(sqlTableItem);
+        SqlItemDetails sqlItemDetails = itemDetailsService.getItemDetails(tripId, itemId);
+        sqlItemDetails.setAmount(amount);
+        itemDetailsService.save(sqlItemDetails);
 
-        return result;
+        return sqlItemDetails;
+    }
+
+    @RequestMapping("/addNewItem")
+    public SqlItem addNewItem(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                              @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                              @RequestParam(name = "itemName", defaultValue = "none") String itemName,
+                              @RequestParam(name = "amount", defaultValue = "-1") int amount) {
+
+        SqlTrip sqlTrip = tripService.getTrip(tripId);
+        SqlItem sqlItem = itemService.addNewItem(itemName, itemName);
+        SqlItemDetails sqlItemDetails = itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, amount, 0);
+        return sqlItemDetails.getItem();
+    }
+
+
+    @RequestMapping("/assignItemToUser")
+    public SqlItem assignItemToUser(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                                    @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                                    @RequestParam(name = "itemId", defaultValue = "-1") long itemId,
+                                    @RequestParam(name = "amount", defaultValue = "-1") int amount) {
+
+        SqlTrip sqlTrip = tripService.getTrip(tripId);
+        SqlItem sqlItem = itemService.getItem(itemId);
+        SqlItemDetails sqlItemDetails = itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, amount, 0);
+        return sqlItemDetails.getItem();
+    }
+
+    @RequestMapping("/getAllItems")
+    public Iterable<SqlItem> getAllItems() {
+        return itemService.getAllItems();
     }
 }
