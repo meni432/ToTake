@@ -191,7 +191,7 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener){
-        String path = "/addNewTrip?userId="+mCurrentUserId+"&destinationName="+destinationName+"&startDate="+startDate+"&endDate="+endDate+"&googlePlaceId="+googlePlaceId;
+        String path = "/addNewTrip?userId="+mCurrentUserId+"&destinationName="+destinationName+"&startDate="+startDate.getTime()+"&endDate="+endDate.getTime()+"&googlePlaceId="+googlePlaceId;
         GsonRequest<Trip> gsonRequest = new GsonRequest<>(mServerUrl + path, Trip.class, null, new Response.Listener<Trip>() {
             @Override
             public void onResponse(Trip response) {

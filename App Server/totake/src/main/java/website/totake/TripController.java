@@ -36,12 +36,12 @@ public class TripController {
     @RequestMapping("/addNewTrip")
     public SqlTrip addNewTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
                            @RequestParam(name = "destinationName", defaultValue = "none") String destinationName,
-                           @RequestParam(name = "startDate", defaultValue = "-1") Date startDate,
-                           @RequestParam(name = "endDate", defaultValue = "-1") Date endDate,
+                           @RequestParam(name = "startDate", defaultValue = "-1") long startDate,
+                           @RequestParam(name = "endDate", defaultValue = "-1") long endDate,
                            @RequestParam(name = "googlePlaceId", defaultValue = "none") String googlePlaceId) {
 
         SqlUser sqlUser = userService.getUser(userId);
-        SqlTrip sqlTrip = tripService.addNewTrip(destinationName, destinationName, googlePlaceId, startDate, endDate);
+        SqlTrip sqlTrip = tripService.addNewTrip(destinationName, destinationName, googlePlaceId, new Date(startDate), new Date(endDate));
         sqlUser.addTrip(sqlTrip);
         userService.save(sqlUser);
 

@@ -28,7 +28,7 @@ public interface LogicInterface {
     public void notifyChangeAmount(Trip trip, Item item);
     public void deleteTrip(Trip trip);
     public void deleteItemFromTrip(Trip trip, Item item);
-    public void addNewTripaddNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener);
+    public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener);
     public void  addNewUser(String userName, String userEmail, final UserLoadListener userLoadListener);
     public void getRecommendationList(int tripId, RecommendationListResponseListener recommandationListResponseListener);
 
