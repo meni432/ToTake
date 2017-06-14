@@ -13,6 +13,9 @@ import com.menisamet.totake.Server.Listeners.UserLoadListener;
 import com.menisamet.totake.Server.LogicInterface;
 import com.menisamet.totake.Server.LogicService;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -60,7 +63,9 @@ public class GuiService implements GuiInterface {
     @Override
     public List<Trip> getAllTrips() {
         if (currentUser != null) {
-            return currentUser.getTrips();
+            final List<Trip> trips = currentUser.getTrips();
+            Collections.reverse(trips);
+            return trips;
         }
         return null;
     }
@@ -109,7 +114,9 @@ public class GuiService implements GuiInterface {
 
     @Override
     public void deleteItemFromTrip(Trip trip, Item item) {
-        server.deleteItemFromTrip(trip, item);
+//        server.deleteItemFromTrip(trip, item);
+        // TODO need to implement
+        trip.getItems().remove(item);
     }
 
     @Override
@@ -128,12 +135,27 @@ public class GuiService implements GuiInterface {
     }
 
     @Override
-    public void getRecommendationList(Trip trip, final RecommendationListResponseListener recommendationListResponseListener) {
+    public void getRecommendationList(final Trip trip, final RecommendationListResponseListener recommendationListResponseListener) {
         //TODO need to change for realy recomendation protocol
         getAllItems(new AllItemsResponseListener() {
             @Override
             public void onResponse(List<Item> items) {
-                recommendationListResponseListener.onResponse(items);
+                List<Item> itemList = new ArrayList<Item>();
+                for (Item item : items) {
+                    if (!trip.getItems().contains(item)) {
+                        itemList.add(item);
+                    }
+                }
+                Collections.sort(itemList, new Comparator<Item>() {
+                    @Override
+                    public int compare(Item o1, Item o2) {
+                        if (Math.random() > 0.5) {
+                            return 1;
+                        }
+                        return -1;
+                    }
+                });
+                recommendationListResponseListener.onResponse(itemList);
             }
         });
     }

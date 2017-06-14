@@ -8,9 +8,9 @@ import website.totake.Services.ItemDetailsService;
 import website.totake.Services.ItemService;
 import website.totake.Services.TripService;
 import website.totake.Services.UserService;
-import website.totake.SqlStructure.SqlItem;
-import website.totake.SqlStructure.SqlItemDetails;
-import website.totake.SqlStructure.SqlTrip;
+import website.totake.SqlStructure.Item;
+import website.totake.SqlStructure.ItemDetails;
+import website.totake.SqlStructure.Trip;
 
 /**
  * Created by meni on 26/05/17.
@@ -37,50 +37,50 @@ public class ItemController {
                                    @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
                                    @RequestParam(name = "itemId", defaultValue = "-1") long itemId) {
 
-        itemDetailsService.removeByTripIdAndItemId(tripId, itemId);
+        itemDetailsService.removeByTripAndItem(tripId, itemId);
         return null;
     }
 
     @RequestMapping("/notifyChangeAmount")
-    public SqlItemDetails notifyChangeAmount(@RequestParam(name = "userId", defaultValue = "-1") long userId,
-                                   @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
-                                   @RequestParam(name = "itemId", defaultValue = "-1") long itemId,
-                                   @RequestParam(name = "amount", defaultValue = "-1") int amount) {
+    public ItemDetails notifyChangeAmount(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                                          @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                                          @RequestParam(name = "itemId", defaultValue = "-1") long itemId,
+                                          @RequestParam(name = "amount", defaultValue = "-1") int amount) {
 
-        SqlItemDetails sqlItemDetails = itemDetailsService.getItemDetails(tripId, itemId);
-        sqlItemDetails.setAmount(amount);
-        itemDetailsService.save(sqlItemDetails);
+        ItemDetails itemDetails = itemDetailsService.getItemDetails(tripId, itemId);
+        itemDetails.setAmount(amount);
+        itemDetailsService.save(itemDetails);
 
-        return sqlItemDetails;
+        return itemDetails;
     }
 
     @RequestMapping("/addNewItem")
-    public SqlItem addNewItem(@RequestParam(name = "userId", defaultValue = "-1") long userId,
-                              @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
-                              @RequestParam(name = "itemName", defaultValue = "none") String itemName,
-                              @RequestParam(name = "amount", defaultValue = "-1") int amount) {
+    public Item addNewItem(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                           @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                           @RequestParam(name = "itemName", defaultValue = "none") String itemName,
+                           @RequestParam(name = "amount", defaultValue = "-1") int amount) {
 
-        SqlTrip sqlTrip = tripService.getTrip(tripId);
-        SqlItem sqlItem = itemService.addNewItem(itemName, itemName);
-        SqlItemDetails sqlItemDetails = itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, amount, 0);
-        return sqlItemDetails.getItem();
+        Trip trip = tripService.getTrip(tripId);
+        Item item = itemService.addNewItem(itemName, itemName);
+        ItemDetails itemDetails = itemDetailsService.addNewItemDetails(trip, item, amount, 0);
+        return itemDetails.getItem();
     }
 
 
     @RequestMapping("/assignItemToUser")
-    public SqlItem assignItemToUser(@RequestParam(name = "userId", defaultValue = "-1") long userId,
-                                    @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
-                                    @RequestParam(name = "itemId", defaultValue = "-1") long itemId,
-                                    @RequestParam(name = "amount", defaultValue = "-1") int amount) {
+    public Item assignItemToUser(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                                 @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                                 @RequestParam(name = "itemId", defaultValue = "-1") long itemId,
+                                 @RequestParam(name = "amount", defaultValue = "-1") int amount) {
 
-        SqlTrip sqlTrip = tripService.getTrip(tripId);
-        SqlItem sqlItem = itemService.getItem(itemId);
-        SqlItemDetails sqlItemDetails = itemDetailsService.addNewItemDetails(sqlTrip, sqlItem, amount, 0);
-        return sqlItemDetails.getItem();
+        Trip trip = tripService.getTrip(tripId);
+        Item item = itemService.getItem(itemId);
+        ItemDetails itemDetails = itemDetailsService.addNewItemDetails(trip, item, amount, 0);
+        return itemDetails.getItem();
     }
 
     @RequestMapping("/getAllItems")
-    public Iterable<SqlItem> getAllItems() {
+    public Iterable<Item> getAllItems() {
         return itemService.getAllItems();
     }
 }

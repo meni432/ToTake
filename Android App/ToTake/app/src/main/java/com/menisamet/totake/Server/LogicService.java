@@ -21,7 +21,13 @@ import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 import com.menisamet.totake.Server.Listeners.UserLoadListener;
 import com.menisamet.totake.Server.Services.GsonRequest;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -80,7 +86,7 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void setUserId(final long userId, final UserLoadListener userLoadListener) {
-        GsonRequest<User> gsonRequest = new GsonRequest<>(mServerUrl + "/getUser?userId="+userId, User.class, null, new Response.Listener<User>() {
+        GsonRequest<User> gsonRequest = new GsonRequest<>(mServerUrl + "/getUser?userId=" + userId, User.class, null, new Response.Listener<User>() {
             @Override
             public void onResponse(User response) {
                 if (response != null) {
@@ -101,7 +107,7 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void addNewItem(Trip trip, String itemName, long amount, final AddNewItemResponseListener addNewItemResponseListener) {
-        String path = "/addNewItem?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemName="+itemName+"&amount="+amount;
+        String path = "/addNewItem?userId=" + mCurrentUserId + "&tripId=" + trip.getTripID() + "&itemName=" + itemName + "&amount=" + amount;
         GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
             @Override
             public void onResponse(Item response) {
@@ -119,7 +125,7 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void assignItemToTrip(Trip trip, Item item, long amount, final AddNewItemResponseListener addNewItemResponseListener) {
-        String path = "/assignItemToUser?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID()+"&amount="+amount;
+        String path = "/assignItemToUser?userId=" + mCurrentUserId + "&tripId=" + trip.getTripID() + "&itemId=" + item.getItemID() + "&amount=" + amount;
         GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
             @Override
             public void onResponse(Item response) {
@@ -137,7 +143,7 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void notifyChangeAmount(Trip trip, Item item) {
-        String path = "/notifyChangeAmount?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID()+"&amount="+item.getItemAmount();
+        String path = "/notifyChangeAmount?userId=" + mCurrentUserId + "&tripId=" + trip.getTripID() + "&itemId=" + item.getItemID() + "&amount=" + item.getItemAmount();
         GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
             @Override
             public void onResponse(Item response) {
@@ -155,7 +161,7 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void deleteTrip(Trip trip) {
-        String path = "/deleteTrip?userId="+mCurrentUserId+"&tripId="+trip.getTripID();
+        String path = "/deleteTrip?userId=" + mCurrentUserId + "&tripId=" + trip.getTripID();
         GsonRequest<Trip> gsonRequest = new GsonRequest<>(mServerUrl + path, Trip.class, null, new Response.Listener<Trip>() {
             @Override
             public void onResponse(Trip response) {
@@ -173,7 +179,7 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void deleteItemFromTrip(Trip trip, Item item) {
-        String path = "/deleteItemFromTrip?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID();
+        String path = "/deleteItemFromTrip?userId=" + mCurrentUserId + "&tripId=" + trip.getTripID() + "&itemId=" + item.getItemID();
         GsonRequest<Item> gsonRequest = new GsonRequest<>(mServerUrl + path, Item.class, null, new Response.Listener<Item>() {
             @Override
             public void onResponse(Item response) {
@@ -190,26 +196,27 @@ public class LogicService implements LogicInterface {
     }
 
     @Override
-    public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener){
-        String path = "/addNewTrip?userId="+mCurrentUserId+"&destinationName="+destinationName+"&startDate="+startDate.getTime()+"&endDate="+endDate.getTime()+"&googlePlaceId="+googlePlaceId;
-        GsonRequest<Trip> gsonRequest = new GsonRequest<>(mServerUrl + path, Trip.class, null, new Response.Listener<Trip>() {
-            @Override
-            public void onResponse(Trip response) {
-                addNewTripResponseListener.onResponse(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                addNewTripResponseListener.onResponse(null);
-            }
-        });
+    public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener) {
+            String path = "/addNewTrip?userId=" + mCurrentUserId + "&destinationName=" + destinationName + "&startDate=" + startDate.getTime() + "&endDate=" + endDate.getTime() + "&googlePlaceId=" + googlePlaceId;
+            String encodedUrl = (mServerUrl + path).replaceAll(" ","%20");
+            GsonRequest<Trip> gsonRequest = new GsonRequest<>(encodedUrl, Trip.class, null, new Response.Listener<Trip>() {
+                @Override
+                public void onResponse(Trip response) {
+                    addNewTripResponseListener.onResponse(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    addNewTripResponseListener.onResponse(null);
+                }
+            });
 
-        mRequestQueue.add(gsonRequest);
+            mRequestQueue.add(gsonRequest);
     }
 
     @Override
     public void addNewUser(String userName, String userEmail, final UserLoadListener userLoadListener) {
-        String path = "/addUser?userName="+userName+"&userEmail="+userEmail;
+        String path = "/addUser?userName=" + userName + "&userEmail=" + userEmail;
         GsonRequest<User> gsonRequest = new GsonRequest<>(mServerUrl + path, User.class, null, new Response.Listener<User>() {
             @Override
             public void onResponse(User response) {
@@ -227,7 +234,7 @@ public class LogicService implements LogicInterface {
 
 
     @Override
-    public void getRecommendationList(int tripId, RecommendationListResponseListener recommendationListResponseListener) {
+    public void getRecommendationList(Trip trip, RecommendationListResponseListener recommendationListResponseListener) {
         recommendationListResponseListener.onResponse(Item.createItemList(10));
     }
 }

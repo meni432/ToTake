@@ -1,16 +1,17 @@
 package website.totake.Services.Interfaces;
 
-import website.totake.SqlStructure.SqlItem;
-import website.totake.SqlStructure.SqlItemDetails;
-import website.totake.SqlStructure.SqlTrip;
+import website.totake.SqlStructure.Item;
+import website.totake.SqlStructure.ItemDetails;
+import website.totake.SqlStructure.Trip;
 
 /**
  * Created by meni on 04/06/17.
  */
 public interface IItemDetailsService {
-    public SqlItemDetails addNewItemDetails(SqlTrip sqlTrip, SqlItem sqlItem, int amount, int isDone);
-    public SqlItemDetails save(SqlItemDetails sqlItemDetails);
-    public void removeByTripIdAndItemId(SqlTrip sqlTrip, SqlItem sqlItem);
-    public void removeByTripIdAndItemId(long tripId, long itemId);
-    public SqlItemDetails getItemDetails(long tripId, long itemId);
+    public ItemDetails addNewItemDetails(Trip trip, Item item, int amount, int isDone);
+    public ItemDetails save(ItemDetails itemDetails);
+    public void removeByTripAndItem(Trip trip, Item item);
+    public void removeByTripAndItem(long tripId, long itemId);
+    public ItemDetails getItemDetails(long tripId, long itemId);
+    public void removeItem(Item item);
 }

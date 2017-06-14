@@ -5,7 +5,7 @@
 
 	<groupId>website.totake</groupId>
 	<artifactId>totake</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-totake-server</version>
 	<packaging>jar</packaging>
 
 	<name>totake</name>
@@ -115,6 +115,16 @@
 				<!--&lt;!&ndash;</configuration>&ndash;&gt;-->
 			<!--</plugin>-->
 		<!--</plugins>-->
+
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 

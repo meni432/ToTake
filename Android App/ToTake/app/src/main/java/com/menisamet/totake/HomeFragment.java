@@ -3,10 +3,20 @@ package com.menisamet.totake;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.menisamet.totake.Logic.GuiInterface;
+import com.menisamet.totake.Logic.GuiService;
+import com.menisamet.totake.Modals.User;
+import com.menisamet.totake.Server.Listeners.UserLoadListener;
 
 
 /**
@@ -18,6 +28,9 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+    private static final String TAG = HomeFragment.class.getCanonicalName();
+    GuiInterface guiInterface = GuiService.getInstance();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -27,11 +40,19 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
+    //loading component
+    private Button mReloadButton;
+    private TextView mUserNameTextView;
+    private ProgressBar mLoadingProgressBar;
+
+
     private OnFragmentInteractionListener mListener;
 
     public HomeFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -61,9 +82,30 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // Inflate the layout for this fragment
+        mReloadButton = (Button) getView().findViewById(R.id.reload_button);
+        mUserNameTextView = (TextView) getView().findViewById(R.id.user_name_textView);
+        mLoadingProgressBar = (ProgressBar) getView().findViewById(R.id.loading_progressBar);
+
+
+        loadUserFromServer();
+
+        mReloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadUserFromServer();
+                mLoadingProgressBar.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -104,5 +146,18 @@ public class HomeFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void loadUserFromServer() {
+        guiInterface.setUserId(15, new UserLoadListener() {
+            @Override
+            public void onUserLoad(User user) {
+                if (user != null) {
+                    mLoadingProgressBar.setVisibility(View.GONE);
+                    mUserNameTextView.setText(user.getNameUser());
+                }
+                Log.d(TAG, "user :" + user);
+            }
+        });
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import website.totake.Repositories.SqlTripRepository;
 import website.totake.Services.Interfaces.ITripSerivce;
-import website.totake.SqlStructure.SqlTrip;
+import website.totake.SqlStructure.Trip;
 
 import java.util.Date;
 
@@ -18,24 +18,30 @@ public class TripService  implements ITripSerivce {
     @Autowired
     private SqlTripRepository sqlTripRepository;
 
-    public SqlTrip getTrip(long tripId) {
-        SqlTrip trip = sqlTripRepository.findTripByTripId(tripId);
-        return trip;
+    public Trip getTrip(long tripId) {
+        Trip trip = sqlTripRepository.findTripByTripId(tripId);
+        if (trip != null && trip.getStatus() == Trip.TRIP_REGULAR) {
+            return trip;
+        } else if (trip != null && trip.getStatus() == Trip.TRIP_DELETED) {
+            return null;
+        }
+
+        return null;
     }
 
-    public Iterable<SqlTrip> getAllTrips() {
+    public Iterable<Trip> getAllTrips() {
         return sqlTripRepository.findAll();
     }
 
-    public SqlTrip addNewTrip(String destinationEnName, String getDestinationHeName, String destinationGoogleId, Date startDate, Date endDate) {
-        SqlTrip newTrip = new SqlTrip(destinationEnName, getDestinationHeName, destinationGoogleId, startDate, endDate);
-        SqlTrip result = sqlTripRepository.save(newTrip);
+    public Trip addNewTrip(String destinationEnName, String getDestinationHeName, String destinationGoogleId, Date startDate, Date endDate) {
+        Trip newTrip = new Trip(destinationEnName, getDestinationHeName, destinationGoogleId, startDate, endDate);
+        Trip result = sqlTripRepository.save(newTrip);
         return result;
     }
 
     @Override
-    public SqlTrip save(SqlTrip sqlTrip) {
-        return sqlTripRepository.save(sqlTrip);
+    public Trip save(Trip trip) {
+        return sqlTripRepository.save(trip);
     }
 
 }

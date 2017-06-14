@@ -3,6 +3,7 @@ package com.menisamet.totake;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,10 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.menisamet.totake.Adapters.TripDetailAdapter;
 import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Trip;
+import com.menisamet.totake.Services.PlaceImageLoader;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,8 +34,12 @@ import java.util.List;
  * Use the {@link TripFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TripFragment extends Fragment {
+public class TripFragment extends Fragment  implements GoogleApiClient.OnConnectionFailedListener {
     List<Trip> trips;
+
+    private GoogleApiClient mGoogleApiClient;
+    private PlaceImageLoader mPlaceImageLoader;
+
 
     GuiInterface guiInterface = GuiService.getInstance();
     // TODO: Rename parameter arguments, choose names that match
@@ -116,11 +125,32 @@ public class TripFragment extends Fragment {
         RecyclerView rvTrips = (RecyclerView) getView().findViewById(R.id.rvTrips);
 
 //        trips = Trip.createTripList(100);//test
+        startGoogleApiClient();
+        mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
+
         trips = guiInterface.getAllTrips();
-        TripDetailAdapter tripDetailAdapter = new TripDetailAdapter(trips, getContext());
+        TripDetailAdapter tripDetailAdapter = new TripDetailAdapter(trips, getContext(), mPlaceImageLoader);
         rvTrips.setAdapter(tripDetailAdapter);
         rvTrips.setLayoutManager(new LinearLayoutManager(getContext()));
         tripDetailAdapter.notifyDataSetChanged();
+
+    }
+
+    private synchronized void startGoogleApiClient() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient
+                    .Builder(getContext())
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .enableAutoManage(getActivity(), this)
+                    .build();
+        }
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     /**

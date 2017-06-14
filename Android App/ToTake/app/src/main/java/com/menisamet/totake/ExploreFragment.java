@@ -41,7 +41,7 @@ import java.util.List;
  * Use the {@link ExploreFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExploreFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
+public class ExploreFragment extends Fragment{
     private static String TAG = ExploreFragment.class.getCanonicalName();
     GuiInterface guiInterface = GuiService.getInstance();
     public static int msCurrentTripId = 0;
@@ -61,11 +61,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.OnConne
     private ExploreSelectedListAdapter mExploreSelectedListAdapter;
 
     private EditText mSearchEditText;
-
-
-
-    private GoogleApiClient mGoogleApiClient;
-    private PlaceImageLoader mPlaceImageLoader;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -126,21 +121,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.OnConne
                 initialSuggestionView();
             }
         });
-
-
-
-        startGoogleApiClient();
-        mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
-    }
-
-
-    private synchronized void startGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(getContext())
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(getActivity(), this)
-                .build();
 
 
     }
@@ -303,11 +283,6 @@ public class ExploreFragment extends Fragment implements GoogleApiClient.OnConne
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     /**

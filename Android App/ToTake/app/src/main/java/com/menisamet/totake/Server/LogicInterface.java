@@ -30,7 +30,7 @@ public interface LogicInterface {
     public void deleteItemFromTrip(Trip trip, Item item);
     public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener);
     public void  addNewUser(String userName, String userEmail, final UserLoadListener userLoadListener);
-    public void getRecommendationList(int tripId, RecommendationListResponseListener recommandationListResponseListener);
+    public void getRecommendationList(Trip trip, RecommendationListResponseListener recommendationListResponseListener);
 
 }
 

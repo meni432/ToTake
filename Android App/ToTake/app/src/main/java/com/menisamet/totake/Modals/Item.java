@@ -102,6 +102,26 @@ public class Item implements ItemInterface, CardsRecyclerView.CardElement{
         return 0;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+
+        Item item = (Item) o;
+
+        if (getItemID() != item.getItemID()) return false;
+        return mItemName.equals(item.mItemName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mItemName.hashCode();
+        result = 31 * result + getItemID();
+        return result;
+    }
+
     /**
      * End CardsRecyclerView.CardElement Area
      */
