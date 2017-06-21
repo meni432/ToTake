@@ -7,6 +7,7 @@ public class SlopeOne {
 
     protected UserItemsContainer ans = DataReader.userItemsArray(null);
     protected List<List<Integer>> recommendationLists;
+    protected List<List<SlopeOneRate.UserPair>> recommendationListsPair;
     protected double[][] itemItemCosine; //every item relationship to every other item
     protected   int[][] itemUserMatrix; //save for every item if user take this item
 
@@ -25,7 +26,17 @@ public class SlopeOne {
         double ans = 0;
         assert (vecA.length == vecB.length);
         for (int i = 0; i < vecA.length; i++) {
-            ans = vecA[i] * vecB[i];
+            ans += vecA[i] * vecB[i];
+        }
+        return ans;
+    }
+
+
+    public static double multiplyVectors(double[] vecA, double[] vecB) {
+        double ans = 0;
+        assert (vecA.length == vecB.length);
+        for (int i = 0; i < vecA.length; i++) {
+            ans += vecA[i] * vecB[i];
         }
         return ans;
     }
@@ -38,6 +49,13 @@ public class SlopeOne {
         return Math.sqrt(ans);
     }
 
+    public static double normVector(double[] vec) {
+        double ans = 0;
+        for (int i = 0; i < vec.length; i++) {
+            ans += vec[i] * vec[i];
+        }
+        return Math.sqrt(ans);
+    }
     public static double[][] randomMatrix(int n, int m) {
         double[][] ans = new double[n][m];
         for (int i = 0; i < n; i++) {
@@ -89,6 +107,7 @@ public class SlopeOne {
 
         final double k = 0;
         recommendationLists = new ArrayList<>();
+        recommendationListsPair = new ArrayList<>();
         for (int userIndex = 0; userIndex < ans.getMaxUserId(); userIndex++) {
             double[] userItemSum = new double[ans.getMaxItemId()];
             for (int userItemIndex = 0; userItemIndex < ans.getMaxItemId(); userItemIndex++) { //run on the users
@@ -99,6 +118,7 @@ public class SlopeOne {
                 }
             }
             ArrayList<Integer> userRecommendation = new ArrayList<Integer>();
+            ArrayList<SlopeOneRate.UserPair> userRecommendationPairs = new ArrayList<>();
             for (int userItemSumIndex = 0; userItemSumIndex < userItemSum.length; userItemSumIndex++) {
                 if (userItemSum[userItemSumIndex] > k) {
                     userRecommendation.add(userItemSumIndex);
@@ -121,6 +141,7 @@ public class SlopeOne {
 //            }
 //            System.out.println();
             recommendationLists.add(userIndex, userRecommendation);
+//            recommendationListsPair.add(userIndex, )
 
         }
         printRecommendation();
