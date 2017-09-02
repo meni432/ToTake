@@ -1,16 +1,13 @@
 package website.totake.Services.Interfaces;
 
-import website.totake.SqlStructure.SqlItem;
-import website.totake.SqlStructure.SqlTrip;
-
-import java.util.Date;
+import website.totake.SqlStructure.Item;
 
 /**
  * Created by meni on 28/05/17.
  */
 public interface IItemService {
-    public SqlItem getItem(long itemId);
-    public Iterable<SqlItem> getAllItems();
-    public SqlItem addNewItem(String mItemEHName, String mItemHEName);
-    public SqlItem save(SqlItem sqlItem);
+    public Item getItem(long itemId);
+    public Iterable<Item> getAllItems();
+    public Item addNewItem(String mItemEHName, String mItemHEName);
+    public Item save(Item item);
 }

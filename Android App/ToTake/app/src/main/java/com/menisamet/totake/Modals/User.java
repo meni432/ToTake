@@ -53,7 +53,7 @@ public class User {
     }
 
     public void addNewTrip(Trip trip) {
-        userTripList.add(trip);
+        userTripList.add(0, trip);
     }
 
     /**

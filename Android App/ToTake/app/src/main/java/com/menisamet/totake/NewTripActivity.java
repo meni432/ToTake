@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -26,12 +27,14 @@ import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.AddNewTripResponseListener;
+import com.menisamet.totake.Services.PlaceImageLoader;
 
 import java.util.Date;
 
 public class NewTripActivity extends AppCompatActivity   implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = NewTripActivity.class.getCanonicalName();
     private GoogleApiClient mGoogleApiClient;
+    private PlaceImageLoader mPlaceImageLoader;
     private Date mFromDate;
     private Date mToDate;
     private Button mToDataButton;
@@ -39,6 +42,7 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
     private Place mPlace;
     private Button mAddButton;
     private EditText mDestinationEditText;
+    private ImageView mImageView;
     private Context mContext;
     private Intent mIntent;
 
@@ -49,6 +53,7 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_trip);
 
+        mContext = getApplicationContext();
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
@@ -56,6 +61,8 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+
+        mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
 
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -69,6 +76,7 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());
                 mPlace = place;
+                mPlaceImageLoader.placePhotosAsync(place.getId(), mImageView);
                 updateView();
             }
 
@@ -83,6 +91,7 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
         mFromDateButton = (Button)findViewById(R.id.from_data_button);
         mAddButton = (Button)findViewById(R.id.add_button);
         mDestinationEditText = ((EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input));
+        mImageView = (ImageView)findViewById(R.id.imageView);
 
         updateView();
 
@@ -131,9 +140,14 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
 
 
     public void addTrip(View v) {
-        guiInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate, new AddNewTripResponseListener() {
+        guiInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate,mPlace.getId(), new AddNewTripResponseListener() {
             @Override
             public void onResponse(Trip trip) {
+                Intent intent = new Intent(mContext, TripActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(TripActivity.ARGS_TRIP_ID, trip.getTripID());
+                intent.putExtras(bundle);
+                startActivity(intent);
                 finish();
             }
         });

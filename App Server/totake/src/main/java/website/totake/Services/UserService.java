@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import website.totake.Repositories.SqlUserRepository;
 import website.totake.Services.Interfaces.IUserService;
-import website.totake.SqlStructure.SqlUser;
+import website.totake.SqlStructure.User;
 
 import java.util.List;
 
@@ -19,32 +19,32 @@ public class UserService implements IUserService {
     private SqlUserRepository sqlUserRepository;
 
     @Override
-    public SqlUser getUser(long userId) {
+    public User getUser(long userId) {
         return sqlUserRepository.findOne(userId);
     }
 
     @Override
-    public Iterable<SqlUser> getAllUsers() {
+    public Iterable<User> getAllUsers() {
         return sqlUserRepository.findAll();
     }
 
     @Override
-    public SqlUser addNewUser(String username, String userEmail) {
-        SqlUser newUser = new SqlUser(username, userEmail);
-        SqlUser result = sqlUserRepository.save(newUser);
+    public User addNewUser(String username, String userEmail) {
+        User newUser = new User(username, userEmail);
+        User result = sqlUserRepository.save(newUser);
         return result;
     }
 
     @Override
-    public SqlUser save(SqlUser user) {
+    public User save(User user) {
         return sqlUserRepository.save(user);
     }
 
     @Override
-    public SqlUser findUserByUserName(String username) {
-        List<SqlUser> sqlUsers = sqlUserRepository.findByUserName(username);
-        if (sqlUsers.size() == 1) {
-            return sqlUsers.get(0);
+    public User findUserByUserName(String username) {
+        List<User> users = sqlUserRepository.findByUserName(username);
+        if (users.size() == 1) {
+            return users.get(0);
         }
         return null;
     }

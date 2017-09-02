@@ -12,6 +12,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     showFragment(mHomeFragment);
-                    // this is tahel
                     return true;
                 case R.id.navigation_trips:
                     showFragment(mTripFragment);
@@ -77,12 +79,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         guiInterface.setContext(getApplicationContext());
-        guiInterface.setUserId(15, new UserLoadListener() {
-            @Override
-            public void onUserLoad(User user) {
-                Log.d(TAG, "user :" + user);
-            }
-        });
+
+
 //        guiInterface.setUserId(1, new UserLoadListener() {
 //            @Override
 //            public void onUserLoad(User user) {
@@ -103,18 +101,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 //            }
 //        }, getBaseContext());
 
-        LogicInterface logicInterface = LogicService.getInstance();
-        logicInterface.setContext(getBaseContext());
-        logicInterface.getAllItems(new AllItemsResponseListener() {
-            @Override
-            public void onResponse(List<Item> items) {
-                if (items != null) {
-                    Log.d(TAG, "from items array: " + items);
-                } else {
-                    Log.d(TAG, "from items array: null object");
-                }
-            }
-        });
+//        LogicInterface logicInterface = LogicService.getInstance();
+//        logicInterface.setContext(getBaseContext());
+//        logicInterface.getAllItems(new AllItemsResponseListener() {
+//            @Override
+//            public void onResponse(List<Item> items) {
+//                if (items != null) {
+//                    Log.d(TAG, "from items array: " + items);
+//                } else {
+//                    Log.d(TAG, "from items array: null object");
+//                }
+//            }
+//        });
     }
 
     @Override

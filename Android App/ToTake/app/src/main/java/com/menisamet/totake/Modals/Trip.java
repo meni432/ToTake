@@ -20,10 +20,12 @@ public class Trip implements TripInterface {
     private Date mStartDate;
 //    @SerializedName("endDate")
     private Date mEndDate;
-    @SerializedName("sqlItemDetails")
+    @SerializedName("itemDetails")
     private List<Item> items;
     @SerializedName("tripId")
     private int tripID;
+    @SerializedName("destinationGoogleId")
+    private String destinationGoogleId;
 
     public Trip() {}
 
@@ -43,8 +45,8 @@ public class Trip implements TripInterface {
         }
     }
 
-    public void setItemAmount(int itemId, long newAmount){
-        items.get(itemId).setmItemAmount(newAmount);
+    public String getDestinationGoogleId() {
+        return destinationGoogleId;
     }
     @Override
     public String getDestinationName() {
@@ -66,11 +68,17 @@ public class Trip implements TripInterface {
     }
 
     public List<Item> getItems() {
+        if (items == null) {
+            items = new ArrayList<>();
+        }
         return items;
     }
 
     public void addItemToList(Item item){
-        items.add(0,item);
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+        items.add(0, item);
     }
 
     public void removeItemFromList(int itemId){

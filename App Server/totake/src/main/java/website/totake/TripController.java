@@ -8,8 +8,8 @@ import website.totake.Services.ItemDetailsService;
 import website.totake.Services.ItemService;
 import website.totake.Services.TripService;
 import website.totake.Services.UserService;
-import website.totake.SqlStructure.SqlTrip;
-import website.totake.SqlStructure.SqlUser;
+import website.totake.SqlStructure.Trip;
+import website.totake.SqlStructure.User;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,37 +34,41 @@ public class TripController {
     private UserService userService;
 
     @RequestMapping("/addNewTrip")
-    public SqlTrip addNewTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
-                           @RequestParam(name = "destinationName", defaultValue = "-1") String destinationName,
-                           @RequestParam(name = "startDate", defaultValue = "-1") Date startDate,
-                           @RequestParam(name = "endDate", defaultValue = "-1") Date endDate) {
+    public Trip addNewTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                           @RequestParam(name = "destinationName", defaultValue = "none") String destinationName,
+                           @RequestParam(name = "startDate", defaultValue = "-1") long startDate,
+                           @RequestParam(name = "endDate", defaultValue = "-1") long endDate,
+                           @RequestParam(name = "googlePlaceId", defaultValue = "none") String googlePlaceId) {
 
-        SqlUser sqlUser = userService.getUser(userId);
-        SqlTrip sqlTrip = tripService.addNewTrip(destinationName, destinationName, startDate, endDate);
-        sqlUser.addTrip(sqlTrip);
-        userService.save(sqlUser);
+        User user = userService.getUser(userId);
+        Trip trip = tripService.addNewTrip(destinationName, destinationName, googlePlaceId, new Date(startDate), new Date(endDate));
+        user.addTrip(trip);
+        userService.save(user);
 
-        return sqlTrip;
+        return trip;
     }
 
 
     @RequestMapping("/deleteTrip")
-    public void deleteTrip(@RequestParam(name = "userId", defaultValue = "-1") long id,
+    public void deleteTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
                            @RequestParam(name = "tripId", defaultValue = "-1") long tripId) {
-        // TODO need to implemnt
-        throw new RuntimeException("deleteTrip not impltment yet");
+
+        User user = userService.getUser(userId);
+        Trip trip = user.findTripById(tripId);
+        trip.setStatus(Trip.TRIP_DELETED);
+        userService.save(user);
     }
 
     @RequestMapping("/getTrip")
-    public SqlTrip getTrip(@RequestParam(value = "tripId", defaultValue = "-1") long tripId) {
+    public Trip getTrip(@RequestParam(value = "tripId", defaultValue = "-1") long tripId) {
         return tripService.getTrip(tripId);
     }
 
     @RequestMapping("/getTripList")
     public List<Long> getTripList(@RequestParam(value = "userId", defaultValue = "-1") long userId) {
         List<Long> tripIdsList = new ArrayList<>();
-        List<SqlTrip> userTrips = userService.getUser(userId).getTrips();
-        for (SqlTrip trip: userTrips) {
+        List<Trip> userTrips = userService.getUser(userId).getTrips();
+        for (Trip trip: userTrips) {
             tripIdsList.add(trip.getTripId());
         }
         return tripIdsList;

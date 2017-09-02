@@ -3,6 +3,7 @@ package com.menisamet.totake;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.menisamet.totake.Adapters.ExploreSelectedListAdapter;
 import com.menisamet.totake.GuiElement.CardsRecyclerView;
 import com.menisamet.totake.Logic.GuiInterface;
@@ -22,6 +26,7 @@ import com.menisamet.totake.Modals.Item;
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
+import com.menisamet.totake.Services.PlaceImageLoader;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -36,7 +41,7 @@ import java.util.List;
  * Use the {@link ExploreFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExploreFragment extends Fragment {
+public class ExploreFragment extends Fragment{
     private static String TAG = ExploreFragment.class.getCanonicalName();
     GuiInterface guiInterface = GuiService.getInstance();
     public static int msCurrentTripId = 0;
@@ -57,6 +62,7 @@ public class ExploreFragment extends Fragment {
 
     private EditText mSearchEditText;
 
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_CURRENT_TRIP = "current_trip";
@@ -70,6 +76,7 @@ public class ExploreFragment extends Fragment {
     public ExploreFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -118,6 +125,8 @@ public class ExploreFragment extends Fragment {
                 initialSuggestionView();
             }
         });
+
+
     }
 
     private void initialSelectedItemView() {
@@ -206,20 +215,19 @@ public class ExploreFragment extends Fragment {
         });
 
         Trip trip = guiInterface.getTripById(msCurrentTripId);
-        guiInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
-            @Override
-            public void onResponse(List<Item> recommendedItems) {
-                mSuggestionItems = new ArrayList<Item>(recommendedItems);
-                mRAdapter.notifyDataSetChanged();
-            }
-        });
+//        guiInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
+//            @Override
+//            public void onResponse(List<Item> recommendedItems) {
+//                mSuggestionItems = new ArrayList<Item>(recommendedItems);
+//                mRAdapter.notifyDataSetChanged();
+//            }
+//        });
     }
 
     private void removeFromSuggestion(int position, boolean isChoosing) {
-        // TODO Meni - notify logic
-        // TODO Meni - chnage to hide
         mSuggestionItems.remove(position);
-        mRAdapter.notifyItemRemoved(position);
+        Log.d(TAG, mSuggestionItems.toString());
+        mRAdapter.notifyDataSetChanged();
     }
 
     private void assignItemToList(final int position) {
@@ -227,8 +235,8 @@ public class ExploreFragment extends Fragment {
         guiInterface.assignItemToTrip(mTrip, item, item.getItemAmount(), new AddNewItemResponseListener() {
             @Override
             public void onResponse(Item item) {
+                mExploreSelectedListAdapter.notifyDataSetChanged();
                 mRvSelectedItems.scrollToPosition(0);
-                mExploreSelectedListAdapter.notifyItemInserted(0);
                 removeFromSuggestion(position, true);
             }
         });

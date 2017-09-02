@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.R;
+import com.menisamet.totake.Services.PlaceImageLoader;
 import com.menisamet.totake.TripActivity;
 
 import java.util.List;
@@ -23,12 +25,15 @@ import java.util.List;
 
 public class TripDetailAdapter extends RecyclerView.Adapter<TripDetailAdapter.ViewHolder>{
 
+    private static final String TAG = TripDetailAdapter.class.getCanonicalName();
     private List<Trip> mTrips;
     private Context mContext;
+    private PlaceImageLoader mPlaceImageLoader;
 
-    public TripDetailAdapter(List<Trip> trips, Context context) {
+    public TripDetailAdapter(List<Trip> trips, Context context, PlaceImageLoader placeImageLoader) {
         this.mTrips = trips;
         this.mContext = context;
+        mPlaceImageLoader = placeImageLoader;
     }
 
     public Context getContext() {
@@ -72,12 +77,21 @@ public class TripDetailAdapter extends RecyclerView.Adapter<TripDetailAdapter.Vi
             }
         });
 
+        Log.d(TAG, "google id: "+ trip.getDestinationGoogleId());
+        if (trip.getDestinationGoogleId() != null && !trip.getDestinationGoogleId().equals("")) {
+            Log.d(TAG, "load image..");
+            mPlaceImageLoader.placePhotosAsync(trip.getDestinationGoogleId(), placeImageView);
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return mTrips.size();
+        if (mTrips != null) {
+            return mTrips.size();
+        }else {
+            return 0;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
