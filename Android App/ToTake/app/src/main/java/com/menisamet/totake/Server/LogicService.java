@@ -40,7 +40,7 @@ public class LogicService implements LogicInterface {
     public static final String TAG = LogicService.class.getCanonicalName();
 
     private static final LogicService ourInstance = new LogicService();
-    private static String mServerUrl = "http://totake.website:8080";
+    private static String mServerUrl = "http://totake.j.box.co.il";
 
     public static LogicService getInstance() {
         return ourInstance;
@@ -82,6 +82,27 @@ public class LogicService implements LogicInterface {
             mRequestQueue.start();
             mCurrentContext = context;
         }
+    }
+
+    @Override
+    public void setFireBaseUserId(String fireBaseUserId, String displayName, final UserLoadListener userLoadListener) {
+        GsonRequest<User> gsonRequest = new GsonRequest<>(mServerUrl + "/getFireBaseUser?userId=" + fireBaseUserId+"&duserName="+displayName, User.class, null, new Response.Listener<User>() {
+            @Override
+            public void onResponse(User response) {
+                if (response != null) {
+                    userLoadListener.onUserLoad(response);
+//                    mCurrentUserId = userId;
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error.toString());
+                userLoadListener.onUserLoad(null);
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
     }
 
     @Override

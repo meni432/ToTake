@@ -20,9 +20,10 @@ import java.util.List;
  */
 
 public interface LogicInterface {
+    public void setFireBaseUserId(String fireBaseUserId, String displayName, UserLoadListener userLoadListener);
+    public void setUserId(long userId, UserLoadListener userLoadListener);
     public void getAllItems(AllItemsResponseListener allItemsResponseListener);
     public void setContext(Context context);
-    public void setUserId(long userId, UserLoadListener userLoadListener);
     public void addNewItem(Trip trip, String itemName, long amount, AddNewItemResponseListener addNewItemResponseListener);
     public void assignItemToTrip(Trip trip, Item item, long amount, AddNewItemResponseListener addNewItemResponseListener);
     public void notifyChangeAmount(Trip trip, Item item);

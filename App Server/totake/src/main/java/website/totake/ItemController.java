@@ -66,7 +66,6 @@ public class ItemController {
         return itemDetails.getItem();
     }
 
-
     @RequestMapping("/assignItemToUser")
     public Item assignItemToUser(@RequestParam(name = "userId", defaultValue = "-1") long userId,
                                  @RequestParam(name = "tripId", defaultValue = "-1") long tripId,

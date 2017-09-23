@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "689572567430",
+    "firebase_url": "https://totake-e17d4.firebaseio.com",
+    "project_id": "totake-e17d4",
+    "storage_bucket": "totake-e17d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689572567430:android:2184df3e84e00fac",
+        "android_client_info": {
+          "package_name": "com.menisamet.totake"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689572567430-lckeiffa42622joo5p7r95hlrtdpl325.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.menisamet.totake",
+            "certificate_hash": "fc445ce143c90d55cfcc4ed1f390336ec36ff6c8"
+          }
+        },
+        {
+          "client_id": "689572567430-rkhdko7fc5nd85k8e7s60mv69fu7lvp0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.menisamet.totake",
+            "certificate_hash": "bbed83f2049205d2353e5ad2cf08af047c10ff4a"
+          }
+        },
+        {
+          "client_id": "689572567430-hlkdh1oa257us6gs4jnsvdc6k9bj4f1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9jDheQeVm-DJoKUO88QzludLxZy1KMb4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689572567430-hlkdh1oa257us6gs4jnsvdc6k9bj4f1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

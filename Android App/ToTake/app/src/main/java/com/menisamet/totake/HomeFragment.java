@@ -1,6 +1,7 @@
 package com.menisamet.totake;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -43,6 +44,7 @@ public class HomeFragment extends Fragment {
 
     //loading component
     private Button mReloadButton;
+    private Button mLoginTestButton;
     private TextView mUserNameTextView;
     private ProgressBar mLoadingProgressBar;
 
@@ -87,6 +89,7 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         mReloadButton = (Button) getView().findViewById(R.id.reload_button);
+        mLoginTestButton = (Button) getView().findViewById(R.id.login_button);
         mUserNameTextView = (TextView) getView().findViewById(R.id.user_name_textView);
         mLoadingProgressBar = (ProgressBar) getView().findViewById(R.id.loading_progressBar);
 
@@ -98,6 +101,14 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 loadUserFromServer();
                 mLoadingProgressBar.setVisibility(View.VISIBLE);
+            }
+        });
+
+        mLoginTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FacebookLoginActivity.class);
+                startActivity(intent);
             }
         });
 

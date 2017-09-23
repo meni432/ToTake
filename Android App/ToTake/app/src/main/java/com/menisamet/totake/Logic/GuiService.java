@@ -45,6 +45,19 @@ public class GuiService implements GuiInterface {
 
 
     @Override
+    public void setFireBaseUser(String firebaseUser, String userName, final UserLoadListener userLoadListener) {
+//        server.setFireBaseUserId(firebaseUser, userName, new UserLoadListener() {
+//            @Override
+//            public void onUserLoad(User user) {
+//                currentUser = user;
+//                userLoadListener.onUserLoad(user);
+//            }
+//        });
+
+        userLoadListener.onUserLoad(null);
+    }
+
+    @Override
     public void setUserId(long userId, final UserLoadListener userLoadListener) {
         server.setUserId(userId, new UserLoadListener() {
             @Override
@@ -136,7 +149,7 @@ public class GuiService implements GuiInterface {
 
     @Override
     public void getRecommendationList(final Trip trip, final RecommendationListResponseListener recommendationListResponseListener) {
-        //TODO need to change for realy recomendation protocol
+        //TODO need to change for real recommendation protocol
         getAllItems(new AllItemsResponseListener() {
             @Override
             public void onResponse(List<Item> items) {

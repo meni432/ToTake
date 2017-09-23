@@ -3,7 +3,6 @@ package com.menisamet.totake;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -15,9 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
 import com.menisamet.totake.Adapters.ExploreSelectedListAdapter;
 import com.menisamet.totake.GuiElement.CardsRecyclerView;
 import com.menisamet.totake.Logic.GuiInterface;
@@ -26,10 +22,8 @@ import com.menisamet.totake.Modals.Item;
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
-import com.menisamet.totake.Services.PlaceImageLoader;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 

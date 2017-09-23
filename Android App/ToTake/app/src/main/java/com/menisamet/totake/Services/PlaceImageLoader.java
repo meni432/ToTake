@@ -125,19 +125,21 @@ public class PlaceImageLoader {
 
                         PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
                         if (photoMetadataBuffer.getCount() > 0) {
-                            // Display the first bitmap in an ImageView in the size of the view
-                            photoMetadataBuffer.get(0)
-                                    .getScaledPhoto(mGoogleApiClient, mImageView.getWidth(),
-                                            mImageView.getHeight())
-                                    .setResultCallback(new ResultCallback<PlacePhotoResult>() {
-                                        @Override
-                                        public void onResult(@NonNull PlacePhotoResult placePhotoResult) {
-                                            if (!placePhotoResult.getStatus().isSuccess()) {
-                                                return;
+                            if (mImageView != null && mImageView.getWidth() > 0) {
+                                // Display the first bitmap in an ImageView in the size of the view
+                                photoMetadataBuffer.get(0)
+                                        .getScaledPhoto(mGoogleApiClient, mImageView.getWidth(),
+                                                mImageView.getHeight())
+                                        .setResultCallback(new ResultCallback<PlacePhotoResult>() {
+                                            @Override
+                                            public void onResult(@NonNull PlacePhotoResult placePhotoResult) {
+                                                if (!placePhotoResult.getStatus().isSuccess()) {
+                                                    return;
+                                                }
+                                                mImageView.setImageBitmap(placePhotoResult.getBitmap());
                                             }
-                                            mImageView.setImageBitmap(placePhotoResult.getBitmap());
-                                        }
-                                    });
+                                        });
+                            }
                         }
                         photoMetadataBuffer.release();
                     }

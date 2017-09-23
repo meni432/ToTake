@@ -14,16 +14,16 @@ import java.util.Date;
  */
 @Service
 @Transactional
-public class TripService  implements ITripSerivce {
+public class TripService implements ITripSerivce {
     @Autowired
     private SqlTripRepository sqlTripRepository;
 
     public Trip getTrip(long tripId) {
         Trip trip = sqlTripRepository.findTripByTripId(tripId);
-        if (trip != null && trip.getStatus() == Trip.TRIP_REGULAR) {
-            return trip;
-        } else if (trip != null && trip.getStatus() == Trip.TRIP_DELETED) {
-            return null;
+        if (trip != null) {
+            if (trip.getStatus() == Trip.TRIP_REGULAR) {
+                return trip;
+            }
         }
 
         return null;

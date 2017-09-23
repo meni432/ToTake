@@ -54,6 +54,15 @@
             android:text="Username"
             tools:layout_editor_absoluteX="162dp"
             tools:layout_editor_absoluteY="485dp" />
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:layout_above="@+id/user_name_textView"
+            android:layout_alignLeft="@+id/reload_button"
+            android:layout_alignStart="@+id/reload_button" />
     </RelativeLayout>
 
 </FrameLayout>

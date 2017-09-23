@@ -31,7 +31,7 @@ import com.menisamet.totake.Services.PlaceImageLoader;
 
 import java.util.Date;
 
-public class NewTripActivity extends AppCompatActivity   implements GoogleApiClient.OnConnectionFailedListener {
+public class NewTripActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = NewTripActivity.class.getCanonicalName();
     private GoogleApiClient mGoogleApiClient;
     private PlaceImageLoader mPlaceImageLoader;
@@ -87,11 +87,11 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
             }
         });
 
-        mToDataButton = (Button)findViewById(R.id.to_data_button);
-        mFromDateButton = (Button)findViewById(R.id.from_data_button);
-        mAddButton = (Button)findViewById(R.id.add_button);
-        mDestinationEditText = ((EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input));
-        mImageView = (ImageView)findViewById(R.id.imageView);
+        mToDataButton = (Button) findViewById(R.id.to_data_button);
+        mFromDateButton = (Button) findViewById(R.id.from_data_button);
+        mAddButton = (Button) findViewById(R.id.add_button);
+        mDestinationEditText = ((EditText) autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input));
+        mImageView = (ImageView) findViewById(R.id.imageView);
 
         updateView();
 
@@ -101,7 +101,7 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
         if (mPlace != null && mFromDate != null && mToDate != null && mDestinationEditText.getText() != null) {
             Log.d(TAG, mDestinationEditText.getText().toString());
             mAddButton.setEnabled(true);
-        } else  {
+        } else {
             Log.d(TAG, mDestinationEditText.getText().toString());
             mAddButton.setEnabled(false);
         }
@@ -118,7 +118,7 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 mFromDate = new Date(year, month, day);
-                mFromDateButton.setText(day+"/"+month+"/"+year);
+                mFromDateButton.setText(day + "/" + month + "/" + year);
                 updateView();
             }
         });
@@ -131,7 +131,7 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 mToDate = new Date(year, month, day);
-                mToDataButton.setText(day+"/"+month+"/"+year);
+                mToDataButton.setText(day + "/" + month + "/" + year);
                 updateView();
             }
         });
@@ -140,15 +140,23 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
 
 
     public void addTrip(View v) {
-        guiInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate,mPlace.getId(), new AddNewTripResponseListener() {
+        guiInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate, mPlace.getId(), new AddNewTripResponseListener() {
             @Override
             public void onResponse(Trip trip) {
-                Intent intent = new Intent(mContext, TripActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt(TripActivity.ARGS_TRIP_ID, trip.getTripID());
-                intent.putExtras(bundle);
-                startActivity(intent);
-                finish();
+                try {
+                    Intent intent = new Intent(mContext, TripActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(TripActivity.ARGS_TRIP_ID, trip.getTripID());
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (!Mode.TEST_MODE) {
+                        throw e;
+                    }
+                }
+
             }
         });
     }
@@ -180,7 +188,6 @@ public class NewTripActivity extends AppCompatActivity   implements GoogleApiCli
             }
         }
     }
-
 
 
     interface OnDataChoseListener {

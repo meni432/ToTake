@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Item;
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+//        AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_main);
 
         //ActionBar

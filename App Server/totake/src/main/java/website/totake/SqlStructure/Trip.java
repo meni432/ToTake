@@ -29,8 +29,8 @@ public class Trip {
     private Date startDate;
     @Column(name = "end_date")
     private Date endDate;
-    @Column(name = "status")
-    private long status;
+    @Column(name = "status", nullable = false)
+    private Long status;
 
     @OneToMany(mappedBy = "primaryKey.trip",
             cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -44,9 +44,11 @@ public class Trip {
 
 
     public Trip() {
+        this.setStatus(TRIP_REGULAR);
     }
 
     public Trip(String destinationEnName, String getDestinationHeName, String googlePlaceId, Date startDate, Date endDate) {
+        this();
         this.destinationEnName = destinationEnName;
         this.getDestinationHeName = getDestinationHeName;
         this.startDate = startDate;
@@ -79,7 +81,14 @@ public class Trip {
     }
 
     public long getStatus() {
-        return status;
+        if (status != null) {
+            return status.longValue();
+        }
+        return -1;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
     }
 
     public void setStatus(long status) {

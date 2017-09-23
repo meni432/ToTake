@@ -6,7 +6,8 @@
 	<groupId>website.totake</groupId>
 	<artifactId>totake</artifactId>
 	<version>0.0.1-totake-server</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
+	<!--<packaging>jar</packaging>-->
 
 	<name>totake</name>
 	<description>ToTake rest service</description>
@@ -40,6 +41,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
+		</dependency>
+
+		<!-- marked the embedded servlet container as provided -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

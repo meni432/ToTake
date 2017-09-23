@@ -39,6 +39,7 @@ public class TripActivity extends AppCompatActivity implements ItemListFragment.
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    mItemListFragment.msCurrentTripId = mCurrentTripId;
                     showFragment(mItemListFragment);
                     mTbItemListButton.setText(R.string.view_build_list);
                 } else {

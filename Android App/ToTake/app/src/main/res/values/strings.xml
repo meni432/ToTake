@@ -22,7 +22,19 @@
     <string name="from">From</string>
     <string name="to">To</string>
 
+    <!--facebook login-->
+
+    <string name="facebook_status_fmt">Facebook User: %s</string>
+    <string name="firebase_status_fmt">Firebase User: %s</string>
+
+    <string name="facebook_title_text">Facebook Login</string>
+
+    <string name="facebook_app_id">1833769566866429</string>
+    <string name="fb_login_protocol_scheme">fb1833769566866429</string>
 
     <!--App Server-->
-    <string name="server_base_url">http://totake.website:8080/</string>
+    <string name="server_base_url">http://totake.j.box.co.il/</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="signed_out">Signed Out</string>
+    <string name="desc_firebase_lockup">FIrebase</string>
 </resources>

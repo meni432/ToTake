@@ -20,6 +20,7 @@ import java.util.List;
  */
 
 public interface GuiInterface {
+    public void setFireBaseUser(String firebaseUser, String userName, UserLoadListener userLoadListener);
     public void setUserId(long userId, UserLoadListener userLoadListener);
     public User getUser();
     public List<Trip> getAllTrips();

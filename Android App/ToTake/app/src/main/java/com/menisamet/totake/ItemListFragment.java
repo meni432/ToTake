@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 
 import com.menisamet.totake.Adapters.ExploreSelectedListAdapter;
 import com.menisamet.totake.Adapters.SelectedListAdapter;
+import com.menisamet.totake.Logic.GuiInterface;
+import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Item;
+import com.menisamet.totake.Modals.Trip;
 
 import java.util.List;
 
@@ -28,7 +31,10 @@ import java.util.List;
  */
 public class ItemListFragment extends Fragment {
     public static int msCurrentTripId = 0;
+    GuiInterface guiInterface = GuiService.getInstance();
     private List<Item> mItems;
+    private Trip mTrip;
+
     private RecyclerView rvItemSelectList;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,7 +86,9 @@ public class ItemListFragment extends Fragment {
     }
 
     private void initialSelectedItemView() {
-        mItems = Item.createItemList(100); // TODO Meni - get from logic
+//        mItems = Item.createItemList(100); // TODO Meni - get from logic
+        mTrip = guiInterface.getTripById(msCurrentTripId);
+        mItems = mTrip.getItems();
         SelectedListAdapter selectedListAdapter = new SelectedListAdapter(getContext(), mItems);
         rvItemSelectList.setAdapter(selectedListAdapter);
         rvItemSelectList.setLayoutManager(new LinearLayoutManager(getContext()));

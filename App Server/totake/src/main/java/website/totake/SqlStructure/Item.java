@@ -26,14 +26,31 @@ public class Item {
     private String mItemEHName;
     @Column(name = "he_name")
     private String mItemHEName;
-    @Column(name = "status")
-    private long status;
+    @Column(name = "status", nullable = false)
+    private Long status;
 
     @OneToMany(mappedBy = "primaryKey.item",
             cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<ItemDetails> itemDetails = new HashSet<>();
 
-    public Item() {}
+    public Item() {
+        setStatus(ITEM_REGULAR);
+    }
+
+    public long getStatus() {
+        if (status != null) {
+            return status.longValue();
+        }
+        return -1;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
+    }
+
+    public void setStatus(long status) {
+        this.status = status;
+    }
 
     public Item(String mItemEHName, String mItemHEName) {
         this.mItemEHName = mItemEHName;
@@ -68,14 +85,6 @@ public class Item {
 
     public void setOwner(Trip owner) {
         this.owner = owner;
-    }
-
-    public long getStatus() {
-        return status;
-    }
-
-    public void setStatus(long status) {
-        this.status = status;
     }
 
     @Override
