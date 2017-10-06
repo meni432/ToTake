@@ -1,5 +1,7 @@
 package website.totake.Services;
 
+import io.prediction.Event;
+import io.prediction.EventClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +10,9 @@ import website.totake.Services.Interfaces.IItemDetailsService;
 import website.totake.SqlStructure.Item;
 import website.totake.SqlStructure.ItemDetails;
 import website.totake.SqlStructure.Trip;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by meni on 04/06/17.
@@ -26,6 +31,7 @@ public class ItemDetailsService implements IItemDetailsService {
         itemDetails.setAmount(amount);
         itemDetails.setIsDone(isDone);
         ItemDetails result = sqlItemDetailsRepository.save(itemDetails);
+
         return result;
     }
 

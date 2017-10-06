@@ -20,6 +20,11 @@ public class User {
     @Column(name = "email_address", unique = true)
     private String emailAddress;
 
+    @Column(name = "firebase_id", unique = true)
+    private String firebaseId;
+
+
+
     @OneToMany
     @JoinTable(name = "users_trips",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
@@ -30,10 +35,11 @@ public class User {
 
     }
 
-    public User(String userName, String emailAddress) {
+    public User(String userName, String firebaseId) {
         this.userName = userName;
-        this.emailAddress = emailAddress;
+        this.firebaseId = firebaseId;
     }
+
 
     public long getUserId() {
         return userId;

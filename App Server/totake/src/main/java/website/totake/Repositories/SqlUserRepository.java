@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface SqlUserRepository extends CrudRepository<User, Long> {
     List<User> findByUserName(String userName);
+    List<User> findByFirebaseId(String firebaseId);
 }

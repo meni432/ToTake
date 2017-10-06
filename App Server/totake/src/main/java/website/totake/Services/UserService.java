@@ -29,8 +29,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User addNewUser(String username, String userEmail) {
-        User newUser = new User(username, userEmail);
+    public User addNewUser(String username, String firebaseId) {
+        User newUser = new User(username, firebaseId);
         User result = sqlUserRepository.save(newUser);
         return result;
     }
@@ -48,4 +48,14 @@ public class UserService implements IUserService {
         }
         return null;
     }
+
+    @Override
+    public User findUserByFirebaseId(String userId) {
+        List<User> users = sqlUserRepository.findByFirebaseId(userId);
+        if (users.size() == 1) {
+            return users.get(0);
+        }
+        return null;
+    }
+
 }

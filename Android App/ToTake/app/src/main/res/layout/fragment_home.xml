@@ -7,7 +7,7 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="8dp"
@@ -18,51 +18,78 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            tools:layout_editor_absoluteX="167dp"
-            tools:layout_editor_absoluteY="311dp" />
+            tools:layout_constraintBottom_creator="1"
+            app:layout_constraintBottom_toTopOf="@+id/reload_button"
+            android:layout_marginStart="27dp"
+            tools:layout_constraintLeft_creator="1"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintLeft_toRightOf="@+id/reload_button"
+            android:layout_marginLeft="27dp" />
 
         <Button
             android:id="@+id/reload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="19dp"
-            android:layout_marginRight="19dp"
             android:text="Reload"
-            tools:layout_editor_absoluteX="147dp"
-            tools:layout_editor_absoluteY="412dp"
-            android:layout_alignBottom="@+id/user_name_textView"
-            android:layout_toLeftOf="@+id/user_name_textView"
-            android:layout_toStartOf="@+id/user_name_textView" />
+            tools:layout_constraintBottom_creator="1"
+            android:layout_marginStart="53dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_constraintLeft_creator="1"
+            android:layout_marginBottom="160dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="53dp" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="368dp"
+            android:layout_width="0dp"
             android:layout_height="495dp"
             android:text="@string/home_fragment"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="89dp" />
+            tools:layout_constraintRight_creator="1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBaseline_toBaselineOf="parent"
+            tools:layout_constraintBaseline_creator="1"
+            tools:layout_constraintLeft_creator="1"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
             android:id="@+id/user_name_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/loading_progressBar"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="55dp"
             android:text="Username"
-            tools:layout_editor_absoluteX="162dp"
-            tools:layout_editor_absoluteY="485dp" />
+            tools:layout_constraintBottom_creator="1"
+            android:layout_marginStart="19dp"
+            app:layout_constraintBottom_toBottomOf="@+id/reload_button"
+            tools:layout_constraintLeft_creator="1"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintLeft_toRightOf="@+id/reload_button"
+            android:layout_marginLeft="19dp" />
+
+        <Button
+            android:id="@+id/login_tahel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:text="Login T"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="@+id/reload_button"
+            app:layout_constraintRight_toRightOf="@+id/reload_button"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1"
+            tools:layout_constraintTop_creator="1" />
 
         <Button
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="61dp"
             android:text="Login"
-            android:layout_above="@+id/user_name_textView"
-            android:layout_alignLeft="@+id/reload_button"
-            android:layout_alignStart="@+id/reload_button" />
-    </RelativeLayout>
+            app:layout_constraintLeft_toLeftOf="@+id/reload_button"
+            app:layout_constraintRight_toRightOf="@+id/reload_button"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_constraintLeft_creator="1"
+            tools:layout_constraintRight_creator="1"
+            tools:layout_constraintTop_creator="1" />
+    </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

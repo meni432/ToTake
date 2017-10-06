@@ -58,6 +58,8 @@ public class FacebookLoginActivity extends AppCompatActivity implements View.OnC
         AppEventsLogger.activateApp(this);
         setContentView(R.layout.activity_facebook_login);
 
+        mGuiService.setContext(getApplicationContext());
+
         // [For debug FB Login only]
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
@@ -123,6 +125,14 @@ public class FacebookLoginActivity extends AppCompatActivity implements View.OnC
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+//            mGuiService.setFireBaseUser(currentUser.getUid(), currentUser.getDisplayName(), new UserLoadListener() {
+//                @Override
+//                public void onUserLoad(User user) {
+//                    finish();
+//                }
+//            });
+        }
         updateUI(currentUser);
     }
     // [END on_start_check_user]

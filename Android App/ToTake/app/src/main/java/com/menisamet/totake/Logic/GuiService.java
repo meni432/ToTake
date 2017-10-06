@@ -46,13 +46,13 @@ public class GuiService implements GuiInterface {
 
     @Override
     public void setFireBaseUser(String firebaseUser, String userName, final UserLoadListener userLoadListener) {
-//        server.setFireBaseUserId(firebaseUser, userName, new UserLoadListener() {
-//            @Override
-//            public void onUserLoad(User user) {
-//                currentUser = user;
-//                userLoadListener.onUserLoad(user);
-//            }
-//        });
+        server.setFireBaseUserId(firebaseUser, userName, new UserLoadListener() {
+            @Override
+            public void onUserLoad(User user) {
+                currentUser = user;
+                userLoadListener.onUserLoad(user);
+            }
+        });
 
         userLoadListener.onUserLoad(null);
     }
@@ -77,8 +77,10 @@ public class GuiService implements GuiInterface {
     public List<Trip> getAllTrips() {
         if (currentUser != null) {
             final List<Trip> trips = currentUser.getTrips();
-            Collections.reverse(trips);
-            return trips;
+            if (trips != null && trips.size() > 0) {
+                Collections.reverse(trips);
+                return trips;
+            }
         }
         return null;
     }
@@ -90,7 +92,7 @@ public class GuiService implements GuiInterface {
 
     @Override
     public void addNewTrip(final String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener) {
-        server.addNewTrip(destinationName, startDate, endDate, googlePlaceId,  new AddNewTripResponseListener() {
+        server.addNewTrip(destinationName, startDate, endDate, googlePlaceId, new AddNewTripResponseListener() {
             @Override
             public void onResponse(Trip trip) {
                 currentUser.addNewTrip(trip);
@@ -116,10 +118,10 @@ public class GuiService implements GuiInterface {
 
     @Override
     public void assignItemToTrip(final Trip trip, Item item, long amount, final AddNewItemResponseListener addNewItemResponseListener) {
+        trip.addItemToList(item);
         server.assignItemToTrip(trip, item, amount, new AddNewItemResponseListener() {
             @Override
             public void onResponse(Item item) {
-                trip.addItemToList(item);
                 addNewItemResponseListener.onResponse(item);
             }
         });

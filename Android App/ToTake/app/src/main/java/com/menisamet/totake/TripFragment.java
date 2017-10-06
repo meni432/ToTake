@@ -40,6 +40,8 @@ public class TripFragment extends Fragment  implements GoogleApiClient.OnConnect
     private GoogleApiClient mGoogleApiClient;
     private PlaceImageLoader mPlaceImageLoader;
 
+    private TripDetailAdapter mTripDetailAdapter;
+
 
     GuiInterface guiInterface = GuiService.getInstance();
     // TODO: Rename parameter arguments, choose names that match
@@ -129,11 +131,17 @@ public class TripFragment extends Fragment  implements GoogleApiClient.OnConnect
         mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
 
         trips = guiInterface.getAllTrips();
-        TripDetailAdapter tripDetailAdapter = new TripDetailAdapter(trips, getContext(), mPlaceImageLoader);
-        rvTrips.setAdapter(tripDetailAdapter);
+        mTripDetailAdapter = new TripDetailAdapter(trips, getContext(), mPlaceImageLoader);
+        rvTrips.setAdapter(mTripDetailAdapter);
         rvTrips.setLayoutManager(new LinearLayoutManager(getContext()));
-        tripDetailAdapter.notifyDataSetChanged();
+        mTripDetailAdapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTripDetailAdapter.notifyDataSetChanged();
     }
 
     private synchronized void startGoogleApiClient() {

@@ -11,4 +11,5 @@ public interface IUserService {
     public User addNewUser(String username, String userEmail);
     public User save(User user);
     public User findUserByUserName(String username);
+    public User findUserByFirebaseId(String username);
 }

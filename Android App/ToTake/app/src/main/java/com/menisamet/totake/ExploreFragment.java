@@ -35,7 +35,7 @@ import java.util.List;
  * Use the {@link ExploreFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExploreFragment extends Fragment{
+public class ExploreFragment extends Fragment {
     private static String TAG = ExploreFragment.class.getCanonicalName();
     GuiInterface guiInterface = GuiService.getInstance();
     public static int msCurrentTripId = 0;
@@ -198,7 +198,9 @@ public class ExploreFragment extends Fragment{
                         public void onDismissed(Snackbar snackbar, int event) {
                             // TODO - Meni add a complete delete
                         }
-                        @Override public void onShown(Snackbar snackbar) {
+
+                        @Override
+                        public void onShown(Snackbar snackbar) {
                             // current not in used
                             // for
                         }
@@ -229,20 +231,21 @@ public class ExploreFragment extends Fragment{
         guiInterface.assignItemToTrip(mTrip, item, item.getItemAmount(), new AddNewItemResponseListener() {
             @Override
             public void onResponse(Item item) {
-                mExploreSelectedListAdapter.notifyDataSetChanged();
-                mRvSelectedItems.scrollToPosition(0);
-                removeFromSuggestion(position, true);
+                Log.d(TAG, "item was assign" + item);
             }
         });
+        mExploreSelectedListAdapter.notifyDataSetChanged();
+        mRvSelectedItems.scrollToPosition(0);
+        removeFromSuggestion(position, true);
     }
 
     private Snackbar generateDeleteSnackbar(final Item item, final View.OnClickListener undoOnClick, final Snackbar.Callback onDismissedCallback) {
         Snackbar snackbar = Snackbar
-                .make(getView(), item.getItemName() + " " +getString(R.string.is_seleted), Snackbar.LENGTH_LONG)
+                .make(getView(), item.getItemName() + " " + getString(R.string.is_seleted), Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Snackbar snackbar1 = Snackbar.make(getView(), item.getItemName() + " " +getString(R.string.add_to_your_list), Snackbar.LENGTH_SHORT);
+                        Snackbar snackbar1 = Snackbar.make(getView(), item.getItemName() + " " + getString(R.string.add_to_your_list), Snackbar.LENGTH_SHORT);
                         snackbar1.show();
                         snackbar1.addCallback(onDismissedCallback);
                         undoOnClick.onClick(v);

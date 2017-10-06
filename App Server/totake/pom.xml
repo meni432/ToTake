@@ -44,11 +44,12 @@
 		</dependency>
 
 		<!-- marked the embedded servlet container as provided -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+			<!--<scope>provided</scope>-->
+		<!--</dependency>-->
+		<!--changeeeee-->
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -99,7 +100,11 @@
 			<!--<artifactId>hibernate-entitymanager</artifactId>-->
 			<!--<version>5.2.3.Final</version>-->
 		<!--</dependency>-->
-
+        <dependency>
+            <groupId>io.prediction</groupId>
+            <artifactId>client</artifactId>
+            <version>0.9.5</version>
+        </dependency>
 
 	</dependencies>
 
@@ -132,7 +137,9 @@
 					<executable>true</executable>
 				</configuration>
 			</plugin>
+
 		</plugins>
+
 	</build>
 
 

@@ -40,7 +40,7 @@ public class LogicService implements LogicInterface {
     public static final String TAG = LogicService.class.getCanonicalName();
 
     private static final LogicService ourInstance = new LogicService();
-    private static String mServerUrl = "http://totake.j.box.co.il";
+    private static String mServerUrl = "http://env-1520118.njs.jelastic.vps-host.net";
 
     public static LogicService getInstance() {
         return ourInstance;
@@ -86,12 +86,21 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void setFireBaseUserId(String fireBaseUserId, String displayName, final UserLoadListener userLoadListener) {
-        GsonRequest<User> gsonRequest = new GsonRequest<>(mServerUrl + "/getFireBaseUser?userId=" + fireBaseUserId+"&duserName="+displayName, User.class, null, new Response.Listener<User>() {
+        Log.d(TAG, "Set Firebase user " + fireBaseUserId + "display: " + displayName);
+        String url = mServerUrl + "/getFireBaseUser?userId=" + fireBaseUserId + "&displayName=" + displayName;
+
+        try {
+            displayName = URLEncoder.encode(displayName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        GsonRequest<User> gsonRequest = new GsonRequest<>(mServerUrl + "/getFireBaseUser?userId=" + fireBaseUserId + "&displayName=" + displayName, User.class, null, new Response.Listener<User>() {
             @Override
             public void onResponse(User response) {
                 if (response != null) {
+                    Log.d(TAG,"get firebase user");
                     userLoadListener.onUserLoad(response);
-//                    mCurrentUserId = userId;
+                    mCurrentUserId = response.getIdUser();
                 }
             }
         }, new Response.ErrorListener() {
@@ -218,21 +227,21 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener) {
-            String path = "/addNewTrip?userId=" + mCurrentUserId + "&destinationName=" + destinationName + "&startDate=" + startDate.getTime() + "&endDate=" + endDate.getTime() + "&googlePlaceId=" + googlePlaceId;
-            String encodedUrl = (mServerUrl + path).replaceAll(" ","%20");
-            GsonRequest<Trip> gsonRequest = new GsonRequest<>(encodedUrl, Trip.class, null, new Response.Listener<Trip>() {
-                @Override
-                public void onResponse(Trip response) {
-                    addNewTripResponseListener.onResponse(response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    addNewTripResponseListener.onResponse(null);
-                }
-            });
+        String path = "/addNewTrip?userId=" + mCurrentUserId + "&destinationName=" + destinationName + "&startDate=" + startDate.getTime() + "&endDate=" + endDate.getTime() + "&googlePlaceId=" + googlePlaceId;
+        String encodedUrl = (mServerUrl + path).replaceAll(" ", "%20");
+        GsonRequest<Trip> gsonRequest = new GsonRequest<>(encodedUrl, Trip.class, null, new Response.Listener<Trip>() {
+            @Override
+            public void onResponse(Trip response) {
+                addNewTripResponseListener.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                addNewTripResponseListener.onResponse(null);
+            }
+        });
 
-            mRequestQueue.add(gsonRequest);
+        mRequestQueue.add(gsonRequest);
     }
 
     @Override

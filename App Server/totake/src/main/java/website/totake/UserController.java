@@ -39,6 +39,19 @@ public class UserController {
         return user;
     }
 
+    @RequestMapping("/getFireBaseUser")
+    public User getFireBaseUser(@RequestParam(name = "userId", defaultValue = "none") String userId,
+                        @RequestParam(name = "displayName", defaultValue = "none") String displayName) {
+        User user = null;
+        if (!userId.equals("none")) {
+            user = userService.findUserByFirebaseId(userId);
+            if (user == null) {
+                user = userService.addNewUser(displayName, userId);
+            }
+        }
+        return user;
+    }
+
     @RequestMapping("/addUser")
     public User addUser(@RequestParam(name = "userName", defaultValue = "none") String userName,
                         @RequestParam(name = "userEmail", defaultValue = "none") String userEmail) {

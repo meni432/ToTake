@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.menisamet.totake.Logic.GuiInterface;
 import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.User;
@@ -37,6 +39,10 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    // [START declare_auth]
+    private FirebaseAuth mAuth;
+    // [END declare_auth]
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -45,6 +51,7 @@ public class HomeFragment extends Fragment {
     //loading component
     private Button mReloadButton;
     private Button mLoginTestButton;
+    private Button mLoginTahelButton;
     private TextView mUserNameTextView;
     private ProgressBar mLoadingProgressBar;
 
@@ -90,17 +97,35 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         mReloadButton = (Button) getView().findViewById(R.id.reload_button);
         mLoginTestButton = (Button) getView().findViewById(R.id.login_button);
+        mLoginTahelButton = (Button) getView().findViewById(R.id.login_tahel_button);
         mUserNameTextView = (TextView) getView().findViewById(R.id.user_name_textView);
         mLoadingProgressBar = (ProgressBar) getView().findViewById(R.id.loading_progressBar);
 
 
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        // [END initialize_auth]
+
+        FirebaseUser firebaseUser;
+        if ((firebaseUser = mAuth.getCurrentUser()) != null) {
+            guiInterface.setFireBaseUser(firebaseUser.getUid(), firebaseUser.getDisplayName(), new UserLoadListener() {
+                @Override
+                public void onUserLoad(User user) {
+                    loadUserFromServer();
+                }
+            });
+        }
+
         loadUserFromServer();
+
+
 
         mReloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadUserFromServer();
                 mLoadingProgressBar.setVisibility(View.VISIBLE);
+                loadUserFromServer();
             }
         });
 
@@ -112,6 +137,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        mLoginTahelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUserWithServer();
+            }
+        });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        loadUserFromServer();
     }
 
     @Override
@@ -159,7 +198,7 @@ public class HomeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void loadUserFromServer() {
+    private void loginUserWithServer() {
         guiInterface.setUserId(15, new UserLoadListener() {
             @Override
             public void onUserLoad(User user) {
@@ -170,5 +209,14 @@ public class HomeFragment extends Fragment {
                 Log.d(TAG, "user :" + user);
             }
         });
+    }
+
+    private void loadUserFromServer() {
+        User user = guiInterface.getUser();
+        if (user != null) {
+            mLoadingProgressBar.setVisibility(View.GONE);
+            mUserNameTextView.setText(user.getNameUser());
+        }
+        Log.d(TAG, "user :" + user);
     }
 }
