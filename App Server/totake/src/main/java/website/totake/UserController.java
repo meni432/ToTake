@@ -1,5 +1,7 @@
 package website.totake;
 
+import io.prediction.Event;
+import io.prediction.EventClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,6 +11,9 @@ import website.totake.Services.ItemService;
 import website.totake.Services.TripService;
 import website.totake.Services.UserService;
 import website.totake.SqlStructure.User;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by meni on 05/06/17.
@@ -41,12 +46,27 @@ public class UserController {
 
     @RequestMapping("/getFireBaseUser")
     public User getFireBaseUser(@RequestParam(name = "userId", defaultValue = "none") String userId,
-                        @RequestParam(name = "displayName", defaultValue = "none") String displayName) {
+                                @RequestParam(name = "displayName", defaultValue = "none") String displayName) {
         User user = null;
         if (!userId.equals("none")) {
             user = userService.findUserByFirebaseId(userId);
+            // Create a new user
             if (user == null) {
                 user = userService.addNewUser(displayName, userId);
+                EventClient client = new EventClient(Defaults.PIO_SERVER, Defaults.PIO_ACCESS_KEY);
+                try {
+                    Event userEvent = new Event()
+                            .event("$set")
+                            .entityType("user")
+                            .entityId("u" + user.getUserId());
+                    client.createEvent(userEvent);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return user;

@@ -53,6 +53,9 @@ public class User {
     }
 
     public void addNewTrip(Trip trip) {
+        if (userTripList == null) {
+            userTripList = new ArrayList<>();
+        }
         userTripList.add(0, trip);
     }
 
