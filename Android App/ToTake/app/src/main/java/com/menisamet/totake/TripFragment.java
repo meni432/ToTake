@@ -16,13 +16,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.menisamet.totake.Adapters.TripDetailAdapter;
-import com.menisamet.totake.Logic.GuiInterface;
-import com.menisamet.totake.Logic.GuiService;
+import com.menisamet.totake.Logic.LogicInterface;
+import com.menisamet.totake.Logic.LogicService;
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Services.PlaceImageLoader;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -43,7 +41,7 @@ public class TripFragment extends Fragment  implements GoogleApiClient.OnConnect
     private TripDetailAdapter mTripDetailAdapter;
 
 
-    GuiInterface guiInterface = GuiService.getInstance();
+    LogicInterface logicInterface = LogicService.getInstance();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -130,7 +128,7 @@ public class TripFragment extends Fragment  implements GoogleApiClient.OnConnect
         startGoogleApiClient();
         mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
 
-        trips = guiInterface.getAllTrips();
+        trips = logicInterface.getAllTrips();
         mTripDetailAdapter = new TripDetailAdapter(trips, getContext(), mPlaceImageLoader);
         rvTrips.setAdapter(mTripDetailAdapter);
         rvTrips.setLayoutManager(new LinearLayoutManager(getContext()));

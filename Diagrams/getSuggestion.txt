@@ -1,0 +1,11 @@
+Android->Server: Get suggestion for Trip x
+Server->ML Server: Get suggstion for Trip x
+ML Server->Server: Suggest i1, i4, i5, i77
+Server->+Mysql: Get item object for i1, i4..
+note left of Server: can be cache
+Mysql-->-Server:
+Server->Android: (i1, Hair Barsh) (i4, Passport) ...
+Android->Android: User pick more items
+Android->Server: Update items in trip x
+Server->Mysql: Store new items in DB
+Android->Server: Get suggestion for Trip x

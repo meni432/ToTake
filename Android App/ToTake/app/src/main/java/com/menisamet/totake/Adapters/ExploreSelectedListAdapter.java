@@ -2,7 +2,6 @@ package com.menisamet.totake.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,9 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
-import com.chauthai.swipereveallayout.ViewBinderHelper;
-import com.menisamet.totake.Logic.GuiInterface;
-import com.menisamet.totake.Logic.GuiService;
 import com.menisamet.totake.Modals.Item;
 import com.menisamet.totake.R;
 

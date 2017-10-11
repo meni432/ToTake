@@ -8,31 +8,18 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.menisamet.totake.Logic.GuiInterface;
-import com.menisamet.totake.Logic.GuiService;
-import com.menisamet.totake.Modals.Item;
-import com.menisamet.totake.Modals.User;
-import com.menisamet.totake.Server.Listeners.AllItemsResponseListener;
-import com.menisamet.totake.Server.Listeners.UserLoadListener;
-import com.menisamet.totake.Server.LogicInterface;
-import com.menisamet.totake.Server.LogicService;
-
-import java.util.List;
+import com.menisamet.totake.Logic.LogicInterface;
+import com.menisamet.totake.Logic.LogicService;
+import com.menisamet.totake.Server.ServerService;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, TripFragment.OnFragmentInteractionListener {
-    private static String TAG = LogicService.class.getCanonicalName();
+    private static String TAG = ServerService.class.getCanonicalName();
 
-    GuiInterface guiInterface = GuiService.getInstance();
+    LogicInterface logicInterface = LogicService.getInstance();
     HomeFragment mHomeFragment;
     TripFragment mTripFragment;
 
@@ -82,17 +69,17 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        guiInterface.setContext(getApplicationContext());
+        logicInterface.setContext(getApplicationContext());
 
 
-//        guiInterface.setUserId(1, new UserLoadListener() {
+//        logicInterface.setUserId(1, new UserLoadListener() {
 //            @Override
 //            public void onUserLoad(User user) {
 //                System.out.println(user);
 //            }
 //        });
 
-//        LogicInterface logicInterface = LogicService.getInstance();
+//        ServerInterface logicInterface = ServerService.getInstance();
 //        logicInterface.getAllItems(new AllItemsResponseListener() {
 //            @Override
 //            public void onResponse(List<Item> items) {
@@ -105,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 //            }
 //        }, getBaseContext());
 
-//        LogicInterface logicInterface = LogicService.getInstance();
+//        ServerInterface logicInterface = ServerService.getInstance();
 //        logicInterface.setContext(getBaseContext());
 //        logicInterface.getAllItems(new AllItemsResponseListener() {
 //            @Override

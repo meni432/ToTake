@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.menisamet.totake.Logic.GuiInterface;
-import com.menisamet.totake.Logic.GuiService;
+import com.menisamet.totake.Logic.LogicInterface;
+import com.menisamet.totake.Logic.LogicService;
 import com.menisamet.totake.Modals.User;
 import com.menisamet.totake.Server.Listeners.UserLoadListener;
 
@@ -32,7 +32,7 @@ import com.menisamet.totake.Server.Listeners.UserLoadListener;
  */
 public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.getCanonicalName();
-    GuiInterface guiInterface = GuiService.getInstance();
+    LogicInterface logicInterface = LogicService.getInstance();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment {
 
         FirebaseUser firebaseUser;
         if ((firebaseUser = mAuth.getCurrentUser()) != null) {
-            guiInterface.setFireBaseUser(firebaseUser.getUid(), firebaseUser.getDisplayName(), new UserLoadListener() {
+            logicInterface.setFireBaseUser(firebaseUser.getUid(), firebaseUser.getDisplayName(), new UserLoadListener() {
                 @Override
                 public void onUserLoad(User user) {
                     loadUserFromServer();
@@ -199,7 +199,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loginUserWithServer() {
-        guiInterface.setUserId(15, new UserLoadListener() {
+        logicInterface.setUserId(15, new UserLoadListener() {
             @Override
             public void onUserLoad(User user) {
                 if (user != null) {
@@ -212,7 +212,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadUserFromServer() {
-        User user = guiInterface.getUser();
+        User user = logicInterface.getUser();
         if (user != null) {
             mLoadingProgressBar.setVisibility(View.GONE);
             mUserNameTextView.setText(user.getNameUser());

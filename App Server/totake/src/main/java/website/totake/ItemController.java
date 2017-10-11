@@ -17,6 +17,7 @@ import website.totake.Services.UserService;
 import website.totake.SqlStructure.Item;
 import website.totake.SqlStructure.ItemDetails;
 import website.totake.SqlStructure.Trip;
+import website.totake.SqlStructure.User;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -46,7 +47,10 @@ public class ItemController {
                                    @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
                                    @RequestParam(name = "itemId", defaultValue = "-1") long itemId) {
 
-        itemDetailsService.removeByTripAndItem(tripId, itemId);
+        Trip trip = tripService.getTrip(tripId);
+        ItemDetails itemDetails = trip.getItemSpecificDetails(itemId);
+        itemDetails.setIsDone(1);
+        itemDetailsService.save(itemDetails);
         return null;
     }
 
@@ -124,6 +128,8 @@ public class ItemController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return itemDetails.getItem();

@@ -27,7 +27,8 @@ public class Trip implements TripInterface {
     @SerializedName("destinationGoogleId")
     private String destinationGoogleId;
 
-    public Trip() {}
+    public Trip() {
+    }
 
     public Trip(String destinationName, Date startDate, Date endDate, int tripID) {
         this.mDestinationName = destinationName;

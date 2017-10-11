@@ -23,8 +23,8 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.menisamet.totake.Logic.GuiInterface;
-import com.menisamet.totake.Logic.GuiService;
+import com.menisamet.totake.Logic.LogicInterface;
+import com.menisamet.totake.Logic.LogicService;
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.AddNewTripResponseListener;
 import com.menisamet.totake.Services.PlaceImageLoader;
@@ -46,7 +46,7 @@ public class NewTripActivity extends AppCompatActivity implements GoogleApiClien
     private Context mContext;
     private Intent mIntent;
 
-    GuiInterface guiInterface = GuiService.getInstance();
+    LogicInterface logicInterface = LogicService.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +140,7 @@ public class NewTripActivity extends AppCompatActivity implements GoogleApiClien
 
 
     public void addTrip(View v) {
-        guiInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate, mPlace.getId(), new AddNewTripResponseListener() {
+        logicInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate, mPlace.getId(), new AddNewTripResponseListener() {
             @Override
             public void onResponse(Trip trip) {
                 try {

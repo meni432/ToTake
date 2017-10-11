@@ -1,5 +1,7 @@
 package website.totake.SqlStructure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
@@ -37,9 +39,20 @@ public class Trip {
     private Set<ItemDetails> itemDetails = new HashSet<>();
 
 
-//    @JsonIgnore
+    //    @JsonIgnore
     public Set<ItemDetails> getItemDetails() {
         return itemDetails;
+    }
+
+    @JsonIgnore
+    public ItemDetails getItemSpecificDetails(long itemId) {
+        for (ItemDetails details : itemDetails) {
+            if (details.getPrimaryKey().getItem().getItemID() == itemId
+                    && details.getPrimaryKey().getTrip().getTripId() == tripId) {
+                return details;
+            }
+        }
+        return null;
     }
 
 

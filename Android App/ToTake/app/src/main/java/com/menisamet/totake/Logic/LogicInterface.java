@@ -19,7 +19,7 @@ import java.util.List;
  * Created by meni on 18/04/17.
  */
 
-public interface GuiInterface {
+public interface LogicInterface {
     public void setFireBaseUser(String firebaseUser, String userName, UserLoadListener userLoadListener);
     public void setUserId(long userId, UserLoadListener userLoadListener);
     public User getUser();

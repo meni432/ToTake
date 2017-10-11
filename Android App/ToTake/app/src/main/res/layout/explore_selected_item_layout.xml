@@ -36,6 +36,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="@null"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_add_circle_black_24dp" />
 
         <TextView
@@ -44,15 +45,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.05"
             android:text="3"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/item_dec_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="@null"
-            app:srcCompat="@drawable/ic_remove_circle_black_24dp"
-            />
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_remove_circle_black_24dp" />
 
     </LinearLayout>
 

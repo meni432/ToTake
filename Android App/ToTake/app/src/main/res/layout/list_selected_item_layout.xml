@@ -40,16 +40,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.05"
             android:text="3"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/item_done_image_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="@null"
-            android:tint="@color/divider"
             android:padding="20dp"
-            app:srcCompat="@drawable/ic_done_black_24dp" />
+            android:tint="@color/divider"
+            app:srcCompat="@drawable/ic_check_box_black_24dp" />
 
 
         <android.support.v4.widget.Space

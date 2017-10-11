@@ -10,8 +10,8 @@ import com.menisamet.totake.Server.Listeners.AddNewTripResponseListener;
 import com.menisamet.totake.Server.Listeners.AllItemsResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 import com.menisamet.totake.Server.Listeners.UserLoadListener;
-import com.menisamet.totake.Server.LogicInterface;
-import com.menisamet.totake.Server.LogicService;
+import com.menisamet.totake.Server.ServerInterface;
+import com.menisamet.totake.Server.ServerService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,21 +25,21 @@ import java.util.List;
 
 // TODO need to deal with similar item name (this is Logic problem, not gui problem)- OK!!!!
 
-public class GuiService implements GuiInterface {
+public class LogicService implements LogicInterface {
 
-    private static final GuiService ourInstance = new GuiService();
+    private static final LogicService ourInstance = new LogicService();
     private User currentUser;
     private List<Item> mAllItems;
     private List<Item> recommendationList;
     private static int RECOMMENDATION_LIST_SIZE_MAX = 30;
     private static int RECOMMENDATION_LIST_SIZE_MIN = 20;
-    private LogicInterface server = LogicService.getInstance();
+    private ServerInterface server = ServerService.getInstance();
 
-    public static GuiService getInstance() {
+    public static LogicService getInstance() {
         return ourInstance;
     }
 
-    private GuiService() {
+    private LogicService() {
 
     }
 
@@ -129,7 +129,7 @@ public class GuiService implements GuiInterface {
 
     @Override
     public void deleteItemFromTrip(Trip trip, Item item) {
-//        server.deleteItemFromTrip(trip, item);
+        server.deleteItemFromTrip(trip, item);
         // TODO need to implement
         trip.getItems().remove(item);
     }

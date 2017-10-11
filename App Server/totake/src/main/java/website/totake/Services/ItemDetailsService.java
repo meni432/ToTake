@@ -12,6 +12,7 @@ import website.totake.SqlStructure.ItemDetails;
 import website.totake.SqlStructure.Trip;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -22,6 +23,7 @@ import java.util.concurrent.ExecutionException;
 public class ItemDetailsService implements IItemDetailsService {
     @Autowired
     private SqlItemDetailsRepository sqlItemDetailsRepository;
+
 
     @Override
     public ItemDetails addNewItemDetails(Trip trip, Item item, int amount, int isDone) {
@@ -50,6 +52,13 @@ public class ItemDetailsService implements IItemDetailsService {
     public void removeByTripAndItem(long tripId, long itemId) {
         //TODO need to implement
         throw new RuntimeException("removeByTripAndItem not implemnt yet");
+//        Trip trip = tripService.getTrip(tripId);
+//        List<ItemDetails> itemDetails = sqlItemDetailsRepository.findByTrip_TripIdAndItem_ItemID(tripId, itemId);
+//        if (itemDetails.size() == 1) {
+//            itemDetails.get(0).setIsDone(1);
+//            sqlItemDetailsRepository.save(itemDetails.get(0));
+//        }
+
     }
 
     @Override

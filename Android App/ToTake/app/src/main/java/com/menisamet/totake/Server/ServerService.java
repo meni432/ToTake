@@ -3,17 +3,13 @@ package com.menisamet.totake.Server;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.reflect.TypeToken;
 import com.menisamet.totake.Modals.Item;
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Modals.User;
-import com.menisamet.totake.R;
 import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
 import com.menisamet.totake.Server.Listeners.AddNewTripResponseListener;
 import com.menisamet.totake.Server.Listeners.AllItemsResponseListener;
@@ -22,27 +18,21 @@ import com.menisamet.totake.Server.Listeners.UserLoadListener;
 import com.menisamet.totake.Server.Services.GsonRequest;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by meni on 18/04/17.
  */
 
-public class LogicService implements LogicInterface {
-    public static final String TAG = LogicService.class.getCanonicalName();
+public class ServerService implements ServerInterface {
+    public static final String TAG = ServerService.class.getCanonicalName();
 
-    private static final LogicService ourInstance = new LogicService();
+    private static final ServerService ourInstance = new ServerService();
     private static String mServerUrl = "http://env-1520118.njs.jelastic.vps-host.net";
 
-    public static LogicService getInstance() {
+    public static ServerService getInstance() {
         return ourInstance;
     }
 
@@ -51,7 +41,7 @@ public class LogicService implements LogicInterface {
 
     private long mCurrentUserId;
 
-    private LogicService() {
+    private ServerService() {
     }
 
 

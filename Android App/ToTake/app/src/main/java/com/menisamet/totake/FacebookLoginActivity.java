@@ -30,8 +30,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.menisamet.totake.Logic.GuiInterface;
-import com.menisamet.totake.Logic.GuiService;
+import com.menisamet.totake.Logic.LogicInterface;
+import com.menisamet.totake.Logic.LogicService;
 import com.menisamet.totake.Modals.User;
 import com.menisamet.totake.Server.Listeners.UserLoadListener;
 
@@ -41,7 +41,7 @@ import java.security.NoSuchAlgorithmException;
 public class FacebookLoginActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TAG = FacebookLoginActivity.class.getCanonicalName();
 
-    private final GuiInterface mGuiService = GuiService.getInstance();
+    private final LogicInterface mGuiService = LogicService.getInstance();
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
