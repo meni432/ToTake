@@ -1,0 +1,184 @@
+item_id,en_name,he_name,status
+1,Ball,Ball,NULL
+3,underpants,underpants,NULL
+4,dress,dress,NULL
+5,scarf,scarf,NULL
+6,pajamas,pajamas,NULL
+7,sandals,sandals,NULL
+8,"Hiking shoes","Hiking shoes",NULL
+9,"Flip flops","Flip flops",NULL
+10,Gloves,Gloves,NULL
+11,"Shoes for daily use","Shoes for daily use",NULL
+12,"Eyeglasses and / or contact lenses","Eyeglasses and / or contact lenses",NULL
+13,Sunglasses,Sunglasses,NULL
+14,"Thermal Pants","Thermal Pants",NULL
+15,"Hiking pants","Hiking pants",NULL
+16,"Elegant trousers","Elegant trousers",NULL
+17,"Long pants","Long pants",NULL
+18,"Short Pants","Short Pants",NULL
+19,Cap,Cap,NULL
+20,"Wool Hat","Wool Hat",NULL
+21,Trainings,Trainings,NULL
+22,"Hot Neck","Hot Neck",NULL
+23,Skirts,Skirts,NULL
+24,"Long / short tights","Long / short tights",NULL
+25,Brassieres,Brassieres,NULL
+26,"sports bras","sports bras",NULL
+27,"Belt / stocking money","Belt / stocking money",NULL
+28,"Thermal shirt","Thermal shirt",NULL
+29,"Elegant shirts","Elegant shirts",NULL
+30,"Long shirts","Long shirts",NULL
+31,"T-shirts sweat","T-shirts sweat",NULL
+32,"short shirts","short shirts",NULL
+33,"A high quality Fleece jacket","A high quality Fleece jacket",NULL
+34,"Casual jacket for day and night","Casual jacket for day and night",NULL
+35,Socks,Socks,NULL
+36,Getx,Getx,NULL
+37,"tank tops","tank tops",NULL
+38,Jeans,Jeans,NULL
+39,Boxer,Boxer,NULL
+40,Swimsuit,Swimsuit,NULL
+41,"Evening bag","Evening bag",NULL
+42,"Warm clothes for the night","Warm clothes for the night",NULL
+43,Cardigan,Cardigan,NULL
+44,jewelry,jewelry,NULL
+45,passport,passport,NULL
+46,"Belt / stocking money","Belt / stocking money",NULL
+47,notebook,notebook,NULL
+48,"Record of immunizations","Record of immunizations",NULL
+49,"Tour Guide","Tour Guide",NULL
+50,"Travel Chicks","Travel Chicks",NULL
+51,"International credit card","International credit card",NULL
+52,"Frequent Flyer Card","Frequent Flyer Card",NULL
+53,"Photos of all documents","Photos of all documents",NULL
+54,"flight tickets","flight tickets",NULL
+55,Dictionary-Phrasebook,Dictionary-Phrasebook,NULL
+56,"Driving License","Driving License",NULL
+57,"Small and large bag identification label","Small and large bag identification label",NULL
+58,"insurance policy","insurance policy",NULL
+59,"Mosquito repellent","Mosquito repellent",NULL
+60,"Antihypertensive drugs","Antihypertensive drugs",NULL
+61,"Elastic bandage","Elastic bandage",NULL
+62,Cotton,Cotton,NULL
+63,Plasters,Plasters,NULL
+64,"Safety pins","Safety pins",NULL
+65,inhaler,inhaler,NULL
+66,"Ointment for rubbing","Ointment for rubbing",NULL
+67,"Ointment for burns","Ointment for burns",NULL
+68,"Pills for lowering heat and cooling","Pills for lowering heat and cooling",NULL
+69,"Heartburn relief pills","Heartburn relief pills",NULL
+70,"Pills for relieving sore throat","Pills for relieving sore throat",NULL
+71,"Pills for malaria","Pills for malaria",NULL
+72,"Pills to prevent diarrhea and abdominal pain","Pills to prevent diarrhea and abdominal pain",NULL
+73,"Anti-nausea pills","Anti-nausea pills",NULL
+74,"Headache pills","Headache pills",NULL
+75,Disinfectant,Disinfectant,NULL
+76,vaseline,vaseline,NULL
+77,Pills,Pills,NULL
+78,Contraception,Contraception,NULL
+79,"Acamol, Advil, Opthalgine, and the like","Acamol, Advil, Opthalgine, and the like",NULL
+80,Thermometer,Thermometer,NULL
+81,"personal bandage","personal bandage",NULL
+82,Makeup,Makeup,NULL
+83,perfume,perfume,NULL
+84,"Hand wash gel","Hand wash gel",NULL
+85,"Hair bands","Hair bands",NULL
+86,deodorant,deodorant,NULL
+87,Tissue,Tissue,NULL
+88,Toothbrush,Toothbrush,NULL
+89,"wet wipes","wet wipes",NULL
+90,"Comb / hair brush","Comb / hair brush",NULL
+91,Q-tips,Q-tips,NULL
+92,"A small mirror","A small mirror",NULL
+93,toothpaste,toothpaste,NULL
+94,"Sanding nails","Sanding nails",NULL
+95,"Body Soap","Body Soap",NULL
+96,"Facial soap","Facial soap",NULL
+97,"Razor + shaving cream / shaver","Razor + shaving cream / shaver",NULL
+98,Tweezers,Tweezers,NULL
+99,Panties,Panties,NULL
+100,Confectionery,Confectionery,NULL
+101,"Nail clippers / nail scissors","Nail clippers / nail scissors",NULL
+102,"body cream","body cream",NULL
+103,"Hair cream","Hair cream",NULL
+104,"face cream","face cream",NULL
+105,Sunscreen,Sunscreen,NULL
+106,shampoo,shampoo,NULL
+107,"Sanitary napkins / tampons","Sanitary napkins / tampons",NULL
+108,"Pen or other hair straightener","Pen or other hair straightener",NULL
+109,"Water for lenses","Water for lenses",NULL
+110,Scissors,Scissors,NULL
+111,headphones,headphones,NULL
+112,generator,generator,NULL
+113,"Music - MP3 player + speaker","Music - MP3 player + speaker",NULL
+114,"A small laptop or tablet","A small laptop or tablet",NULL
+115,"Charger / charger","Charger / charger",NULL
+116,Splitter,Splitter,NULL
+117,Camera,Camera,NULL
+118,Batteries,Batteries,NULL
+119,"light bulbs","light bulbs",NULL
+120,"TADYOR - Emergency Flashlight","TADYOR - Emergency Flashlight",NULL
+121,"Various adapters for electricity","Various adapters for electricity",NULL
+122,"Cell Phones","Cell Phones",NULL
+123,"Nuts, almonds, etc.","Nuts, almonds, etc.",NULL
+124,"Granola bars","Granola bars",NULL
+125,Cups,Cups,NULL
+126,water,water,NULL
+127,pot,pot,NULL
+128,amount,amount,NULL
+129,Plates,Plates,NULL
+130,Kabanus,Kabanus,NULL
+131,"folding table","folding table",NULL
+132,"Canned food","Canned food",NULL
+133,oil,oil,NULL
+134,"Garbage bags + plastic bags","Garbage bags + plastic bags",NULL
+135,"Quick-cooking dishes","Quick-cooking dishes",NULL
+136,"Sandwiches for the first day","Sandwiches for the first day",NULL
+137,"Salt, pepper and spices","Salt, pepper and spices",NULL
+138,"Soap Dish","Soap Dish",NULL
+139,"Sleeping Bag","Sleeping Bag",NULL
+140,"Another blanket","Another blanket",NULL
+141,"A toothbrush box","A toothbrush box",NULL
+142,Finjan,Finjan,NULL
+143,hammock,hammock,NULL
+144,"Sewing kit","Sewing kit",NULL
+145,binoculars,binoculars,NULL
+146,compass,compass,NULL
+147,"Stick for trips","Stick for trips",NULL
+148,"Locks for bags","Locks for bags",NULL
+149,mat,mat,NULL
+150,"Inflatable double / single mattress","Inflatable double / single mattress",NULL
+151,"A small towel","A small towel",NULL
+152,Lederman,Lederman,NULL
+153,"A small pillow","A small pillow",NULL
+154,"Mosquito net","Mosquito net",NULL
+155,"folding chair","folding chair",NULL
+156,"tent Pegs and rods","tent Pegs and rods",NULL
+157,Ropes,Ropes,NULL
+158,"Gasier ","Gasier ",NULL
+159,Switchblade,Switchblade,NULL
+160,Earplugs,Earplugs,NULL
+161,Purse,Purse,NULL
+162,"Eyecover for sleep","Eyecover for sleep",NULL
+163,"Writing Tools","Writing Tools",NULL
+164,Cash,Cash,NULL
+165,"A small sleeping pad for the plane","A small sleeping pad for the plane",NULL
+166,"Towels for bathing and sea","Towels for bathing and sea",NULL
+167,"Small notebook and pen","Small notebook and pen",NULL
+168,"Lighter and matches","Lighter and matches",NULL
+169,Book,Book,NULL
+170,"Sewing kit","Sewing kit",NULL
+171,hammer,hammer,NULL
+172,"Fishing Equipment","Fishing Equipment",NULL
+173,Tzilla,Tzilla,NULL
+174,Cards,Cards,NULL
+175,"Sunshade to the sea","Sunshade to the sea",NULL
+176,"Laundry bag","Laundry bag",NULL
+177,phone,phone,NULL
+178,battery,battery,NULL
+179,celddddd,celddddd,NULL
+180,celddddd,celddddd,NULL
+181,ppppp,ppppp,NULL
+182,ppppp,ppppp,NULL
+183,ppppp,ppppp,NULL
+184,ppppp,ppppp,NULL

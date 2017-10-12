@@ -2,6 +2,8 @@ package website.totake;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.prediction.EngineClient;
 import io.prediction.Event;
@@ -20,6 +22,9 @@ import website.totake.SqlStructure.Trip;
 import website.totake.SqlStructure.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -54,6 +59,68 @@ public class ItemController {
         return null;
     }
 
+
+    @RequestMapping("/getSuggestionItemForTrip")
+    public Iterable<Item> getSuggestionItemForTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
+                                                   @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
+                                                   @RequestParam(name = "amount", defaultValue = "-1") long amount) {
+        Trip trip = tripService.getTrip(tripId);
+        ImmutableList.Builder<String> itemIdsListBuilder = ImmutableList.builder();
+        Set<ItemDetails> tripItemsDetails = trip.getItemDetails();
+
+        for (ItemDetails itemDetails : tripItemsDetails) {
+            itemIdsListBuilder.add("i" + itemDetails.getPrimaryKey().getItem().getItemID());
+        }
+
+        ImmutableList<String> itemIdsImmutableList = itemIdsListBuilder.build();
+        System.out.println("itemIdsImmutableList: " + itemIdsImmutableList);
+
+        JsonObject response = getSuggestionListFromServer(amount, itemIdsImmutableList);
+
+        if (response != null) {
+            ImmutableList<Item> items = predictionResponseToItemObject(response);
+            return items;
+        }
+
+        return null;
+    }
+
+    private JsonObject getSuggestionListFromServer(long amount, ImmutableList<String> itemIdsImmutableList) {
+        JsonObject response = null;
+        EngineClient engineClient = new EngineClient(Defaults.PIO_SERVER);
+
+        try {
+            response = engineClient.sendQuery(ImmutableMap.<String, Object>of(
+                    "items", itemIdsImmutableList,
+                    "num", amount
+            ));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    private ImmutableList<Item> predictionResponseToItemObject(JsonObject response) {
+        JsonElement jsonElement = response.get("itemScores");
+        JsonArray jsonElements = jsonElement.getAsJsonArray();
+
+        ImmutableList.Builder<Item> itemBuilder = ImmutableList.builder();
+        for (JsonElement element : jsonElements) {
+            JsonObject itemObject = element.getAsJsonObject();
+            String sItem = itemObject.get("item").getAsString();
+            double iScore = itemObject.get("score").getAsDouble();
+            int iItem = Integer.parseInt(sItem.substring(1));
+            Item item = itemService.getItem(iItem);
+            itemBuilder.add(item);
+        }
+
+        return itemBuilder.build();
+    }
+
     @RequestMapping("/notifyChangeAmount")
     public ItemDetails notifyChangeAmount(@RequestParam(name = "userId", defaultValue = "-1") long userId,
                                           @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
@@ -78,6 +145,7 @@ public class ItemController {
         ItemDetails itemDetails = itemDetailsService.addNewItemDetails(trip, item, amount, 0);
         return itemDetails.getItem();
     }
+
 
     @RequestMapping("/getSimilarItems")
     public String getSimilarItems(@RequestParam(name = "itemId", defaultValue = "i1") String itemId,
@@ -138,5 +206,27 @@ public class ItemController {
     @RequestMapping("/getAllItems")
     public Iterable<Item> getAllItems() {
         return itemService.getAllItems();
+    }
+
+    @RequestMapping("/loadItemsToPredictionEngine")
+    public boolean loadItemsToPredictionEngine() {
+        Iterable<Item> items = itemService.getAllItems();
+        EventClient client = new EventClient(Defaults.PIO_SERVER, Defaults.PIO_ACCESS_KEY);
+        for (Item item : items) {
+            Event itemEvent = new Event()
+                    .event("$set")
+                    .entityType("item")
+                    .entityId("i"+item.getItemID());
+            try {
+                client.createEvent(itemEvent);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 }

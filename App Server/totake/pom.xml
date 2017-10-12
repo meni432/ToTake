@@ -6,8 +6,8 @@
 	<groupId>website.totake</groupId>
 	<artifactId>totake</artifactId>
 	<version>0.0.1-totake-server</version>
-	<packaging>war</packaging>
-	<!--<packaging>jar</packaging>-->
+	<!--<packaging>war</packaging>-->
+	<packaging>jar</packaging>
 
 	<name>totake</name>
 	<description>ToTake rest service</description>
