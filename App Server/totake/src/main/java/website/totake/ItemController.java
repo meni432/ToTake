@@ -8,6 +8,13 @@ import com.google.gson.JsonObject;
 import io.prediction.EngineClient;
 import io.prediction.Event;
 import io.prediction.EventClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +26,8 @@ import website.totake.Services.UserService;
 import website.totake.SqlStructure.Item;
 import website.totake.SqlStructure.ItemDetails;
 import website.totake.SqlStructure.Trip;
-import website.totake.SqlStructure.User;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -63,31 +67,36 @@ public class ItemController {
     @RequestMapping("/getSuggestionItemForTrip")
     public Iterable<Item> getSuggestionItemForTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
                                                    @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
-                                                   @RequestParam(name = "amount", defaultValue = "-1") long amount) {
+                                                   @RequestParam(name = "amount", defaultValue = "10") long amount) {
+
         Trip trip = tripService.getTrip(tripId);
-        ImmutableList.Builder<String> itemIdsListBuilder = ImmutableList.builder();
-        Set<ItemDetails> tripItemsDetails = trip.getItemDetails();
+        if (trip.getItemDetails().size() < 5) {
+            return null;
+        } else {
+            ImmutableList.Builder<String> itemIdsListBuilder = ImmutableList.builder();
+            Set<ItemDetails> tripItemsDetails = trip.getItemDetails();
 
-        for (ItemDetails itemDetails : tripItemsDetails) {
-            itemIdsListBuilder.add("i" + itemDetails.getPrimaryKey().getItem().getItemID());
+            for (ItemDetails itemDetails : tripItemsDetails) {
+                itemIdsListBuilder.add("i" + itemDetails.getPrimaryKey().getItem().getItemID());
+            }
+
+            ImmutableList<String> itemIdsImmutableList = itemIdsListBuilder.build();
+            System.out.println("itemIdsImmutableList: " + itemIdsImmutableList);
+
+            JsonObject response = getSuggestionListFromServer(amount, itemIdsImmutableList);
+
+            if (response != null) {
+                ImmutableList<Item> items = predictionResponseToItemObject(response);
+                return items;
+            }
+
         }
-
-        ImmutableList<String> itemIdsImmutableList = itemIdsListBuilder.build();
-        System.out.println("itemIdsImmutableList: " + itemIdsImmutableList);
-
-        JsonObject response = getSuggestionListFromServer(amount, itemIdsImmutableList);
-
-        if (response != null) {
-            ImmutableList<Item> items = predictionResponseToItemObject(response);
-            return items;
-        }
-
         return null;
     }
 
     private JsonObject getSuggestionListFromServer(long amount, ImmutableList<String> itemIdsImmutableList) {
         JsonObject response = null;
-        EngineClient engineClient = new EngineClient(Defaults.PIO_SERVER);
+        EngineClient engineClient = new EngineClient(Defaults.PIO_DEPLOY_SERVER);
 
         try {
             response = engineClient.sendQuery(ImmutableMap.<String, Object>of(
@@ -182,24 +191,20 @@ public class ItemController {
         Trip trip = tripService.getTrip(tripId);
         Item item = itemService.getItem(itemId);
         ItemDetails itemDetails = itemDetailsService.addNewItemDetails(trip, item, amount, 0);
+
+        JSONObject json = new JSONObject();
         try {
-            EventClient client = new EventClient(Defaults.PIO_SERVER, Defaults.PIO_ACCESS_KEY);
-            Event viewEvent = new Event()
-                    .event("view")
-                    .entityType("user")
-                    .entityId("u" + userId)
-                    .targetEntityType("item")
-                    .targetEntityId("i" + itemId);
-            client.createEvent(viewEvent);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
+            json.put("event", "view");
+            json.put("entityType", "user");
+            json.put("entityId", Defaults.PIO_USER_PREFIX + userId);
+            json.put("targetEntityType", "item");
+            json.put("targetEntityId", Defaults.PIO_ITEM_PREFIX + itemId);
+
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+        EventPrediction.getInstance().sendEvent(json);
+
         return itemDetails.getItem();
     }
 
@@ -210,20 +215,19 @@ public class ItemController {
 
     @RequestMapping("/loadItemsToPredictionEngine")
     public boolean loadItemsToPredictionEngine() {
-        Iterable<Item> items = itemService.getAllItems();
-        EventClient client = new EventClient(Defaults.PIO_SERVER, Defaults.PIO_ACCESS_KEY);
-        for (Item item : items) {
-            Event itemEvent = new Event()
-                    .event("$set")
-                    .entityType("item")
-                    .entityId("i"+item.getItemID());
+        for (Item item : itemService.getAllItems()) {
             try {
-                client.createEvent(itemEvent);
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                JSONObject json = new JSONObject();
+                json.put("event", "$set");
+                json.put("entityType", "item");
+                json.put("entityId", "i" + item.getItemID());
+
+
+                CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+
+                EventPrediction.getInstance().sendEvent(json);
+
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }

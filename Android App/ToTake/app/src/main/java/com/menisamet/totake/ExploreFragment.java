@@ -22,9 +22,12 @@ import com.menisamet.totake.Logic.LogicService;
 import com.menisamet.totake.Modals.Item;
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
+import com.menisamet.totake.Server.Listeners.AllItemsResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
@@ -112,18 +115,8 @@ public class ExploreFragment extends Fragment {
 
         initialSelectedItemView();
         mTrip = logicInterface.getTripById(msCurrentTripId);
-        logicInterface.getRecommendationList(mTrip, new RecommendationListResponseListener() {
-            @Override
-            public void onResponse(List<Item> recommendedItems) {
-                List<Item> items = new ArrayList<Item>();
-                for (Item item : recommendedItems) {
-                    items.add(item);
-                }
-                mSuggestionItems = items;
-                initialSuggestionView();
-            }
-        });
 
+        getUpdatedRecommendedItems();
 
     }
 
@@ -180,11 +173,13 @@ public class ExploreFragment extends Fragment {
     }
 
     private final int NUM_SUGGESTION_TO_DELETE = 2;
+
     private void cleanSuggestionList() {
         new CountDownTimer(10000, 1000) {
             public void onFinish() {
                 for (int i = 0; i < NUM_SUGGESTION_TO_DELETE; i++) {
-                    removeFromSuggestion(0, false);
+//                    removeFromSuggestion(0, false);
+                    moveToTailFromSuggestion(0);
                 }
                 cleanSuggestionList();
             }
@@ -259,9 +254,50 @@ public class ExploreFragment extends Fragment {
     }
 
     private void moveToTailFromSuggestion(int position) {
-        Item item = mSuggestionItems.remove(position);
-        Log.d(TAG, mSuggestionItems.toString());
-        mSuggestionItems.add(mSuggestionItems.size() -1 , item);
+        if (mSuggestionItems.size() > NUM_SUGGESTION_TO_DELETE) {
+            Item item = mSuggestionItems.remove(position);
+            Log.d(TAG, mSuggestionItems.toString());
+            mSuggestionItems.add(mSuggestionItems.size() - 1, item);
+            mRAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void getUpdatedRecommendedItems() {
+        logicInterface.getRecommendationList(mTrip, new RecommendationListResponseListener() {
+            @Override
+            public void onResponse(List<Item> recommendedItems) {
+                if (recommendedItems.size() < 10) {
+                    logicInterface.getAllItems(new AllItemsResponseListener() {
+                        @Override
+                        public void onResponse(List<Item> allItems) {
+                            List<Item> items = new ArrayList<Item>();
+                            for (Item item : allItems) {
+                                items.add(item);
+                            }
+                            Collections.sort(items, new Comparator<Item>() {
+                                @Override
+                                public int compare(Item o1, Item o2) {
+                                    if (Math.random() < 0.5) {
+                                        return -1;
+                                    }
+                                    return 1;
+                                }
+                            });
+                            mSuggestionItems = items;
+                            initialSuggestionView();
+                        }
+                    });
+                } else {
+                    List<Item> items = new ArrayList<Item>();
+                    for (Item item : recommendedItems) {
+                        items.add(item);
+                    }
+                    mSuggestionItems = items;
+
+                }
+            }
+        });
+
         mRAdapter.notifyDataSetChanged();
     }
 

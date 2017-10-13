@@ -151,25 +151,37 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void getRecommendationList(final Trip trip, final RecommendationListResponseListener recommendationListResponseListener) {
-        //TODO need to change for real recommendation protocol
-        getAllItems(new AllItemsResponseListener() {
+//        getAllItems(new AllItemsResponseListener() {
+//            @Override
+//            public void onResponse(List<Item> items) {
+//                List<Item> itemList = new ArrayList<Item>();
+//                for (Item item : items) {
+//                    if (!trip.getItems().contains(item)) {
+//                        itemList.add(item);
+//                    }
+//                }
+//                Collections.sort(itemList, new Comparator<Item>() {
+//                    @Override
+//                    public int compare(Item o1, Item o2) {
+//                        if (Math.random() > 0.5) {
+//                            return 1;
+//                        }
+//                        return -1;
+//                    }
+//                });
+//                recommendationListResponseListener.onResponse(itemList);
+//            }
+//        });
+
+        server.getRecommendationList(trip, new RecommendationListResponseListener() {
             @Override
-            public void onResponse(List<Item> items) {
+            public void onResponse(List<Item> recommendedItems) {
                 List<Item> itemList = new ArrayList<Item>();
-                for (Item item : items) {
+                for (Item item : recommendedItems) {
                     if (!trip.getItems().contains(item)) {
-                        itemList.add(item);
+                        itemList.add(0,item);
                     }
                 }
-                Collections.sort(itemList, new Comparator<Item>() {
-                    @Override
-                    public int compare(Item o1, Item o2) {
-                        if (Math.random() > 0.5) {
-                            return 1;
-                        }
-                        return -1;
-                    }
-                });
                 recommendationListResponseListener.onResponse(itemList);
             }
         });

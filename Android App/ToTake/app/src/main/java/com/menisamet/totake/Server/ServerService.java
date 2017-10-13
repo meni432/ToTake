@@ -254,7 +254,24 @@ public class ServerService implements ServerInterface {
 
 
     @Override
-    public void getRecommendationList(Trip trip, RecommendationListResponseListener recommendationListResponseListener) {
+    public void getRecommendationList(Trip trip, final RecommendationListResponseListener recommendationListResponseListener) {
+        String path = mServerUrl + "/getSuggestionItemForTrip?userId="+mCurrentUserId+"&tripId="+trip.getTripID();
+        Log.d(TAG, "request path = " + path);
+        GsonRequest<Item[]> gsonRequest = new GsonRequest<>(path, Item[].class, null, new Response.Listener<Item[]>() {
+            @Override
+            public void onResponse(Item[] response) {
+                Log.d(TAG, "item recomended: " + Arrays.toString(response));
+                recommendationListResponseListener.onResponse(Arrays.asList(response));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, error.toString());
+                recommendationListResponseListener.onResponse(null);
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
         recommendationListResponseListener.onResponse(Item.createItemList(10));
     }
 }

@@ -2,6 +2,8 @@ package website.totake;
 
 import io.prediction.Event;
 import io.prediction.EventClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,23 +55,23 @@ public class UserController {
             // Create a new user
             if (user == null) {
                 user = userService.addNewUser(displayName, userId);
-                EventClient client = new EventClient(Defaults.PIO_SERVER, Defaults.PIO_ACCESS_KEY);
+                JSONObject json = new JSONObject();
                 try {
-                    Event userEvent = new Event()
-                            .event("$set")
-                            .entityType("user")
-                            .entityId("u" + user.getUserId());
-                    client.createEvent(userEvent);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                    json.put("event", "$set");
+                    json.put("entityType", "user");
+                    json.put("entityId", Defaults.PIO_USER_PREFIX + user.getUserId());
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                EventPrediction.getInstance().sendEvent(json);
             }
         }
         return user;
+    }
+
+
+    private void createUser(String userName) {
+
     }
 
     @RequestMapping("/addUser")
