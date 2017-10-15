@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by meni on 18/04/17.
@@ -261,7 +262,11 @@ public class ServerService implements ServerInterface {
             @Override
             public void onResponse(Item[] response) {
                 Log.d(TAG, "item recomended: " + Arrays.toString(response));
-                recommendationListResponseListener.onResponse(Arrays.asList(response));
+                List<Item> responseItemList = null;
+                if (response != null && response.length > 0) {
+                    responseItemList = Arrays.asList(response);
+                }
+                recommendationListResponseListener.onResponse(responseItemList);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -272,6 +277,5 @@ public class ServerService implements ServerInterface {
         });
 
         mRequestQueue.add(gsonRequest);
-        recommendationListResponseListener.onResponse(Item.createItemList(10));
     }
 }

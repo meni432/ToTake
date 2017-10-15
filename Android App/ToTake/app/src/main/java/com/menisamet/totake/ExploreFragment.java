@@ -26,8 +26,6 @@ import com.menisamet.totake.Server.Listeners.AllItemsResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
@@ -116,7 +114,7 @@ public class ExploreFragment extends Fragment {
         initialSelectedItemView();
         mTrip = logicInterface.getTripById(msCurrentTripId);
 
-        getUpdatedRecommendedItems();
+
 
     }
 
@@ -170,22 +168,36 @@ public class ExploreFragment extends Fragment {
 
             }
         });
+
+        getUpdatedRecommendedItems();
     }
 
     private final int NUM_SUGGESTION_TO_DELETE = 2;
 
+    private boolean mWaitingForRecomandetion = false;
     private void cleanSuggestionList() {
-        new CountDownTimer(10000, 1000) {
+        new CountDownTimer(30000, 1000) {
+            boolean skip = false;
             public void onFinish() {
-                for (int i = 0; i < NUM_SUGGESTION_TO_DELETE; i++) {
+                if (!skip) {
+                    for (int i = 0; i < NUM_SUGGESTION_TO_DELETE; i++) {
 //                    removeFromSuggestion(0, false);
-                    moveToTailFromSuggestion(0);
+                        moveToTailFromSuggestion(0);
+                    }
+                    getUpdatedRecommendedItems();
                 }
                 cleanSuggestionList();
             }
 
             public void onTick(long millisUntilFinished) {
                 // millisUntilFinished    The amount of time until finished.
+                if (!mWaitingForRecomandetion && mSuggestionItems.size() < 3) {
+                    skip = true;
+                    mWaitingForRecomandetion = true;
+                    getUpdatedRecommendedItems();
+                } else if (mSuggestionItems.size() >= 3) {
+                    mWaitingForRecomandetion = false;
+                }
             }
         }.start();
     }
@@ -262,11 +274,12 @@ public class ExploreFragment extends Fragment {
         }
     }
 
+    private boolean mPredictionFalg = true;
     private void getUpdatedRecommendedItems() {
         logicInterface.getRecommendationList(mTrip, new RecommendationListResponseListener() {
             @Override
             public void onResponse(List<Item> recommendedItems) {
-                if (recommendedItems.size() < 10) {
+                if (recommendedItems.size() < 5 && mPredictionFalg) {
                     logicInterface.getAllItems(new AllItemsResponseListener() {
                         @Override
                         public void onResponse(List<Item> allItems) {
@@ -274,31 +287,30 @@ public class ExploreFragment extends Fragment {
                             for (Item item : allItems) {
                                 items.add(item);
                             }
-                            Collections.sort(items, new Comparator<Item>() {
-                                @Override
-                                public int compare(Item o1, Item o2) {
-                                    if (Math.random() < 0.5) {
-                                        return -1;
-                                    }
-                                    return 1;
-                                }
-                            });
+
                             mSuggestionItems = items;
                             initialSuggestionView();
                         }
                     });
                 } else {
-                    List<Item> items = new ArrayList<Item>();
-                    for (Item item : recommendedItems) {
-                        items.add(item);
+                    if (mPredictionFalg) {
+                        mSuggestionItems = new ArrayList<Item>();
                     }
-                    mSuggestionItems = items;
-
+                    mPredictionFalg = false;
+                    Log.d(TAG, "recommended items: " + recommendedItems);
+                    for (Item item : recommendedItems) {
+                        if (!mSuggestionItems.contains(item) && !mItems.contains(item)) {
+                            mSuggestionItems.add(item);
+                        }
+                    }
+                    initialSuggestionView();
                 }
             }
         });
 
-        mRAdapter.notifyDataSetChanged();
+        if (mRAdapter != null) {
+            mRAdapter.notifyDataSetChanged();
+        }
     }
 
     private void assignItemToList(final int position) {

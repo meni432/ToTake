@@ -177,9 +177,11 @@ public class LogicService implements LogicInterface {
             @Override
             public void onResponse(List<Item> recommendedItems) {
                 List<Item> itemList = new ArrayList<Item>();
-                for (Item item : recommendedItems) {
-                    if (!trip.getItems().contains(item)) {
-                        itemList.add(0,item);
+                if (recommendedItems != null) {
+                    for (Item item : recommendedItems) {
+                        if (!trip.getItems().contains(item)) {
+                            itemList.add(0, item);
+                        }
                     }
                 }
                 recommendationListResponseListener.onResponse(itemList);

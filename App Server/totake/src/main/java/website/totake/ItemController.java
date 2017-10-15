@@ -77,7 +77,7 @@ public class ItemController {
             Set<ItemDetails> tripItemsDetails = trip.getItemDetails();
 
             for (ItemDetails itemDetails : tripItemsDetails) {
-                itemIdsListBuilder.add("i" + itemDetails.getPrimaryKey().getItem().getItemID());
+                itemIdsListBuilder.add(Defaults.PIO_ITEM_PREFIX + itemDetails.getPrimaryKey().getItem().getItemID());
             }
 
             ImmutableList<String> itemIdsImmutableList = itemIdsListBuilder.build();
@@ -122,7 +122,7 @@ public class ItemController {
             JsonObject itemObject = element.getAsJsonObject();
             String sItem = itemObject.get("item").getAsString();
             double iScore = itemObject.get("score").getAsDouble();
-            int iItem = Integer.parseInt(sItem.substring(1));
+            int iItem = Integer.parseInt(sItem.substring(Defaults.PIO_ITEM_PREFIX.length()));
             Item item = itemService.getItem(iItem);
             itemBuilder.add(item);
         }
@@ -220,7 +220,7 @@ public class ItemController {
                 JSONObject json = new JSONObject();
                 json.put("event", "$set");
                 json.put("entityType", "item");
-                json.put("entityId", "i" + item.getItemID());
+                json.put("entityId", Defaults.PIO_ITEM_PREFIX + item.getItemID());
 
 
                 CloseableHttpClient httpClient = HttpClientBuilder.create().build();

@@ -36,7 +36,7 @@ public class Trip implements TripInterface {
         this.mEndDate = endDate;
         this.tripID = tripID;
         items =  new ArrayList<>();
-        initialSampleItems(20);
+//        initialSampleItems(20);
     }
 
     private void initialSampleItems(int numberOfItems) {
