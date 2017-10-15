@@ -6,4 +6,5 @@ public final class Defaults {
     public static final String PIO_ACCESS_KEY = "f992af68b58b37363d354b52eb64b3f4";
     public static final String PIO_USER_PREFIX = "ttu";
     public static final String PIO_ITEM_PREFIX = "tti";
+    public static final int LRU_CAPACITY = 40;
 }
