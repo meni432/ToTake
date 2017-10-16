@@ -32,6 +32,7 @@ public interface ServerInterface {
     public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener);
     public void  addNewUser(String userName, String userEmail, final UserLoadListener userLoadListener);
     public void getRecommendationList(Trip trip, final RecommendationListResponseListener recommendationListResponseListener);
+    public void removeFromRecommendationList(Trip trip, final Item item);
 
 }
 

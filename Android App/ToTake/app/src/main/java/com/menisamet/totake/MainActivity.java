@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     HomeFragment mHomeFragment;
     TripFragment mTripFragment;
 
+    public static final boolean PRODUCTION_MODE = true;
     //Navigation Listener
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {

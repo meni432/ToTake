@@ -101,6 +101,12 @@ public class HomeFragment extends Fragment {
         mUserNameTextView = (TextView) getView().findViewById(R.id.user_name_textView);
         mLoadingProgressBar = (ProgressBar) getView().findViewById(R.id.loading_progressBar);
 
+        if (MainActivity.PRODUCTION_MODE) {
+            mReloadButton.setVisibility(View.INVISIBLE);
+            mLoginTahelButton.setVisibility(View.INVISIBLE);
+        }
+
+        mUserNameTextView.setVisibility(View.INVISIBLE);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -118,7 +124,6 @@ public class HomeFragment extends Fragment {
         }
 
         loadUserFromServer();
-
 
 
         mReloadButton.setOnClickListener(new View.OnClickListener() {
@@ -144,6 +149,27 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        logicInterface.setOnUserChangeListener(new LogicInterface.OnUserChangeListener() {
+            @Override
+            public void getCurrentUser(User user) {
+                updateUI(user);
+            }
+        });
+
+    }
+
+    private void updateUI(User user) {
+        if (user == null) {
+            mUserNameTextView.setVisibility(View.GONE);
+            mUserNameTextView.setText("");
+            mLoginTestButton.setText(R.string.login);
+            mLoadingProgressBar.setVisibility(View.VISIBLE);
+        } else {
+            mUserNameTextView.setVisibility(View.VISIBLE);
+            mUserNameTextView.setText(user.getNameUser());
+            mLoginTestButton.setText(R.string.logout);
+            mLoadingProgressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -202,10 +228,7 @@ public class HomeFragment extends Fragment {
         logicInterface.setUserId(15, new UserLoadListener() {
             @Override
             public void onUserLoad(User user) {
-                if (user != null) {
-                    mLoadingProgressBar.setVisibility(View.GONE);
-                    mUserNameTextView.setText(user.getNameUser());
-                }
+                updateUI(user);
                 Log.d(TAG, "user :" + user);
             }
         });
@@ -213,10 +236,7 @@ public class HomeFragment extends Fragment {
 
     private void loadUserFromServer() {
         User user = logicInterface.getUser();
-        if (user != null) {
-            mLoadingProgressBar.setVisibility(View.GONE);
-            mUserNameTextView.setText(user.getNameUser());
-        }
+        updateUI(user);
         Log.d(TAG, "user :" + user);
     }
 }

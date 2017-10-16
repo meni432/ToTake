@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import website.totake.Defaults;
 import website.totake.LRU.LRUCacheSync;
 import website.totake.Repositories.SqlItemRepository;
+import website.totake.Services.DataModels.ItemBlackList;
 import website.totake.Services.Interfaces.IItemService;
 import website.totake.SqlStructure.Item;
 
@@ -21,6 +22,8 @@ public class ItemService implements IItemService {
     private SqlItemRepository sqlItemRepository;
 
     private LRUCacheSync<Long, Item> itemIdToItemLRUCacheSync = new LRUCacheSync<>(Defaults.LRU_CAPACITY);
+
+    private ItemBlackList itemBlackList = new ItemBlackList();
 
     public Item getItem(long itemId) {
         Item item = null;
@@ -54,5 +57,9 @@ public class ItemService implements IItemService {
     @Override
     public Item save(Item item) {
         return sqlItemRepository.save(item);
+    }
+
+    public ItemBlackList getItemBlackList() {
+        return itemBlackList;
     }
 }

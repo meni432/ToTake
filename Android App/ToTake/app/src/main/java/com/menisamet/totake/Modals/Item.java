@@ -89,7 +89,7 @@ public class Item implements ItemInterface, CardsRecyclerView.CardElement{
 
     @Override
     public int getColor() {
-        return 0;
+        return 0xFFE91E63;
     }
 
     @Override

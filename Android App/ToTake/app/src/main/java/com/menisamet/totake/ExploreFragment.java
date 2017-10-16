@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -115,7 +116,6 @@ public class ExploreFragment extends Fragment {
         mTrip = logicInterface.getTripById(msCurrentTripId);
 
 
-
     }
 
     private void initialSelectedItemView() {
@@ -174,29 +174,39 @@ public class ExploreFragment extends Fragment {
 
     private final int NUM_SUGGESTION_TO_DELETE = 2;
 
+    public boolean isFragmentUIActive() {
+        return isAdded() && !isDetached() && !isRemoving();
+    }
+
     private boolean mWaitingForRecomandetion = false;
+
     private void cleanSuggestionList() {
         new CountDownTimer(30000, 1000) {
             boolean skip = false;
+
             public void onFinish() {
-                if (!skip) {
-                    for (int i = 0; i < NUM_SUGGESTION_TO_DELETE; i++) {
+                if (isFragmentUIActive()) {
+                    if (!skip) {
+                        for (int i = 0; i < NUM_SUGGESTION_TO_DELETE; i++) {
 //                    removeFromSuggestion(0, false);
-                        moveToTailFromSuggestion(0);
+                            moveToTailFromSuggestion(0);
+                        }
+                        getUpdatedRecommendedItems();
                     }
-                    getUpdatedRecommendedItems();
+                    cleanSuggestionList();
                 }
-                cleanSuggestionList();
             }
 
             public void onTick(long millisUntilFinished) {
-                // millisUntilFinished    The amount of time until finished.
-                if (!mWaitingForRecomandetion && mSuggestionItems.size() < 3) {
-                    skip = true;
-                    mWaitingForRecomandetion = true;
-                    getUpdatedRecommendedItems();
-                } else if (mSuggestionItems.size() >= 3) {
-                    mWaitingForRecomandetion = false;
+                if (isFragmentUIActive()) {
+                    // millisUntilFinished    The amount of time until finished.
+                    if (!mWaitingForRecomandetion && mSuggestionItems.size() < 3) {
+                        skip = true;
+                        mWaitingForRecomandetion = true;
+                        getUpdatedRecommendedItems();
+                    } else if (mSuggestionItems.size() >= 3) {
+                        mWaitingForRecomandetion = false;
+                    }
                 }
             }
         }.start();
@@ -205,8 +215,13 @@ public class ExploreFragment extends Fragment {
     private void initialSuggestionView() {
 //        mSuggestionItems = Item.createItemList(20); //TODO Meni - get from logic
         mRecyclerView = (CardsRecyclerView) getView().findViewById(R.id.suggestion_card_recycle_view);
+        if (mRecyclerView == null) {
+            return;
+        }
+        mRecyclerView.setDuration(1);
         mRecyclerView.setNumLinesAndOrientation(1, CardsRecyclerView.HORIZONTAL);
         mRAdapter = new CardsRecyclerView.RecycleViewCardAdapter<>(mSuggestionItems);
+        mRAdapter.setCardGlobalColor(0xFFE91E63);
         mRAdapter.setImageGlobalRecurse(R.drawable.ic_add_circle_black_24dp);
         mRAdapter.setCardGlobalColor(CardsRecyclerView.RANDOM_COLOR);
         mRecyclerView.setAdapter(mRAdapter);
@@ -219,6 +234,7 @@ public class ExploreFragment extends Fragment {
                 }
             }
         });
+        final Trip trip = logicInterface.getTripById(msCurrentTripId);
         mRecyclerView.setCardLongClickListener(new CardsRecyclerView.CardLongClickListener() {
             @Override
             public void onCardLongCLick(View view, int position) {
@@ -233,7 +249,8 @@ public class ExploreFragment extends Fragment {
                     }, new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar snackbar, int event) {
-                            // TODO - Meni add a complete delete
+                            Log.d(TAG, " removeFromRecommendationList dismissed");
+                            logicInterface.removeFromRecommendationList(trip, item);
                         }
 
                         @Override
@@ -242,12 +259,19 @@ public class ExploreFragment extends Fragment {
                             // for
                         }
                     });
+                    snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            super.onDismissed(transientBottomBar, event);
+                            Log.d(TAG, " removeFromRecommendationList dismissed");
+                            logicInterface.removeFromRecommendationList(trip, item);
+                        }
+                    });
                     snackbar.show();
                 }
             }
         });
 
-        Trip trip = logicInterface.getTripById(msCurrentTripId);
 //        logicInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
 //            @Override
 //            public void onResponse(List<Item> recommendedItems) {
@@ -275,6 +299,7 @@ public class ExploreFragment extends Fragment {
     }
 
     private boolean mPredictionFalg = true;
+
     private void getUpdatedRecommendedItems() {
         logicInterface.getRecommendationList(mTrip, new RecommendationListResponseListener() {
             @Override

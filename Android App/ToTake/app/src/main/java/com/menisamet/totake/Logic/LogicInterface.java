@@ -1,6 +1,7 @@
 package com.menisamet.totake.Logic;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.menisamet.totake.Modals.Item;
 import com.menisamet.totake.Modals.Trip;
@@ -32,7 +33,12 @@ public interface LogicInterface {
     public void deleteItemFromTrip(Trip trip, Item item);
     public void getAllItems(final AllItemsResponseListener allItemsResponseListener);
     public void getRecommendationList(Trip trip, RecommendationListResponseListener recommendationListResponseListener);
+    public void removeFromRecommendationList(Trip trip, Item item);
     public void notifyChangeAmount(Trip trip, Item item);
     public List<Item> getSuggestionForSearch(String query);
     public void setContext(Context context);
+    public void setOnUserChangeListener(OnUserChangeListener onUserChangeListener);
+    interface OnUserChangeListener {
+        public void getCurrentUser(User user);
+    }
 }

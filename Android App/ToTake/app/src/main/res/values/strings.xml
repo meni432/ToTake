@@ -37,4 +37,6 @@
     <string name="sign_out">Sign Out</string>
     <string name="signed_out">Signed Out</string>
     <string name="desc_firebase_lockup">FIrebase</string>
+    <string name="logout">Logout</string>
+    <string name="login">Login</string>
 </resources>

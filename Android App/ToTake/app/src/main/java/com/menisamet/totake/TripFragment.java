@@ -155,6 +155,13 @@ public class TripFragment extends Fragment  implements GoogleApiClient.OnConnect
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }

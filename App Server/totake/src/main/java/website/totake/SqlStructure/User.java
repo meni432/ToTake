@@ -24,7 +24,6 @@ public class User {
     private String firebaseId;
 
 
-
     @OneToMany
     @JoinTable(name = "users_trips",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),

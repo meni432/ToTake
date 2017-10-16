@@ -34,6 +34,7 @@ public class LogicService implements LogicInterface {
     private static int RECOMMENDATION_LIST_SIZE_MAX = 30;
     private static int RECOMMENDATION_LIST_SIZE_MIN = 20;
     private ServerInterface server = ServerService.getInstance();
+    private OnUserChangeListener onUserChangeListener= null;
 
     public static LogicService getInstance() {
         return ourInstance;
@@ -50,6 +51,7 @@ public class LogicService implements LogicInterface {
             @Override
             public void onUserLoad(User user) {
                 currentUser = user;
+                noticeListenerOnChangeUser(user);
                 userLoadListener.onUserLoad(user);
             }
         });
@@ -64,6 +66,7 @@ public class LogicService implements LogicInterface {
             public void onUserLoad(User user) {
                 currentUser = user;
                 userLoadListener.onUserLoad(user);
+                noticeListenerOnChangeUser(user);
             }
         });
     }
@@ -190,6 +193,11 @@ public class LogicService implements LogicInterface {
     }
 
     @Override
+    public void removeFromRecommendationList(Trip trip, Item item) {
+        server.removeFromRecommendationList(trip, item);
+    }
+
+    @Override
     public void notifyChangeAmount(Trip trip, Item item) {
         server.notifyChangeAmount(trip, item);
     }
@@ -202,5 +210,15 @@ public class LogicService implements LogicInterface {
     @Override
     public void setContext(Context context) {
         server.setContext(context);
+    }
+
+
+    private void noticeListenerOnChangeUser(User user) {
+        if (this.onUserChangeListener != null) {
+            this.onUserChangeListener.getCurrentUser(user);
+        }
+    }
+    public void setOnUserChangeListener(OnUserChangeListener onUserChangeListener) {
+        this.onUserChangeListener = onUserChangeListener;
     }
 }

@@ -278,4 +278,24 @@ public class ServerService implements ServerInterface {
 
         mRequestQueue.add(gsonRequest);
     }
+
+    @Override
+    public void removeFromRecommendationList(Trip trip, final Item item) {
+        Log.d(TAG, "on removeSuggestionItemForTrip");
+        String path = mServerUrl + "/removeSuggestionItemForTrip?userId="+mCurrentUserId+"&tripId="+trip.getTripID()+"&itemId="+item.getItemID();
+        Log.d(TAG, "request path = " + path);
+        GsonRequest<String> gsonRequest = new GsonRequest<>(path, String.class, null, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "add to black list callback froms server:  "+item.getItemID());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, error.toString());
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
+    }
 }

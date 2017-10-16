@@ -16,11 +16,12 @@ public class User {
     private int userId;
     @SerializedName("trips")
     private List<Trip> userTripList;
+    @SerializedName("firebaseId")
+    private String firebaseId;
 
     public User() {
     }
 
-    ;
 
     public User(String userName, int userId) {
         this.userName = userName;
@@ -88,6 +89,10 @@ public class User {
                 return;
             }
         }
+    }
+
+    public String getFirebaseId() {
+        return firebaseId;
     }
 
     @Override
