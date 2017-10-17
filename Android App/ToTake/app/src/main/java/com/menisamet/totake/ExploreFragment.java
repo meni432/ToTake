@@ -23,7 +23,6 @@ import com.menisamet.totake.Logic.LogicService;
 import com.menisamet.totake.Modals.Item;
 import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Server.Listeners.AddNewItemResponseListener;
-import com.menisamet.totake.Server.Listeners.AllItemsResponseListener;
 import com.menisamet.totake.Server.Listeners.RecommendationListResponseListener;
 
 import java.util.ArrayList;
@@ -116,6 +115,8 @@ public class ExploreFragment extends Fragment {
         mTrip = logicInterface.getTripById(msCurrentTripId);
 
 
+        getUpdatedRecommendedItems();
+
     }
 
     private void initialSelectedItemView() {
@@ -169,7 +170,6 @@ public class ExploreFragment extends Fragment {
             }
         });
 
-        getUpdatedRecommendedItems();
     }
 
     private final int NUM_SUGGESTION_TO_DELETE = 2;
@@ -180,37 +180,6 @@ public class ExploreFragment extends Fragment {
 
     private boolean mWaitingForRecomandetion = false;
 
-    private void cleanSuggestionList() {
-        new CountDownTimer(30000, 1000) {
-            boolean skip = false;
-
-            public void onFinish() {
-                if (isFragmentUIActive()) {
-                    if (!skip) {
-                        for (int i = 0; i < NUM_SUGGESTION_TO_DELETE; i++) {
-//                    removeFromSuggestion(0, false);
-                            moveToTailFromSuggestion(0);
-                        }
-                        getUpdatedRecommendedItems();
-                    }
-                    cleanSuggestionList();
-                }
-            }
-
-            public void onTick(long millisUntilFinished) {
-                if (isFragmentUIActive()) {
-                    // millisUntilFinished    The amount of time until finished.
-                    if (!mWaitingForRecomandetion && mSuggestionItems.size() < 3) {
-                        skip = true;
-                        mWaitingForRecomandetion = true;
-                        getUpdatedRecommendedItems();
-                    } else if (mSuggestionItems.size() >= 3) {
-                        mWaitingForRecomandetion = false;
-                    }
-                }
-            }
-        }.start();
-    }
 
     private void initialSuggestionView() {
 //        mSuggestionItems = Item.createItemList(20); //TODO Meni - get from logic
@@ -249,14 +218,10 @@ public class ExploreFragment extends Fragment {
                     }, new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar snackbar, int event) {
-                            Log.d(TAG, " removeFromRecommendationList dismissed");
-                            logicInterface.removeFromRecommendationList(trip, item);
                         }
 
                         @Override
                         public void onShown(Snackbar snackbar) {
-                            // current not in used
-                            // for
                         }
                     });
                     snackbar.addCallback(new BaseTransientBottomBar.BaseCallback<Snackbar>() {
@@ -272,21 +237,14 @@ public class ExploreFragment extends Fragment {
             }
         });
 
-//        logicInterface.getRecommendationList(trip, new RecommendationListResponseListener() {
-//            @Override
-//            public void onResponse(List<Item> recommendedItems) {
-//                mSuggestionItems = new ArrayList<Item>(recommendedItems);
-//                mRAdapter.notifyDataSetChanged();
-//            }
-//        });
-
-        cleanSuggestionList();
     }
 
     private void removeFromSuggestion(int position, boolean isChoosing) {
         mSuggestionItems.remove(position);
         Log.d(TAG, mSuggestionItems.toString());
         mRAdapter.notifyDataSetChanged();
+        mRecyclerView.scrollToPosition(position);
+        checkForNeededUpdate();
     }
 
     private void moveToTailFromSuggestion(int position) {
@@ -298,38 +256,75 @@ public class ExploreFragment extends Fragment {
         }
     }
 
-    private boolean mPredictionFalg = true;
+
+    private void checkForNeededUpdate() {
+        if (mSuggestionItems.size() < 5 || mOverrideSuggestion) {
+            getUpdatedRecommendedItems();
+        }
+    }
+
+    private void liveUpdateRecomendation() {
+        new CountDownTimer(3000, 10) {
+            public void onFinish() {
+                checkForNeededUpdate();
+            }
+
+            public void onTick(long millisUntilFinished) {
+                // millisUntilFinished    The amount of time until finished.
+            }
+        }.start();
+    }
+
+    private boolean mOverrideSuggestion = false;
 
     private void getUpdatedRecommendedItems() {
         logicInterface.getRecommendationList(mTrip, new RecommendationListResponseListener() {
             @Override
-            public void onResponse(List<Item> recommendedItems) {
-                if (recommendedItems.size() < 5 && mPredictionFalg) {
-                    logicInterface.getAllItems(new AllItemsResponseListener() {
-                        @Override
-                        public void onResponse(List<Item> allItems) {
-                            List<Item> items = new ArrayList<Item>();
-                            for (Item item : allItems) {
-                                items.add(item);
-                            }
-
-                            mSuggestionItems = items;
-                            initialSuggestionView();
+            public void onResponse(List<Item> recommendedItems, boolean override) {
+                if (override) {
+                    mOverrideSuggestion = true;
+                    List<Item> items = new ArrayList<Item>();
+                    for (Item item : recommendedItems) {
+                        if (!mItems.contains(item)) {
+                            items.add(item);
                         }
-                    });
+                    }
+
+                    mSuggestionItems = items;
+                    int currentPosition = 0;
+                    if (mRecyclerView != null) {
+                        currentPosition = mRecyclerView.getHorizontalFadingEdgeLength();
+                    }
+                    initialSuggestionView();
+                    mRecyclerView.scrollToPosition(currentPosition);
                 } else {
-                    if (mPredictionFalg) {
+                    boolean hasChange = false;
+                    if (mOverrideSuggestion) {
                         mSuggestionItems = new ArrayList<Item>();
                     }
-                    mPredictionFalg = false;
-                    Log.d(TAG, "recommended items: " + recommendedItems);
+                    mOverrideSuggestion = false;
+                    if (mSuggestionItems == null) {
+                        mSuggestionItems = new ArrayList<Item>();
+                    }
                     for (Item item : recommendedItems) {
                         if (!mSuggestionItems.contains(item) && !mItems.contains(item)) {
                             mSuggestionItems.add(item);
+                            hasChange = true;
                         }
                     }
-                    initialSuggestionView();
+                    if (hasChange) {
+                        int currentPosition = 0;
+                        if (mRecyclerView != null) {
+                            currentPosition = mRecyclerView.getHorizontalFadingEdgeLength();
+                        }
+                        initialSuggestionView();
+                        mRecyclerView.scrollToPosition(currentPosition);
+                    }
+
+                    liveUpdateRecomendation();
                 }
+
+
             }
         });
 
@@ -352,7 +347,8 @@ public class ExploreFragment extends Fragment {
     }
 
     private Snackbar generateDeleteSnackbar(final Item item, final View.OnClickListener undoOnClick, final Snackbar.Callback onDismissedCallback) {
-        Snackbar snackbar = Snackbar
+
+        return Snackbar
                 .make(getView(), item.getItemName() + " " + getString(R.string.is_seleted), Snackbar.LENGTH_LONG)
                 .setAction(R.string.undo, new View.OnClickListener() {
                     @Override
@@ -363,8 +359,6 @@ public class ExploreFragment extends Fragment {
                         undoOnClick.onClick(v);
                     }
                 });
-
-        return snackbar;
     }
 
     @Override

@@ -104,10 +104,10 @@ public class CardsRecyclerView extends RecyclerView {
 
     @Override
     public void setAdapter(Adapter adapter) {
-        ScaleInAnimationAdapter scaleInAnimationAdapter = new ScaleInAnimationAdapter(adapter);
-        scaleInAnimationAdapter.setDuration(mDuration);
-        scaleInAnimationAdapter.setFirstOnly(mFirstOnly);
-        super.setAdapter(scaleInAnimationAdapter);
+//        ScaleInAnimationAdapter scaleInAnimationAdapter = new ScaleInAnimationAdapter(adapter);
+//        scaleInAnimationAdapter.setDuration(mDuration);
+//        scaleInAnimationAdapter.setFirstOnly(mFirstOnly);
+        super.setAdapter(adapter);
     }
 
     public void setCardClickListener(CardClickListener cardClickListener) {

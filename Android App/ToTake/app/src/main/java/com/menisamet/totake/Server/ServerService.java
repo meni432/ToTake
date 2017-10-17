@@ -266,13 +266,13 @@ public class ServerService implements ServerInterface {
                 if (response != null && response.length > 0) {
                     responseItemList = Arrays.asList(response);
                 }
-                recommendationListResponseListener.onResponse(responseItemList);
+                recommendationListResponseListener.onResponse(responseItemList, true);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, error.toString());
-                recommendationListResponseListener.onResponse(null);
+                recommendationListResponseListener.onResponse(null, true);
             }
         });
 

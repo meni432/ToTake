@@ -98,7 +98,7 @@ public class ItemController {
                 System.out.println("itemIdsImmutableList: " + itemIdsImmutableList);
 
 
-                List<Long> blackList = (List<Long>) itemService.getItemBlackList().getBlackList(trip).get();
+                List<Long> blackList =  itemService.getItemBlackList().getBlackList(trip).get();
                 ImmutableList.Builder<String> blackListBuilder = ImmutableList.builder();
                 if (blackList != null) {
                     for (Long itemId : blackList) {
@@ -110,14 +110,11 @@ public class ItemController {
                 JsonObject response = getSuggestionListFromServer(amount, itemIdsImmutableList, blackListImmutableList);
 
                 if (response != null) {
-                    ImmutableList<Item> items = predictionResponseToItemObject(response);
-                    return items;
+                    return predictionResponseToItemObject(response);
                 }
 
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;

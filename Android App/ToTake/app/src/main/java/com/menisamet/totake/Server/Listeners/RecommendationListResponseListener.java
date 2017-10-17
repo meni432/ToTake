@@ -9,5 +9,5 @@ import java.util.List;
  */
 
 public interface RecommendationListResponseListener {
-    public void onResponse(List<Item> recommendedItems);
+    public void onResponse(List<Item> recommendedItems, boolean override);
 }

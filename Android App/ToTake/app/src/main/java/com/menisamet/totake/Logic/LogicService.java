@@ -1,6 +1,7 @@
 package com.menisamet.totake.Logic;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.menisamet.totake.Modals.Item;
 import com.menisamet.totake.Modals.Trip;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class LogicService implements LogicInterface {
 
+    private static final String TAG = LogicService.class.getCanonicalName();
     private static final LogicService ourInstance = new LogicService();
     private User currentUser;
     private List<Item> mAllItems;
@@ -34,7 +36,7 @@ public class LogicService implements LogicInterface {
     private static int RECOMMENDATION_LIST_SIZE_MAX = 30;
     private static int RECOMMENDATION_LIST_SIZE_MIN = 20;
     private ServerInterface server = ServerService.getInstance();
-    private OnUserChangeListener onUserChangeListener= null;
+    private OnUserChangeListener onUserChangeListener = null;
 
     public static LogicService getInstance() {
         return ourInstance;
@@ -154,40 +156,39 @@ public class LogicService implements LogicInterface {
 
     @Override
     public void getRecommendationList(final Trip trip, final RecommendationListResponseListener recommendationListResponseListener) {
-//        getAllItems(new AllItemsResponseListener() {
-//            @Override
-//            public void onResponse(List<Item> items) {
-//                List<Item> itemList = new ArrayList<Item>();
-//                for (Item item : items) {
-//                    if (!trip.getItems().contains(item)) {
-//                        itemList.add(item);
-//                    }
-//                }
-//                Collections.sort(itemList, new Comparator<Item>() {
-//                    @Override
-//                    public int compare(Item o1, Item o2) {
-//                        if (Math.random() > 0.5) {
-//                            return 1;
-//                        }
-//                        return -1;
-//                    }
-//                });
-//                recommendationListResponseListener.onResponse(itemList);
-//            }
-//        });
-
         server.getRecommendationList(trip, new RecommendationListResponseListener() {
             @Override
-            public void onResponse(List<Item> recommendedItems) {
+            public void onResponse(List<Item> recommendedItems, boolean override) {
                 List<Item> itemList = new ArrayList<Item>();
-                if (recommendedItems != null) {
+                if (recommendedItems != null && recommendedItems.size() > 0) {
                     for (Item item : recommendedItems) {
                         if (!trip.getItems().contains(item)) {
                             itemList.add(0, item);
+                        } else {
+                            assignItemToTrip(trip, item, 1, new AddNewItemResponseListener() {
+                                @Override
+                                public void onResponse(Item item) {
+                                    Log.d(TAG, "Re assign item to trip after get a prediction" + item);
+                                }
+                            });
                         }
                     }
+                    recommendationListResponseListener.onResponse(itemList, false);
+                } else {
+                    getAllItems(new AllItemsResponseListener() {
+                        @Override
+                        public void onResponse(List<Item> items) {
+                            List<Item> allItemList = new ArrayList<Item>();
+                            for (Item item : items) {
+                                if (!trip.getItems().contains(item)) {
+                                    allItemList.add(item);
+                                }
+                            }
+                            recommendationListResponseListener.onResponse(allItemList, true);
+                        }
+                    });
                 }
-                recommendationListResponseListener.onResponse(itemList);
+
             }
         });
     }
@@ -218,6 +219,7 @@ public class LogicService implements LogicInterface {
             this.onUserChangeListener.getCurrentUser(user);
         }
     }
+
     public void setOnUserChangeListener(OnUserChangeListener onUserChangeListener) {
         this.onUserChangeListener = onUserChangeListener;
     }

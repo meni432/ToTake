@@ -24,27 +24,19 @@ public class TripService implements ITripSerivce {
     private LRUCacheSync<Long, Trip> longTripLRUCacheSync = new LRUCacheSync<>(Defaults.LRU_CAPACITY);
 
     public Trip getTrip(long tripId) {
-        try {
             Trip trip;
 
-            if ((trip = longTripLRUCacheSync.get(tripId).get()) != null) {
-                return trip;
-            }
+//            if ((trip = longTripLRUCacheSync.get(tripId).get()) != null) {
+//                return trip;
+//            }
 
             trip = sqlTripRepository.findTripByTripId(tripId);
             if (trip != null) {
                 if (trip.getStatus() == Trip.TRIP_REGULAR) {
-                    longTripLRUCacheSync.put(tripId, trip);
+//                    longTripLRUCacheSync.put(tripId, trip);
                     return trip;
                 }
             }
-
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
         return null;
     }
 
