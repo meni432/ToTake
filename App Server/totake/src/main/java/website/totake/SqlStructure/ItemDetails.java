@@ -3,6 +3,7 @@ package website.totake.SqlStructure;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by meni on 28/05/17.
@@ -44,6 +45,7 @@ public class ItemDetails {
     public int getIsDone() {
         return isDone;
     }
+
 
     public void setIsDone(int isDone) {
         this.isDone = isDone;

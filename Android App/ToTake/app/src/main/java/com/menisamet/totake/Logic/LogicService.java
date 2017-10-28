@@ -83,7 +83,6 @@ public class LogicService implements LogicInterface {
         if (currentUser != null) {
             final List<Trip> trips = currentUser.getTrips();
             if (trips != null && trips.size() > 0) {
-                Collections.reverse(trips);
                 return trips;
             }
         }

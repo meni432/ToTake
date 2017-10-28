@@ -30,6 +30,8 @@ import com.menisamet.totake.Server.Listeners.AddNewTripResponseListener;
 import com.menisamet.totake.Services.PlaceImageLoader;
 
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NewTripActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = NewTripActivity.class.getCanonicalName();
@@ -139,7 +141,10 @@ public class NewTripActivity extends AppCompatActivity implements GoogleApiClien
     }
 
 
+    //    AtomicBoolean atomicBoolean = new AtomicBoolean(false);
     public void addTrip(View v) {
+//        if (!atomicBoolean.get()) {
+//            atomicBoolean.set(true);
         logicInterface.addNewTrip(mPlace.getName().toString(), mFromDate, mToDate, mPlace.getId(), new AddNewTripResponseListener() {
             @Override
             public void onResponse(Trip trip) {
@@ -150,6 +155,7 @@ public class NewTripActivity extends AppCompatActivity implements GoogleApiClien
                     intent.putExtras(bundle);
                     startActivity(intent);
                     finish();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     if (!Mode.TEST_MODE) {
@@ -159,6 +165,7 @@ public class NewTripActivity extends AppCompatActivity implements GoogleApiClien
 
             }
         });
+//        }
     }
 
     public static class DatePickerFragment extends DialogFragment

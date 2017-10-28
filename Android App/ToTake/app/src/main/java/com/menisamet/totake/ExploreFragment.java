@@ -58,8 +58,6 @@ public class ExploreFragment extends Fragment {
     // Selected Item Adapter elemnt
     private ExploreSelectedListAdapter mExploreSelectedListAdapter;
 
-    private EditText mSearchEditText;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -107,15 +105,14 @@ public class ExploreFragment extends Fragment {
 
         mRvSelectedItems = (RecyclerView) getView().findViewById(R.id.rvExploreSelectedList);
         mRvSelectedItems.setItemAnimator(new SlideInLeftAnimator());
-        mSearchEditText = (EditText) getView().findViewById(R.id.search_edit_text);
 
         logicInterface.setContext(getContext());
 
-        initialSelectedItemView();
-        mTrip = logicInterface.getTripById(msCurrentTripId);
-
-
-        getUpdatedRecommendedItems();
+        if (isFragmentUIActive()) {
+            initialSelectedItemView();
+            mTrip = logicInterface.getTripById(msCurrentTripId);
+            getUpdatedRecommendedItems();
+        }
 
     }
 
@@ -181,14 +178,17 @@ public class ExploreFragment extends Fragment {
     private boolean mWaitingForRecomandetion = false;
 
 
-    private void initialSuggestionView() {
+    private void initialSuggestionView(int numLines) {
 //        mSuggestionItems = Item.createItemList(20); //TODO Meni - get from logic
+        if (!isFragmentUIActive()) {
+            return;
+        }
         mRecyclerView = (CardsRecyclerView) getView().findViewById(R.id.suggestion_card_recycle_view);
         if (mRecyclerView == null) {
             return;
         }
         mRecyclerView.setDuration(1);
-        mRecyclerView.setNumLinesAndOrientation(1, CardsRecyclerView.HORIZONTAL);
+        mRecyclerView.setNumLinesAndOrientation(numLines, CardsRecyclerView.HORIZONTAL);
         mRAdapter = new CardsRecyclerView.RecycleViewCardAdapter<>(mSuggestionItems);
         mRAdapter.setCardGlobalColor(0xFFE91E63);
         mRAdapter.setImageGlobalRecurse(R.drawable.ic_add_circle_black_24dp);
@@ -285,8 +285,9 @@ public class ExploreFragment extends Fragment {
                     mOverrideSuggestion = true;
                     List<Item> items = new ArrayList<Item>();
                     for (Item item : recommendedItems) {
+                        int randPosition = Math.max((int) (Math.random() * (items.size() - 1)), 0);
                         if (!mItems.contains(item)) {
-                            items.add(item);
+                            items.add(randPosition, item);
                         }
                     }
 
@@ -295,7 +296,7 @@ public class ExploreFragment extends Fragment {
                     if (mRecyclerView != null) {
                         currentPosition = mRecyclerView.getHorizontalFadingEdgeLength();
                     }
-                    initialSuggestionView();
+                    initialSuggestionView(4);
                     mRecyclerView.scrollToPosition(currentPosition);
                 } else {
                     boolean hasChange = false;
@@ -317,8 +318,10 @@ public class ExploreFragment extends Fragment {
                         if (mRecyclerView != null) {
                             currentPosition = mRecyclerView.getHorizontalFadingEdgeLength();
                         }
-                        initialSuggestionView();
-                        mRecyclerView.scrollToPosition(currentPosition);
+                        initialSuggestionView(1);
+                        if (mRecyclerView != null) {
+                            mRecyclerView.scrollToPosition(currentPosition);
+                        }
                     }
 
                     liveUpdateRecomendation();
@@ -390,6 +393,17 @@ public class ExploreFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isFragmentUIActive()) {
+            initialSelectedItemView();
+            mTrip = logicInterface.getTripById(msCurrentTripId);
+            getUpdatedRecommendedItems();
+        }
     }
 
     /**

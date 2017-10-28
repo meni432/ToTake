@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.sun.deploy.util.BlackList;
 import io.prediction.EngineClient;
 import io.prediction.Event;
 import io.prediction.EventClient;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import website.totake.Services.DataModels.ItemBlackList;
 import website.totake.Services.ItemDetailsService;
 import website.totake.Services.ItemService;
 import website.totake.Services.TripService;
@@ -74,6 +76,9 @@ public class ItemController {
         Trip trip = tripService.getTrip(tripId);
         if (trip != null) {
             itemService.getItemBlackList().addToBlackList(trip, itemId);
+            String newBlackList = ItemBlackList.addToBlackList(itemId, trip.getBlackListIds());
+            trip.setBlackListIds(newBlackList);
+            tripService.save(trip);
         }
 
     }
@@ -82,40 +87,37 @@ public class ItemController {
     public Iterable<Item> getSuggestionItemForTrip(@RequestParam(name = "userId", defaultValue = "-1") long userId,
                                                    @RequestParam(name = "tripId", defaultValue = "-1") long tripId,
                                                    @RequestParam(name = "amount", defaultValue = "10") long amount) {
-        try {
-            Trip trip = tripService.getTrip(tripId);
-            if (trip.getItemDetails().size() < 5) {
-                return null;
-            } else {
-                ImmutableList.Builder<String> itemIdsListBuilder = ImmutableList.builder();
-                Set<ItemDetails> tripItemsDetails = trip.getItemDetails();
+        Trip trip = tripService.getTrip(tripId);
+        if (trip.getItemDetails().size() < 5) {
+            return null;
+        } else {
+            ImmutableList.Builder<String> itemIdsListBuilder = ImmutableList.builder();
+            Set<ItemDetails> tripItemsDetails = trip.getItemDetails();
 
-                for (ItemDetails itemDetails : tripItemsDetails) {
-                    itemIdsListBuilder.add(Defaults.PIO_ITEM_PREFIX + itemDetails.getPrimaryKey().getItem().getItemID());
-                }
-
-                ImmutableList<String> itemIdsImmutableList = itemIdsListBuilder.build();
-                System.out.println("itemIdsImmutableList: " + itemIdsImmutableList);
-
-
-                List<Long> blackList =  itemService.getItemBlackList().getBlackList(trip).get();
-                ImmutableList.Builder<String> blackListBuilder = ImmutableList.builder();
-                if (blackList != null) {
-                    for (Long itemId : blackList) {
-                        blackListBuilder.add(Defaults.PIO_ITEM_PREFIX + itemId);
-                    }
-                }
-                ImmutableList<String> blackListImmutableList = blackListBuilder.build();
-                System.out.println("blacklist for trip " + trip.getTripId() + blackListImmutableList);
-                JsonObject response = getSuggestionListFromServer(amount, itemIdsImmutableList, blackListImmutableList);
-
-                if (response != null) {
-                    return predictionResponseToItemObject(response);
-                }
-
+            for (ItemDetails itemDetails : tripItemsDetails) {
+                itemIdsListBuilder.add(Defaults.PIO_ITEM_PREFIX + itemDetails.getPrimaryKey().getItem().getItemID());
             }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+
+            ImmutableList<String> itemIdsImmutableList = itemIdsListBuilder.build();
+            System.out.println("itemIdsImmutableList: " + itemIdsImmutableList);
+
+
+//                List<Long> blackList =  itemService.getItemBlackList().getBlackList(trip).get();
+            ImmutableList<Long> blackList = ItemBlackList.getImmutableBlackList(trip.getBlackListIds());
+            ImmutableList.Builder<String> blackListBuilder = ImmutableList.builder();
+            if (blackList != null) {
+                for (Long itemId : blackList) {
+                    blackListBuilder.add(Defaults.PIO_ITEM_PREFIX + itemId);
+                }
+            }
+            ImmutableList<String> blackListImmutableList = blackListBuilder.build();
+            System.out.println("blacklist for trip " + trip.getTripId() + blackListImmutableList);
+            JsonObject response = getSuggestionListFromServer(amount, itemIdsImmutableList, blackListImmutableList);
+
+            if (response != null) {
+                return predictionResponseToItemObject(response);
+            }
+
         }
         return null;
     }

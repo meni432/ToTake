@@ -39,4 +39,7 @@
     <string name="desc_firebase_lockup">FIrebase</string>
     <string name="logout">Logout</string>
     <string name="login">Login</string>
+    <string name="guest">Guest</string>
+    <string name="please_log_in">Please Log In</string>
+    <string name="create_your_first_trip">Create your first Trip</string>
 </resources>

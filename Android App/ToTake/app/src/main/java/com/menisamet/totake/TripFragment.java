@@ -128,10 +128,15 @@ public class TripFragment extends Fragment  implements GoogleApiClient.OnConnect
         startGoogleApiClient();
         mPlaceImageLoader = new PlaceImageLoader(mGoogleApiClient);
 
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
         trips = logicInterface.getAllTrips();
         mTripDetailAdapter = new TripDetailAdapter(trips, getContext(), mPlaceImageLoader);
         rvTrips.setAdapter(mTripDetailAdapter);
-        rvTrips.setLayoutManager(new LinearLayoutManager(getContext()));
+//        rvTrips.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvTrips.setLayoutManager(mLayoutManager);
         mTripDetailAdapter.notifyDataSetChanged();
 
     }

@@ -34,8 +34,15 @@ public class Trip {
     @Column(name = "status", nullable = false)
     private Long status;
 
+
     @OneToMany(mappedBy = "primaryKey.trip",
             cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+
+    @Column(name = "black_list_ids", length = 1000)
+    private String blackListIds;
+
+
     private Set<ItemDetails> itemDetails = new HashSet<>();
 
 
@@ -60,6 +67,8 @@ public class Trip {
         this.setStatus(TRIP_REGULAR);
     }
 
+
+
     public Trip(String destinationEnName, String getDestinationHeName, String googlePlaceId, Date startDate, Date endDate) {
         this();
         this.destinationEnName = destinationEnName;
@@ -71,6 +80,14 @@ public class Trip {
 
     public long getTripId() {
         return tripId;
+    }
+
+    public String getBlackListIds() {
+        return blackListIds;
+    }
+
+    public void setBlackListIds(String blackListIds) {
+        this.blackListIds = blackListIds;
     }
 
     public String getDestinationEnName() {

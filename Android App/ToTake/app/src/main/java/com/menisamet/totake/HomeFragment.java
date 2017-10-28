@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,15 +12,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.menisamet.totake.Logic.LogicInterface;
 import com.menisamet.totake.Logic.LogicService;
+import com.menisamet.totake.Modals.Trip;
 import com.menisamet.totake.Modals.User;
 import com.menisamet.totake.Server.Listeners.UserLoadListener;
+import com.menisamet.totake.Services.PlaceImageLoader;
 
 
 /**
@@ -30,7 +37,7 @@ import com.menisamet.totake.Server.Listeners.UserLoadListener;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = HomeFragment.class.getCanonicalName();
     LogicInterface logicInterface = LogicService.getInstance();
 
@@ -49,11 +56,10 @@ public class HomeFragment extends Fragment {
 
 
     //loading component
-    private Button mReloadButton;
     private Button mLoginTestButton;
-    private Button mLoginTahelButton;
     private TextView mUserNameTextView;
     private ProgressBar mLoadingProgressBar;
+    private TextView mNextTripTextView;
 
 
     private OnFragmentInteractionListener mListener;
@@ -95,17 +101,10 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         // Inflate the layout for this fragment
-        mReloadButton = (Button) getView().findViewById(R.id.reload_button);
         mLoginTestButton = (Button) getView().findViewById(R.id.login_button);
-        mLoginTahelButton = (Button) getView().findViewById(R.id.login_tahel_button);
         mUserNameTextView = (TextView) getView().findViewById(R.id.user_name_textView);
         mLoadingProgressBar = (ProgressBar) getView().findViewById(R.id.loading_progressBar);
-
-        if (MainActivity.PRODUCTION_MODE) {
-            mReloadButton.setVisibility(View.INVISIBLE);
-            mLoginTahelButton.setVisibility(View.INVISIBLE);
-        }
-
+        mNextTripTextView = (TextView) getView().findViewById(R.id.next_trip_text_view);
         mUserNameTextView.setVisibility(View.INVISIBLE);
 
         // [START initialize_auth]
@@ -126,13 +125,6 @@ public class HomeFragment extends Fragment {
         loadUserFromServer();
 
 
-        mReloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLoadingProgressBar.setVisibility(View.VISIBLE);
-                loadUserFromServer();
-            }
-        });
 
         mLoginTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,12 +134,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        mLoginTahelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginUserWithServer();
-            }
-        });
 
         logicInterface.setOnUserChangeListener(new LogicInterface.OnUserChangeListener() {
             @Override
@@ -161,14 +147,19 @@ public class HomeFragment extends Fragment {
     private void updateUI(User user) {
         if (user == null) {
             mUserNameTextView.setVisibility(View.GONE);
-            mUserNameTextView.setText("");
             mLoginTestButton.setText(R.string.login);
-            mLoadingProgressBar.setVisibility(View.VISIBLE);
+            mLoadingProgressBar.setVisibility(View.GONE);
+            mUserNameTextView.setText(R.string.guest);
+            mNextTripTextView.setText(R.string.please_log_in);
         } else {
             mUserNameTextView.setVisibility(View.VISIBLE);
             mUserNameTextView.setText(user.getNameUser());
             mLoginTestButton.setText(R.string.logout);
             mLoadingProgressBar.setVisibility(View.GONE);
+            if (user.getTrips() != null && user.getTrips().size() > 0) {
+                Trip trip = logicInterface.getAllTrips().get(logicInterface.getAllTrips().size() - 1);
+                mNextTripTextView.setText(String.format("Your next Trip to - %s", trip.getDestinationName()));
+            }
         }
     }
 
@@ -183,6 +174,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -209,6 +205,11 @@ public class HomeFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -224,15 +225,6 @@ public class HomeFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void loginUserWithServer() {
-        logicInterface.setUserId(15, new UserLoadListener() {
-            @Override
-            public void onUserLoad(User user) {
-                updateUI(user);
-                Log.d(TAG, "user :" + user);
-            }
-        });
-    }
 
     private void loadUserFromServer() {
         User user = logicInterface.getUser();

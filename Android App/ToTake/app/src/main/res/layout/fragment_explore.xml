@@ -34,14 +34,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/search_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Search"
-                android:inputType="text"
-                android:maxLines="1"
-                android:imeOptions="actionDone"/>
 
             <!--<ImageButton-->
             <!--android:id="@+id/search_image_button"-->

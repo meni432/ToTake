@@ -3,6 +3,7 @@ package com.menisamet.totake.Server;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -31,6 +32,7 @@ public class ServerService implements ServerInterface {
     public static final String TAG = ServerService.class.getCanonicalName();
 
     private static final ServerService ourInstance = new ServerService();
+    private static final int MY_SOCKET_TIMEOUT_MS = 90000;
     private static String mServerUrl = "http://env-1520118.njs.jelastic.vps-host.net";
 
     public static ServerService getInstance() {
@@ -219,6 +221,7 @@ public class ServerService implements ServerInterface {
     @Override
     public void addNewTrip(String destinationName, Date startDate, Date endDate, String googlePlaceId, final AddNewTripResponseListener addNewTripResponseListener) {
         String path = "/addNewTrip?userId=" + mCurrentUserId + "&destinationName=" + destinationName + "&startDate=" + startDate.getTime() + "&endDate=" + endDate.getTime() + "&googlePlaceId=" + googlePlaceId;
+        Log.d(TAG, path);
         String encodedUrl = (mServerUrl + path).replaceAll(" ", "%20");
         GsonRequest<Trip> gsonRequest = new GsonRequest<>(encodedUrl, Trip.class, null, new Response.Listener<Trip>() {
             @Override
@@ -228,9 +231,16 @@ public class ServerService implements ServerInterface {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                addNewTripResponseListener.onResponse(null);
+                Log.d(TAG, "add new trim error " + error.networkResponse);
+                Log.d(TAG, "volley error " + error);
+//                addNewTripResponseListener.onResponse(null);
             }
         });
+
+        gsonRequest.setRetryPolicy(new DefaultRetryPolicy(
+                MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         mRequestQueue.add(gsonRequest);
     }

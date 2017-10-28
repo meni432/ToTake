@@ -11,12 +11,18 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import com.menisamet.totake.Logic.LogicInterface;
+import com.menisamet.totake.Logic.LogicService;
+import com.menisamet.totake.Modals.Trip;
+
 public class TripActivity extends AppCompatActivity implements ItemListFragment.OnFragmentInteractionListener, ExploreFragment.OnFragmentInteractionListener {
     public static final String TAG = TripActivity.class.getCanonicalName();
     public static final String ARGS_TRIP_ID = "trip_id";
     private int mCurrentTripId;
     ExploreFragment mExploreFragment;
     ItemListFragment mItemListFragment;
+
+    LogicInterface logicInterface = LogicService.getInstance();
 
     ToggleButton mTbItemListButton;
 
@@ -32,18 +38,21 @@ public class TripActivity extends AppCompatActivity implements ItemListFragment.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Sets the Toolbar to act as the ActionBar for this Activity window.
         // Make sure the toolbar exists in the activity and is not null
+        Trip trip = logicInterface.getTripById(mCurrentTripId);
+        if (trip != null) {
+            toolbar.setTitle(trip.getDestinationName());
+        }
         setSupportActionBar(toolbar);
-
         mTbItemListButton = (ToggleButton) findViewById(R.id.tb_item_list_button);
         mTbItemListButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    mItemListFragment.msCurrentTripId = mCurrentTripId;
+                    ItemListFragment.msCurrentTripId = mCurrentTripId;
                     showFragment(mItemListFragment);
                     mTbItemListButton.setText(R.string.view_build_list);
                 } else {
-                    mExploreFragment.msCurrentTripId = mCurrentTripId;
+                    ExploreFragment.msCurrentTripId = mCurrentTripId;
                     showFragment(mExploreFragment);
                     mTbItemListButton.setText(R.string.view_item_list);
                 }
